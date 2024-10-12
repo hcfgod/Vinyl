@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Vinyl\Log.h" />
     <ClInclude Include="Source\Vinyl.h" />
     <ClInclude Include="Source\Vinyl\Application.h" />
     <ClInclude Include="Source\Vinyl\Core.h" />
     <ClInclude Include="Source\Vinyl\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Vinyl\Log.cpp" />
     <ClCompile Include="Source\Vinyl\Application.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -67,6 +69,7 @@
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS; VL_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);VL_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Vendor\SpdLog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,6 +85,7 @@
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS; VL_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);VL_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Vendor\SpdLog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

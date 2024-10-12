@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);VL_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Source\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Source\;$(SolutionDir)Vinyl\Vendor\SpdLog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,7 +74,7 @@
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);VL_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Source\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Vinyl\Source\;$(SolutionDir)Vinyl\Vendor\SpdLog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

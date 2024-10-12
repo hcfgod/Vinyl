@@ -1,0 +1,3 @@
+[submodule "Vinyl/Vendor/SpdLog"]
+	path = Vinyl/Vendor/SpdLog
+	url = https://github.com/gabime/spdlog
