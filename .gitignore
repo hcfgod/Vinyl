@@ -1,0 +1,7 @@
+# Directories
+.vs/
+Bin/
+Bin-Intermediates/
+
+# Files
+*.user
