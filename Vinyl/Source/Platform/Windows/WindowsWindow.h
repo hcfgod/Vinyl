@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Vinyl/Window.h"
-
 #include <GLFW/glfw3.h>
 
 namespace Vinyl

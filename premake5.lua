@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
+IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 
 include "Vinyl/Vendor/GLFW"
+include "Vinyl/Vendor/Glad"
 
 project "Vinyl"
 	location "Vinyl"
@@ -38,12 +40,14 @@ project "Vinyl"
 	{
 		"%{prj.name}/Source/",
 		"%{prj.name}/Vendor/SpdLog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib",
 		"dwmapi.lib"
 	}
@@ -54,7 +58,8 @@ project "Vinyl"
 		defines
 		{
 			"VL_PLATFORM_WINDOWS",
-			"VL_BUILD_DLL"
+			"VL_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
