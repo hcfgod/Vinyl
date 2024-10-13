@@ -72,6 +72,7 @@ project "Vinyl"
 		{
 			"VL_PLATFORM_WINDOWS",
 			"VL_BUILD_DLL",
+			"IMGUI_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
 
@@ -114,6 +115,7 @@ project "Sandbox"
 	{
 		"Vinyl/Vendor/SpdLog/include",
 		"Vinyl/Source",
+		"Vinyl/Vendor/",
 		"%{IncludeDir.glm}"
 	}
 
@@ -128,7 +130,7 @@ project "Sandbox"
 
 	defines
 	{
-		"VL_PLATFORM_WINDOWS",
+		"VL_PLATFORM_WINDOWS"
 	}
 
 	filter "configurations:Debug"

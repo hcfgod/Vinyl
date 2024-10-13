@@ -1,5 +1,7 @@
 #include <Vinyl.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Vinyl::Layer
 {
 public:
@@ -16,6 +18,12 @@ public:
 		}
 	}
 
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Hello World");
+		ImGui::End();
+	}
+
 	void OnEvent(Vinyl::Event& event) override
 	{
 		
@@ -28,7 +36,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Vinyl::ImGuiLayer());
 	}
 
 	~Sandbox()

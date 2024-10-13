@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_BUILD_DLL;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -102,7 +102,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_BUILD_DLL;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -129,7 +129,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_BUILD_DLL;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -165,9 +165,6 @@
     <ClInclude Include="Source\Vinyl\Events\KeyEvent.h" />
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h" />
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.h" />
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.h" />
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Source\Vinyl\Input.h" />
     <ClInclude Include="Source\Vinyl\Layer.h" />
     <ClInclude Include="Source\Vinyl\LayerStack.h" />
@@ -595,9 +592,8 @@
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Vinyl\Application.cpp" />
+    <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.cpp" />
-    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\Vinyl\Layer.cpp" />
     <ClCompile Include="Source\Vinyl\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Log.cpp" />

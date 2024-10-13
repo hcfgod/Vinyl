@@ -7,6 +7,7 @@
 
 #include "Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"
+#include "Vinyl/ImGui/ImGuiLayer.h"
 
 namespace Vinyl
 {
@@ -29,6 +30,7 @@ namespace Vinyl
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:

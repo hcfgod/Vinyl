@@ -3,9 +3,9 @@
 
 #include "Vinyl/Application.h"
 
-#include "OpenGL/imgui_impl_glfw.h"
-#include "OpenGL/imgui_impl_opengl3.h"
-#include "OpenGL/imgui_impl_opengl3_loader.h"
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_opengl3_loader.h>
 
 #include <imgui.h>
 #include <GLFW/glfw3.h>
@@ -27,8 +27,12 @@ namespace Vinyl
 		ImGui::StyleColorsDark();
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -55,6 +59,12 @@ namespace Vinyl
 		ImGui::DestroyContext();
 	}
 
+	void ImGuiLayer::OnImGuiRender()
+	{
+		static bool show = true;
+		ImGui::ShowDemoWindow(&show);
+	}
+
 	void ImGuiLayer::OnEvent(Event& e)
 	{
 		if (m_BlockEvents)
@@ -63,16 +73,6 @@ namespace Vinyl
 			e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
-	}
-
-	void ImGuiLayer::OnUpdate()
-	{
-		Begin();
-
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
-		End();
 	}
 
 	void ImGuiLayer::Begin()
@@ -91,6 +91,14 @@ namespace Vinyl
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
 	}
 
 	void ImGuiLayer::SetDarkThemeColors()

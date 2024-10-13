@@ -22,9 +22,6 @@
     <Filter Include="Source\Vinyl\ImGui">
       <UniqueIdentifier>{E16E14D8-CD52-D52D-36B3-CF8022B6BFAF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Vinyl\ImGui\OpenGL">
-      <UniqueIdentifier>{F570454B-6133-79D5-AAE3-076216E551B3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Vendor">
       <UniqueIdentifier>{935FDCD7-7F01-07AE-68BC-1A0254FD8DFE}</UniqueIdentifier>
     </Filter>
@@ -86,15 +83,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h">
       <Filter>Source\Vinyl\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.h">
-      <Filter>Source\Vinyl\ImGui\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.h">
-      <Filter>Source\Vinyl\ImGui\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3_loader.h">
-      <Filter>Source\Vinyl\ImGui\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Input.h">
       <Filter>Source\Vinyl</Filter>
@@ -1373,14 +1361,11 @@
     <ClCompile Include="Source\Vinyl\Application.cpp">
       <Filter>Source\Vinyl</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp">
+    <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp">
       <Filter>Source\Vinyl\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.cpp">
-      <Filter>Source\Vinyl\ImGui\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.cpp">
-      <Filter>Source\Vinyl\ImGui\OpenGL</Filter>
+    <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp">
+      <Filter>Source\Vinyl\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Layer.cpp">
       <Filter>Source\Vinyl</Filter>
