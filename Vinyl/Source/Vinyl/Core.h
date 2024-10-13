@@ -10,7 +10,4 @@
 	#error Vinyl only supports windows.
 #endif // VL_PLATFORM_WINDOWS
 
-namespace Vinyl
-{
-
-}
+#define BIT(x) (1 << x)

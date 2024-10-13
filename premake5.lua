@@ -18,6 +18,8 @@ project "Vinyl"
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "vlpch.h"
+	pchsource "Vinyl/Source/vlpch.cpp"
 
 	files
 	{
@@ -27,7 +29,8 @@ project "Vinyl"
 
 	includedirs
 	{
-		"Vinyl/Vendor/SpdLog/include"
+		"Vinyl/Vendor/SpdLog/include",
+		"Vinyl/Source/"
 	}
 
 	filter "system:windows"

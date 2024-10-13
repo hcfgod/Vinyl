@@ -1,6 +1,7 @@
-#include <spdlog/sinks/stdout_color_sinks.h>
-
+#include "vlpch.h"
 #include "Log.h"
+
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Vinyl
 {

@@ -4,6 +4,12 @@
     <Filter Include="Vinyl">
       <UniqueIdentifier>{37B34E0E-A3C7-76BF-6C49-1A1FD81C73F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vinyl\Core">
+      <UniqueIdentifier>{EF713B3E-DB29-7D8B-4431-56E73008187C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vinyl\Events">
+      <UniqueIdentifier>{3BBB01C0-271E-9164-D0A3-C91ABCE55CE7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Vinyl.h" />
@@ -13,12 +19,31 @@
     <ClInclude Include="Source\Vinyl\Core.h">
       <Filter>Vinyl</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\KeyCodes.h">
+      <Filter>Vinyl\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\MouseCodes.h">
+      <Filter>Vinyl\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\EntryPoint.h">
       <Filter>Vinyl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Events\ApplicationEvent.h">
+      <Filter>Vinyl\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Events\Event.h">
+      <Filter>Vinyl\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Events\KeyEvent.h">
+      <Filter>Vinyl\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Events\MouseEvent.h">
+      <Filter>Vinyl\Events</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Log.h">
       <Filter>Vinyl</Filter>
     </ClInclude>
+    <ClInclude Include="Source\vlpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Vinyl\Application.cpp">
@@ -27,5 +52,6 @@
     <ClCompile Include="Source\Vinyl\Log.cpp">
       <Filter>Vinyl</Filter>
     </ClCompile>
+    <ClCompile Include="Source\vlpch.cpp" />
   </ItemGroup>
 </Project>
