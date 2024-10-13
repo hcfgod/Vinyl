@@ -49,6 +49,12 @@
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h">
       <Filter>Vinyl\Events</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Layer.h">
+      <Filter>Vinyl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\LayerStack.h">
+      <Filter>Vinyl</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Log.h">
       <Filter>Vinyl</Filter>
     </ClInclude>
@@ -62,6 +68,12 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Application.cpp">
+      <Filter>Vinyl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Layer.cpp">
+      <Filter>Vinyl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\LayerStack.cpp">
       <Filter>Vinyl</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Log.cpp">

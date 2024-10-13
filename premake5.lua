@@ -20,6 +20,7 @@ project "Vinyl"
 	location "Vinyl"
 	kind "SharedLib"
 	language "C++"
+	cppdialect "C++20"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
@@ -48,10 +49,8 @@ project "Vinyl"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
-
+		staticruntime "Off"
 		defines
 		{
 			"VL_PLATFORM_WINDOWS",
@@ -65,14 +64,17 @@ project "Vinyl"
 
 	filter "configurations:Debug"
 		defines "VL_DEBUG"
-		optimize "On"
+		buildoptions "/MDd"
+		symbols "On"
 
 	filter "configurations:Release"
 		defines "VL_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "VL_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 project "Sandbox"
@@ -102,7 +104,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 
 		defines
@@ -112,7 +114,7 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "VL_DEBUG"
-		optimize "On"
+		symbols "On"
 
 	filter "configurations:Release"
 		defines "VL_RELEASE"

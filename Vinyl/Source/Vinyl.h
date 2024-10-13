@@ -3,6 +3,7 @@
 // For use Vinyl applications
 
 #include "Vinyl/Application.h"
+#include "Vinyl/Layer.h"
 #include "Vinyl/Log.h"
 
 //--------EntryPoint-------//
