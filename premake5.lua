@@ -10,6 +10,12 @@ workspace "Vinyl"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
+
+include "Vinyl/Vendor/GLFW"
+
 project "Vinyl"
 	location "Vinyl"
 	kind "SharedLib"
@@ -29,8 +35,16 @@ project "Vinyl"
 
 	includedirs
 	{
-		"Vinyl/Vendor/SpdLog/include",
-		"Vinyl/Source/"
+		"%{prj.name}/Source/",
+		"%{prj.name}/Vendor/SpdLog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib",
+		"dwmapi.lib"
 	}
 
 	filter "system:windows"
