@@ -8,3 +8,6 @@
 	path = Vinyl/Vendor/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
+[submodule "Vinyl/Vendor/glm"]
+	path = Vinyl/Vendor/glm
+	url = https://github.com/g-truc/glm.git

@@ -10,12 +10,15 @@ public:
 
 	void OnUpdate() override
 	{
-		
+		if (Vinyl::Input::IsKeyPressed(Vinyl::Key::Space))
+		{
+			VL_TRACE("Space has been pressed");
+		}
 	}
 
 	void OnEvent(Vinyl::Event& event) override
 	{
-		VL_TRACE("{0}", event.ToString());
+		
 	}
 };
 

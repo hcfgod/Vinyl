@@ -1,6 +1,8 @@
 #include "vlpch.h"
 #include "Application.h"
 
+#include "Input.h"
+
 #include <Glad/glad.h>
 
 namespace Vinyl
