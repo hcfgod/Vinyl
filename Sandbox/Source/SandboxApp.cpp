@@ -10,7 +10,7 @@ public:
 
 	void OnUpdate() override
 	{
-		VL_TRACE("ExampleLayer::Update");
+		
 	}
 
 	void OnEvent(Vinyl::Event& event) override
@@ -25,6 +25,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Vinyl::ImGuiLayer());
 	}
 
 	~Sandbox()

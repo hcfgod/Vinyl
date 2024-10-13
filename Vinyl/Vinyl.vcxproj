@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,7 +132,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,6 +155,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\Vinyl.h" />
     <ClInclude Include="Source\Vinyl\Application.h" />
@@ -166,6 +167,9 @@
     <ClInclude Include="Source\Vinyl\Events\Event.h" />
     <ClInclude Include="Source\Vinyl\Events\KeyEvent.h" />
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h" />
+    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Source\Vinyl\Layer.h" />
     <ClInclude Include="Source\Vinyl\LayerStack.h" />
     <ClInclude Include="Source\Vinyl\Log.h" />
@@ -173,8 +177,11 @@
     <ClInclude Include="Source\vlpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Vinyl\Application.cpp" />
+    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Vinyl\ImGui\OpenGL\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\Vinyl\Layer.cpp" />
     <ClCompile Include="Source\Vinyl\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Log.cpp" />
@@ -188,6 +195,9 @@
     </ProjectReference>
     <ProjectReference Include="Vendor\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

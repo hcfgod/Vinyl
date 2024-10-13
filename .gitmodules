@@ -4,3 +4,7 @@
 [submodule "Vinyl/Vendor/GLFW"]
 	path = Vinyl/Vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "Vinyl/Vendor/imgui"]
+	path = Vinyl/Vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
