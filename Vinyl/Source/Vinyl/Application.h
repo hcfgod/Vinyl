@@ -8,6 +8,8 @@
 #include "Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"
 #include "Vinyl/ImGui/ImGuiLayer.h"
+#include "Vinyl/Renderer/Shader.h"
+#include "Vinyl/Renderer/Buffer.h"
 
 namespace Vinyl
 {
@@ -35,7 +37,10 @@ namespace Vinyl
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		unsigned int m_VertexArray;
+		std::unique_ptr<Shader> m_Shader;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	private:
 		static Application* s_Instance;
 	};

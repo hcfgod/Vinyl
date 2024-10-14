@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
@@ -161,7 +162,10 @@
     <ClInclude Include="Source\Vinyl\Layer.h" />
     <ClInclude Include="Source\Vinyl\LayerStack.h" />
     <ClInclude Include="Source\Vinyl\Log.h" />
+    <ClInclude Include="Source\Vinyl\Renderer\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Renderer\GraphicsContext.h" />
+    <ClInclude Include="Source\Vinyl\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Vinyl\Renderer\Shader.h" />
     <ClInclude Include="Source\Vinyl\Window.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
@@ -582,6 +586,7 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
@@ -591,6 +596,9 @@
     <ClCompile Include="Source\Vinyl\Layer.cpp" />
     <ClCompile Include="Source\Vinyl\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Log.cpp" />
+    <ClCompile Include="Source\Vinyl\Renderer\Buffer.cpp" />
+    <ClCompile Include="Source\Vinyl\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Vinyl\Renderer\Shader.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
