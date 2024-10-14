@@ -27,9 +27,10 @@ group ""
 
 project "Vinyl"
 	location "Vinyl"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
@@ -43,6 +44,11 @@ project "Vinyl"
 		"%{prj.name}/Source/**.cpp",
 		"%{prj.name}/Vendor/glm/glm/**.hpp",
 		"%{prj.name}/Vendor/glm/glm/**.inl"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
 	}
 
 	includedirs
@@ -60,47 +66,40 @@ project "Vinyl"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib",
 		"dwmapi.lib"
 	}
 
 	filter "system:windows"
 		systemversion "latest"
-		cppdialect "C++20"
 
 		defines
 		{
 			"VL_PLATFORM_WINDOWS",
 			"VL_BUILD_DLL",
-			"IMGUI_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
 		}
-
-	postbuildcommands
-	{
-		("{COPY} %{cfg.buildtarget.relpath} \"../Bin/" .. outputdir .. "/Sandbox/\"")
-	}
 
 	filter "configurations:Debug"
 		defines "VL_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "VL_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "VL_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
@@ -125,7 +124,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 	defines
@@ -136,14 +134,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "VL_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "VL_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "VL_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

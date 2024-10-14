@@ -2,6 +2,7 @@
 #include "WindowsInput.h"
 
 #include "Vinyl/Application.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Vinyl
@@ -30,7 +31,7 @@ namespace Vinyl
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		return { xpos, ypos };
+		return { (float)xpos, (float)ypos };
 	}
 
 	float WindowsInput::GetMouseXImpl()

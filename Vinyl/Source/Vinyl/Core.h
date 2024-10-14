@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef VL_PLATFORM_WINDOWS
+#if VL_DYNAMIC_LINK
 	#ifdef VL_BUILD_DLL
 		#define VINYL_API __declspec(dllexport)
 	#else
 		#define VINYL_API __declspec(dllimport)
 	#endif // VL_BUILD_DLL
+#else
+	#define VINYL_API
+#endif
 #else
 	#error Vinyl only supports windows.
 #endif // VL_PLATFORM_WINDOWS
