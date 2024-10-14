@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Vinyl/Renderer/Buffer.h"
+#include "Vinyl/Rendering/Buffer.h"
 
 namespace Vinyl
 {

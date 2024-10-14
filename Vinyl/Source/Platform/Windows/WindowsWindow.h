@@ -2,7 +2,7 @@
 
 #include "Vinyl/Window.h"
 
-#include "Vinyl/Renderer/GraphicsContext.h"
+#include "Vinyl/Rendering/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 

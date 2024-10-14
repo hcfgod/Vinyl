@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Renderer/VertexArray.h"
+#include "Vinyl/Rendering/VertexArray.h"
 
 namespace Vinyl
 {

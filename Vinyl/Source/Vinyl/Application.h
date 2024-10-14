@@ -8,9 +8,9 @@
 #include "Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"
 #include "Vinyl/ImGui/ImGuiLayer.h"
-#include "Vinyl/Renderer/Shader.h"
-#include "Vinyl/Renderer/Buffer.h"
-#include "Vinyl/Renderer/VertexArray.h"
+#include "Vinyl/Rendering/Shader.h"
+#include "Vinyl/Rendering/Buffer.h"
+#include "Vinyl/Rendering/VertexArray.h"
 
 namespace Vinyl
 {
