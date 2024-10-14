@@ -87,10 +87,10 @@
     <ClInclude Include="Source\Vinyl\Input.h">
       <Filter>Source\Vinyl</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Layer.h">
+    <ClInclude Include="Source\Vinyl\Layer\Layer.h">
       <Filter>Source\Vinyl</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\LayerStack.h">
+    <ClInclude Include="Source\Vinyl\Layer\LayerStack.h">
       <Filter>Source\Vinyl</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Log.h">
@@ -1373,10 +1373,10 @@
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp">
       <Filter>Source\Vinyl\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Layer.cpp">
+    <ClCompile Include="Source\Vinyl\Layer\Layer.cpp">
       <Filter>Source\Vinyl</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\LayerStack.cpp">
+    <ClCompile Include="Source\Vinyl\Layer\LayerStack.cpp">
       <Filter>Source\Vinyl</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Log.cpp">

@@ -10,6 +10,27 @@ namespace Vinyl
 	#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 	Application* Application::s_Instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+			case Vinyl::ShaderDataType::Bool:      return GL_BOOL;
+			case Vinyl::ShaderDataType::Int:       return GL_INT;
+			case Vinyl::ShaderDataType::Int2:      return GL_INT;
+			case Vinyl::ShaderDataType::Int3:      return GL_INT;
+			case Vinyl::ShaderDataType::Int4:      return GL_INT;
+			case Vinyl::ShaderDataType::Float:     return GL_FLOAT;
+			case Vinyl::ShaderDataType::Float2:    return GL_FLOAT;
+			case Vinyl::ShaderDataType::Float3:    return GL_FLOAT;
+			case Vinyl::ShaderDataType::Float4:    return GL_FLOAT;
+			case Vinyl::ShaderDataType::Mat3:      return GL_FLOAT;
+			case Vinyl::ShaderDataType::Mat4:      return GL_FLOAT;
+		}
+
+		VL_CORE_ASSERT(false, "Unknown ShaderDataType.");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		VL_CORE_ASSERT(!s_Instance, "Application already exist.");
@@ -24,17 +45,32 @@ namespace Vinyl
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
 
-		float vertices[3 * 3] =
+		float vertices[3 * 7] =
 		{
-			-0.5f, -0.5f, -0.0f,
-			 0.5f, -0.5f, -0.0f,
-			 0.0f,  0.5f, -0.0f
+			-0.5f, -0.5f, -0.0f, 0.2f, 0.4f, 1.0f, 1.0f,
+			 0.5f, -0.5f, -0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+			 0.0f,  0.5f, -0.0f, 0.5f, 0.3f, 1.0f, 1.0f
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * sizeof(float), 0);
+		{
+			BufferLayout layout
+			{
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color" },
+			};
+			m_VertexBuffer->SetLayout(layout);
+		}
+
+		const auto& layout = m_VertexBuffer->GetLayout();
+		uint32_t index = 0;
+		for (const auto& element : layout)
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.Type), element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), reinterpret_cast<void*>(static_cast<uintptr_t>(element.Offset)));
+			index++;
+		}
 
 		uint32_t indices[3] =
 		{
@@ -48,12 +84,17 @@ namespace Vinyl
 				#version 330 core
 
 				layout(location = 0) in vec3 a_Position;
+				layout(location = 1) in vec4 a_Color;
+
 				out vec3 v_Position;
+				out vec4 v_Color;
 
 				void main()
 				{
-					gl_Position = vec4(a_Position, 1.0f);
 					v_Position = a_Position;
+					v_Color = a_Color;
+
+					gl_Position = vec4(a_Position, 1.0f);
 				}
 		  )";
 
@@ -62,11 +103,12 @@ namespace Vinyl
 				#version 330 core
 
 				in vec3 v_Position;
+				in vec4 v_Color;
 				out vec4 o_Color;
 				
 				void main()
 				{
-					o_Color = vec4(v_Position * 0.5 + 0.3, 1.0);
+					o_Color = v_Color;
 				}
 		  )";
 

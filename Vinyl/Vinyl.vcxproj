@@ -159,8 +159,8 @@
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h" />
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Source\Vinyl\Input.h" />
-    <ClInclude Include="Source\Vinyl\Layer.h" />
-    <ClInclude Include="Source\Vinyl\LayerStack.h" />
+    <ClInclude Include="Source\Vinyl\Layer\Layer.h" />
+    <ClInclude Include="Source\Vinyl\Layer\LayerStack.h" />
     <ClInclude Include="Source\Vinyl\Log.h" />
     <ClInclude Include="Source\Vinyl\Renderer\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Renderer\GraphicsContext.h" />
@@ -593,8 +593,8 @@
     <ClCompile Include="Source\Vinyl\Application.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="Source\Vinyl\Layer.cpp" />
-    <ClCompile Include="Source\Vinyl\LayerStack.cpp" />
+    <ClCompile Include="Source\Vinyl\Layer\Layer.cpp" />
+    <ClCompile Include="Source\Vinyl\Layer\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Log.cpp" />
     <ClCompile Include="Source\Vinyl\Renderer\Buffer.cpp" />
     <ClCompile Include="Source\Vinyl\Renderer\Renderer.cpp" />
