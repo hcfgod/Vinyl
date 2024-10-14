@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Vinyl/Window.h"
+
+#include "Vinyl/Renderer/GraphicsContext.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Vinyl
@@ -26,7 +29,7 @@ namespace Vinyl
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
-
+		GraphicsContext* m_Context;
 		struct WindowData
 		{
 			std::string Title;

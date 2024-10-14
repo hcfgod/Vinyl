@@ -56,7 +56,6 @@ namespace Vinyl
 			glClearColor(0.1f, 0.2f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate();
