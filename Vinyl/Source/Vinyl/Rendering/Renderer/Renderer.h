@@ -9,6 +9,7 @@ namespace Vinyl
 	class Renderer
 	{
 	public:
+		static void Init();
 		static void BeginScene(OrthographicCamera& camera); // TODO: take in all the scene paramaters we need
 		static void EndScene();
 
