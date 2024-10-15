@@ -2,7 +2,7 @@
 
 #include "RenderCommand.h"
 
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
+#include "Platform/OpenGL/Renderer/OpenGLRendererAPI.h"
 
 namespace Vinyl
 {

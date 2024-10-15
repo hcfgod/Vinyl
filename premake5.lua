@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
+IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -42,8 +43,12 @@ project "Vinyl"
 	{
 		"%{prj.name}/Source/**.h",
 		"%{prj.name}/Source/**.cpp",
+
+		"%{prj.name}/Vendor/stb_image/**.h",
+		"%{prj.name}/Vendor/stb_image/**.cpp",
+
 		"%{prj.name}/Vendor/glm/glm/**.hpp",
-		"%{prj.name}/Vendor/glm/glm/**.inl"
+		"%{prj.name}/Vendor/glm/glm/**.inl",
 	}
 
 	defines
@@ -58,7 +63,8 @@ project "Vinyl"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links

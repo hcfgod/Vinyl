@@ -3,6 +3,8 @@
 #include "Vinyl/Core.h"
 #include "Vinyl/Events/Event.h"
 
+#include "Vinyl/Core/TimeStep.h"
+
 namespace Vinyl
 {
 	class VINYL_API Layer
@@ -13,7 +15,7 @@ namespace Vinyl
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(TimeStep timestep) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 

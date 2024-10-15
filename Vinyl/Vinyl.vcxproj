@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,11 +143,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
-    <ClInclude Include="Source\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="Source\Platform\OpenGL\Renderer\OpenGLContext.h" />
+    <ClInclude Include="Source\Platform\OpenGL\Renderer\OpenGLRendererAPI.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\Vinyl.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Source\Vinyl\Core.h" />
     <ClInclude Include="Source\Vinyl\Core\KeyCodes.h" />
     <ClInclude Include="Source\Vinyl\Core\MouseCodes.h" />
+    <ClInclude Include="Source\Vinyl\Core\TimeStep.h" />
     <ClInclude Include="Source\Vinyl\EntryPoint.h" />
     <ClInclude Include="Source\Vinyl\Events\ApplicationEvent.h" />
     <ClInclude Include="Source\Vinyl\Events\Event.h" />
@@ -166,11 +168,13 @@
     <ClInclude Include="Source\Vinyl\Layer\LayerStack.h" />
     <ClInclude Include="Source\Vinyl\Log.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RendererAPI.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Shader.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h" />
     <ClInclude Include="Source\Vinyl\Window.h" />
     <ClInclude Include="Source\vlpch.h" />
@@ -590,13 +594,15 @@
     <ClInclude Include="Vendor\glm\glm\vec3.hpp" />
     <ClInclude Include="Vendor\glm\glm\vec4.hpp" />
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="Vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
-    <ClCompile Include="Source\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\Renderer\OpenGLContext.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\Renderer\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Vinyl\Application.cpp" />
@@ -606,14 +612,17 @@
     <ClCompile Include="Source\Vinyl\Layer\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Log.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RendererAPI.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Shader.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\VertexArray.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Vendor\GLFW\GLFW.vcxproj">

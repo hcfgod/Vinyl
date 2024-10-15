@@ -5,7 +5,7 @@
 #include "Vinyl/Events/KeyEvent.h"
 #include "Vinyl/Events/MouseEvent.h"
 
-#include "Platform/OpenGL/OpenGLContext.h"
+#include "Platform/OpenGL/Renderer/OpenGLContext.h"
 
 namespace Vinyl
 {
