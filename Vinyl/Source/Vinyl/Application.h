@@ -7,14 +7,12 @@
 
 #include "Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"
+
 #include "Vinyl/ImGui/ImGuiLayer.h"
-#include "Vinyl/Rendering/Shader.h"
-#include "Vinyl/Rendering/Buffer.h"
-#include "Vinyl/Rendering/VertexArray.h"
 
 namespace Vinyl
 {
-	class VINYL_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -35,14 +33,8 @@ namespace Vinyl
 
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
-		bool m_Running = true;
+		bool m_Running = true; 
 		LayerStack m_LayerStack;
-
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVertexArray;
 	private:
 		static Application* s_Instance;
 	};
