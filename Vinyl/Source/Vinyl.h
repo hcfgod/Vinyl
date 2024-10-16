@@ -2,7 +2,7 @@
 
 // For use Vinyl applications
 
-#include "Vinyl/Application.h"
+#include "Vinyl/Core/Application.h"
 #include "Vinyl/Layer/Layer.h"
 #include "Vinyl/ImGui/ImGuiLayer.h"
 #include "Vinyl/Log.h"
@@ -12,6 +12,8 @@
 #include "Vinyl/Input.h"
 #include "Vinyl/Core/KeyCodes.h"
 #include "Vinyl/Core/MouseCodes.h"
+
+#include "Vinyl/OrthographicCameraController.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 #include "Vinyl/Rendering/Renderer/RenderCommand.h"

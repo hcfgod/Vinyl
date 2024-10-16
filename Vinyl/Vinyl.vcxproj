@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Vinyl\OrthographicCameraController.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLTexture.h" />
@@ -152,8 +153,8 @@
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\Vinyl.h" />
-    <ClInclude Include="Source\Vinyl\Application.h" />
-    <ClInclude Include="Source\Vinyl\Core.h" />
+    <ClInclude Include="Source\Vinyl\Core\Application.h" />
+    <ClInclude Include="Source\Vinyl\Core\Core.h" />
     <ClInclude Include="Source\Vinyl\Core\KeyCodes.h" />
     <ClInclude Include="Source\Vinyl\Core\MouseCodes.h" />
     <ClInclude Include="Source\Vinyl\Core\TimeStep.h" />
@@ -176,7 +177,7 @@
     <ClInclude Include="Source\Vinyl\Rendering\Shader.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h" />
-    <ClInclude Include="Source\Vinyl\Window.h" />
+    <ClInclude Include="Source\Vinyl\Core\Window.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
@@ -597,6 +598,7 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Vinyl\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLTexture.cpp" />
@@ -605,7 +607,7 @@
     <ClCompile Include="Source\Platform\OpenGL\Renderer\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="Source\Vinyl\Application.cpp" />
+    <ClCompile Include="Source\Vinyl\Core\Application.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Vinyl\Layer\Layer.cpp" />

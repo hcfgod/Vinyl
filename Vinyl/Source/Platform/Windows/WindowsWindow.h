@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Window.h"
+#include "Vinyl/Core/Window.h"
 
 #include "Vinyl/Rendering/Renderer/GraphicsContext.h"
 

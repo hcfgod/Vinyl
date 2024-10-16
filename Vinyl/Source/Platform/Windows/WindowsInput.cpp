@@ -1,7 +1,7 @@
 #include "vlpch.h"
 #include "WindowsInput.h"
 
-#include "Vinyl/Application.h"
+#include "Vinyl/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

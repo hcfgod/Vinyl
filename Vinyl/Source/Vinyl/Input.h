@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Core.h"
+#include "Vinyl/Core/Core.h"
 
 #include "Vinyl/Core/KeyCodes.h"
 #include "Vinyl/Core/MouseCodes.h"

@@ -1,9 +1,9 @@
 #include "vlpch.h"
 #include "Application.h"
 
-#include "Input.h"
+#include "Vinyl/Input.h"
 
-#include "Rendering/Renderer/Renderer.h"
+#include "Vinyl/Rendering/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>
 

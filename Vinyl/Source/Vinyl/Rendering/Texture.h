@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Vinyl/Core.h"
+#include "Vinyl/Core/Core.h"
 
 namespace Vinyl
 {

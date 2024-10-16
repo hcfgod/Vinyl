@@ -10,9 +10,9 @@
 class ExampleLayer : public Vinyl::Layer
 {
 public:
-	ExampleLayer() : Layer("Example"), m_OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+	ExampleLayer() : Layer("Example"), m_OrthographicCameraController(1280.0f / 720.0f)
 	{
-		m_SquareVertexArray.reset(Vinyl::VertexArray::Create());
+		m_SquareVertexArray = Vinyl::VertexArray::Create();
 
 		float vertices[5 * 4] =
 		{
@@ -86,17 +86,14 @@ public:
 
 	void OnUpdate(Vinyl::TimeStep timestep) override
 	{
-		float deltaTime = timestep;
-		HandleCameraInput(deltaTime);
+		// Update
+		m_OrthographicCameraController.OnUpdate(timestep);
 
+		// Render
 		Vinyl::RenderCommand::SetClearColor(glm::vec4(0.1, 0.1, 0.1, 1.0));
 		Vinyl::RenderCommand::Clear();
 
-		m_OrthographicCamera.SetPosition(m_CameraPosition);
-		m_OrthographicCamera.SetRotation(m_CameraRotation);
-
-		Vinyl::Renderer::BeginScene(m_OrthographicCamera);
-
+		Vinyl::Renderer::BeginScene(m_OrthographicCameraController.GetCamera());
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 		std::dynamic_pointer_cast<Vinyl::OpenGLShader>(m_FlatColorShader)->Bind();
@@ -131,37 +128,9 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(Vinyl::Event& event) override {}
-
-	void HandleCameraInput(float deltaTime)
+	void OnEvent(Vinyl::Event& event) override
 	{
-		if (Vinyl::Input::IsKeyPressed(Vinyl::Key::W))
-		{
-			m_CameraPosition.y += m_CameraMoveSpeed * deltaTime;
-		}
-		else if (Vinyl::Input::IsKeyPressed(Vinyl::Key::S))
-		{
-			m_CameraPosition.y -= m_CameraMoveSpeed * deltaTime;
-		}
-
-		if (Vinyl::Input::IsKeyPressed(Vinyl::Key::A))
-		{
-			m_CameraPosition.x -= m_CameraMoveSpeed * deltaTime;
-		}
-		else if (Vinyl::Input::IsKeyPressed(Vinyl::Key::D))
-		{
-			m_CameraPosition.x += m_CameraMoveSpeed * deltaTime;
-		}
-
-		if (Vinyl::Input::IsKeyPressed(Vinyl::Key::R))
-		{
-			m_CameraRotation += m_CameraRotationSpeed * deltaTime;
-		}
-
-		if (Vinyl::Input::IsKeyPressed(Vinyl::Key::T))
-		{
-			m_CameraRotation -= m_CameraRotationSpeed * deltaTime;
-		}
+		m_OrthographicCameraController.OnEvent(event);
 	}
 private:
 	Vinyl::ShaderLibrary m_ShaderLibrary;
@@ -171,12 +140,7 @@ private:
 
 	Vinyl::Ref<Vinyl::Texture> m_SqaureTexture, m_SilkTexture;
 
-	Vinyl::OrthographicCamera m_OrthographicCamera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 2.0f;
-
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 180.0f;
+	Vinyl::OrthographicCameraController m_OrthographicCameraController;
 
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };

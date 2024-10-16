@@ -1,7 +1,7 @@
 #include "vlpch.h"
 #include "ImGuiLayer.h"
 
-#include "Vinyl/Application.h"
+#include "Vinyl/Core/Application.h"
 
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>

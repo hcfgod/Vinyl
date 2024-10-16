@@ -5,7 +5,7 @@
 
 #include "Vinyl/Layer/LayerStack.h"
 
-#include "Events/Event.h"
+#include "Vinyl/Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"
 
 #include "Vinyl/ImGui/ImGuiLayer.h"
