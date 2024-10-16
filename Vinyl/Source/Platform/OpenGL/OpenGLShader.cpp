@@ -31,9 +31,27 @@ namespace Vinyl
 		auto sources = PreProcess(source);
 
 		Compile(sources);
+
+		// Extract name from filePath
+		auto lastSlash = filePath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = filePath.rfind('.');
+
+		auto count = lastDot == std::string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filePath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource) : m_RendererID(0)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& filePath)
+	{
+		std::string source = ReadFile(filePath);
+		auto sources = PreProcess(source);
+
+		Compile(sources);
+
+		m_Name = name;
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_RendererID(0), m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 
@@ -47,7 +65,7 @@ namespace Vinyl
 	{
 		std::string result;
 
-		std::ifstream in(filePath, std::ios::in, std::ios::binary);
+		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
 		if (in)
 		{
@@ -91,9 +109,12 @@ namespace Vinyl
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs;
-		glShaderIDs.reserve(shaderSources.size());
 
+		VL_CORE_ASSERT(shaderSources.size() <= 2, "We are only supporting 2 shader types for now");
+
+		std::array<GLenum, 2> glShaderIDs;
+
+		int glShaderIDIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -124,7 +145,7 @@ namespace Vinyl
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		glLinkProgram(program);

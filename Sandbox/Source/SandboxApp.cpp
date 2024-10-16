@@ -75,13 +75,13 @@ public:
 				}
 		  )";
 
-		m_FlatColorShader.reset(Vinyl::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
+		m_FlatColorShader = Vinyl::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource);
+		auto simpleTextureShader = m_ShaderLibrary.Load("SimpleTexture", "Assets/Shaders/Texture.glsl");
 
-		m_TextureShader.reset(Vinyl::Shader::Create("Assets/Shaders/Texture.glsl"));
 		m_SqaureTexture = Vinyl::Texture2D::Create("Assets/Textures/baby.jpg");
 		m_SilkTexture = Vinyl::Texture2D::Create("Assets/Textures/silk.png");
 
-		std::dynamic_pointer_cast<Vinyl::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Vinyl::OpenGLShader>(simpleTextureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Vinyl::TimeStep timestep) override
@@ -112,11 +112,12 @@ public:
 			}
 		}
 
+		auto simpleTextureShader = m_ShaderLibrary.Get("SimpleTexture");
 		m_SqaureTexture->Bind();
-		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)));
+		Vinyl::Renderer::Submit(simpleTextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)));
 
 		m_SilkTexture->Bind();
-		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
+		Vinyl::Renderer::Submit(simpleTextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
 
 		Vinyl::Renderer::EndScene();
 	}
@@ -163,8 +164,9 @@ public:
 		}
 	}
 private:
+	Vinyl::ShaderLibrary m_ShaderLibrary;
 	Vinyl::Ref<Vinyl::Shader> m_FlatColorShader;
-	Vinyl::Ref<Vinyl::Shader> m_TextureShader;
+
 	Vinyl::Ref<Vinyl::VertexArray> m_SquareVertexArray;
 
 	Vinyl::Ref<Vinyl::Texture> m_SqaureTexture, m_SilkTexture;

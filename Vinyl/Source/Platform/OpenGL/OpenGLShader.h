@@ -13,11 +13,14 @@ namespace Vinyl
 	{
 	public:
 		OpenGLShader(const std::string& filePath);
-		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
+		OpenGLShader(const std::string& name, const std::string& filePath);
+		OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void UnBind() const override;
+
+		virtual const std::string& GetName() const override { return m_Name; }
 
 		void UploadUniformBool(const std::string& name, bool value);
 		void UploadUniformInt(const std::string& name, int value);
@@ -35,5 +38,6 @@ namespace Vinyl
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
 		uint32_t m_RendererID;
+		std::string m_Name;
 	};
 }
