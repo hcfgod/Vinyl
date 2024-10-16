@@ -77,45 +77,9 @@ public:
 
 		m_FlatColorShader.reset(Vinyl::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
 
-
-		std::string textureVertexSource =
-		R"(
-				#version 330 core
-
-				layout(location = 0) in vec3 a_Position;
-				layout(location = 1) in vec2 a_TextureCoord;
-
-				out vec2 v_TextureCoord;
-
-				uniform mat4 u_ViewProjection;
-				uniform mat4 u_Transform;
-
-				void main()
-				{
-					v_TextureCoord = a_TextureCoord;
-					gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-				}
-		)";
-
-		std::string textureFragmentSource =
-		R"(
-				#version 330 core
-
-				in vec2 v_TextureCoord;
-
-				out vec4 o_Color;
-				
-				uniform sampler2D u_Texture;
-
-				void main()
-				{			
-					o_Color = texture(u_Texture, v_TextureCoord);
-				}
-		)";
-
-		m_TextureShader.reset(Vinyl::Shader::Create(textureVertexSource, textureFragmentSource));
-		m_SqaureTexture = Vinyl::Texture2D::Create("../Assets/Textures/baby.jpg");
-		m_SilkTexture = Vinyl::Texture2D::Create("../Assets/Textures/silk.png");
+		m_TextureShader.reset(Vinyl::Shader::Create("Assets/Shaders/Texture.glsl"));
+		m_SqaureTexture = Vinyl::Texture2D::Create("Assets/Textures/baby.jpg");
+		m_SilkTexture = Vinyl::Texture2D::Create("Assets/Textures/silk.png");
 
 		std::dynamic_pointer_cast<Vinyl::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 	}
@@ -149,10 +113,10 @@ public:
 		}
 
 		m_SqaureTexture->Bind();
-		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)));
 
 		m_SilkTexture->Bind();
-		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)));
+		Vinyl::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
 
 		Vinyl::Renderer::EndScene();
 	}
