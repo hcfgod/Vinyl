@@ -18,7 +18,6 @@ void main()
 }
 
 
-
 #type fragment
 #version 330 core
 
@@ -26,9 +25,10 @@ in vec2 v_TextureCoord;
 
 out vec4 o_Color;
 				
+uniform vec4 u_Color;
 uniform sampler2D u_Texture;
 
 void main()
 {			
-	o_Color = texture(u_Texture, v_TextureCoord);
+	o_Color = texture(u_Texture, v_TextureCoord) * u_Color;
 }

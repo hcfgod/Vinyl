@@ -13,7 +13,7 @@ namespace Vinyl
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLVertexBuffer>(vertices, size);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!"); 
@@ -25,7 +25,7 @@ namespace Vinyl
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLIndexBuffer>(indices, count);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!");

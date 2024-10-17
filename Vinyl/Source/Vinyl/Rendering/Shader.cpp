@@ -13,7 +13,7 @@ namespace Vinyl
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(filePath);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(filePath);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
@@ -25,7 +25,7 @@ namespace Vinyl
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(name, filePath);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(name, filePath);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
@@ -37,7 +37,7 @@ namespace Vinyl
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(name, vertexSource, fragmentSource);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(name, vertexSource, fragmentSource);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
