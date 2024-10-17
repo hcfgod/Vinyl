@@ -23,6 +23,8 @@ namespace Vinyl
 
 		static inline API GetAPI() { return s_API; }
 		static inline void SetAPI(API api) { s_API = api; }
+
+		static Scope<RendererAPI> Create();
 	private:
 		static API s_API;
 	};

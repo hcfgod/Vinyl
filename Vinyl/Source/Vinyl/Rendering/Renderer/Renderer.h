@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderCommand.h"
+#include "Vinyl/Rendering/Renderer/RenderCommand.h"
 #include "Vinyl/Rendering/Shader.h"
 #include "Vinyl/Rendering/Camera/OrthographicCamera.h"
 
@@ -10,6 +10,7 @@ namespace Vinyl
 	{
 	public:
 		static void Init();
+		static void Shutdown();
 		static void OnWindowResize(uint32_t width, uint32_t height);
 		static void BeginScene(OrthographicCamera& camera); // TODO: take in all the scene paramaters we need
 		static void EndScene();

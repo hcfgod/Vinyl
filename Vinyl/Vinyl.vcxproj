@@ -154,6 +154,7 @@
     <ClInclude Include="Source\Vinyl.h" />
     <ClInclude Include="Source\Vinyl\Core\Application.h" />
     <ClInclude Include="Source\Vinyl\Core\Core.h" />
+    <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h" />
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h" />
@@ -616,6 +617,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer2D.cpp" />

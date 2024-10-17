@@ -13,6 +13,8 @@ namespace Vinyl
 
 	void OrthographicCameraController::OnUpdate(TimeStep timeStep)
 	{
+		VL_PROFILE_FUNCTION();
+
 		if (Input::IsKeyPressed(Vinyl::Key::W))
 		{
 			m_CameraPosition.y += m_CameraMoveSpeed * timeStep;
@@ -51,6 +53,8 @@ namespace Vinyl
 
 	void OrthographicCameraController::OnEvent(Event& event)
 	{
+		VL_PROFILE_FUNCTION();
+
 		EventDispatcher eventDispatcher(event);
 
 		eventDispatcher.Dispatch<MouseScrolledEvent>(VL_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
@@ -59,6 +63,8 @@ namespace Vinyl
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
 	{
+		VL_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= event.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -68,6 +74,8 @@ namespace Vinyl
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& event)
 	{
+		VL_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)event.GetWidth() / (float)event.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

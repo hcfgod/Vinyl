@@ -1,6 +1,6 @@
 #include "vlpch.h"
-#include "Renderer2D.h"
 
+#include "Vinyl/Rendering/Renderer/Renderer2D.h"
 #include "Vinyl/Rendering/VertexArray.h"
 #include "Vinyl/Rendering/Shader.h"
 #include "Vinyl/Rendering/Renderer/RenderCommand.h"
@@ -19,27 +19,28 @@ namespace Vinyl
 
 	void Renderer2D::Init()
 	{
+		VL_PROFILE_FUNCTION();
+
 		s_Data = new Renderer2DStorage();
 		s_Data->QuadVertexArray = VertexArray::Create();
-		float squareVertices[5 * 4] = 
+		float squareVertices[5 * 4] =
 		{
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
 			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
 			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
-		Ref<VertexBuffer> squareVB;
-		squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+
+		Ref<VertexBuffer> squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout
-		({ 
+		({
 				{ShaderDataType::Float3, "a_Position" },
 				{ShaderDataType::Float2, "a_TextureCoord" }
-		});
-
+			});
 		s_Data->QuadVertexArray->AddVertexBuffer(squareVB);
+
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Ref<IndexBuffer> squareIB;
-		squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Ref<IndexBuffer> squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		s_Data->QuadVertexArray->SetIndexBuffer(squareIB);
 
 		// Setup default texture
@@ -54,16 +55,23 @@ namespace Vinyl
 
 	void Renderer2D::Shutdown()
 	{
+		VL_PROFILE_FUNCTION();
+
 		delete s_Data;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		VL_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
-	void Renderer2D::EndScene() { }
+	void Renderer2D::EndScene()
+	{
+		VL_PROFILE_FUNCTION();
+	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -72,6 +80,8 @@ namespace Vinyl
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		VL_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		s_Data->DefaultTexture->Bind();
 
@@ -91,6 +101,8 @@ namespace Vinyl
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& colorTint)
 	{
+		VL_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->SetFloat4("u_Color", colorTint);
 		texture->Bind();
 

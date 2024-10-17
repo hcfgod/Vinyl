@@ -9,13 +9,20 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_OrthographicCameraController(1280
 
 void Sandbox2D::OnAttach()
 {
+	VL_PROFILE_FUNCTION();
+
 	m_SqaureTexture = Vinyl::Texture2D::Create("Assets/Textures/baby.jpg");
 }
 
-void Sandbox2D::OnDetach() {}
+void Sandbox2D::OnDetach()
+{
+	VL_PROFILE_FUNCTION();
+}
 
 void Sandbox2D::OnUpdate(Vinyl::TimeStep timestep)
 {
+	VL_PROFILE_FUNCTION();
+
 	// Update
 	m_OrthographicCameraController.OnUpdate(timestep);
 
@@ -27,13 +34,15 @@ void Sandbox2D::OnUpdate(Vinyl::TimeStep timestep)
 
 	Vinyl::Renderer2D::DrawQuad({ -1.5f,  0.0f }, { 0.5f, 0.5f }, m_SquareColor);
 	Vinyl::Renderer2D::DrawQuad({ -0.5f, -0.3f }, { 0.5f, 1.0f }, m_SquareColor);
-	Vinyl::Renderer2D::DrawQuad({  1.0f,  0.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture);
+	Vinyl::Renderer2D::DrawQuad({ 1.0f,  0.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture);
 
 	Vinyl::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+	VL_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 
 	ImGui::ColorEdit4("SqaureColor", glm::value_ptr(m_SquareColor));
@@ -43,5 +52,7 @@ void Sandbox2D::OnImGuiRender()
 
 void Sandbox2D::OnEvent(Vinyl::Event& event)
 {
+	VL_PROFILE_FUNCTION();
+
 	m_OrthographicCameraController.OnEvent(event);
 }

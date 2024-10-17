@@ -14,6 +14,8 @@
 
 #include "Vinyl/Core/Log.h"
 
+#include "Vinyl/Core/Debug/Instrumentor.h"
+
 #ifdef VL_PLATFORM_WINDOWS
 
 #include <Windows.h>

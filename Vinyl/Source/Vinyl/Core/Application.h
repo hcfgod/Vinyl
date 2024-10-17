@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
+#include "Vinyl/Core/Core.h"
+#include "Vinyl/Core/Window.h"
 
 #include "Vinyl/Core/Layer/LayerStack.h"
 

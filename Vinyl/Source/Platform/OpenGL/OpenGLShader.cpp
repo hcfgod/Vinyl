@@ -27,6 +27,8 @@ namespace Vinyl
 
 	OpenGLShader::OpenGLShader(const std::string& filePath)
 	{
+		VL_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto sources = PreProcess(source);
 
@@ -43,6 +45,8 @@ namespace Vinyl
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& filePath)
 	{
+		VL_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto sources = PreProcess(source);
 
@@ -53,6 +57,8 @@ namespace Vinyl
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_RendererID(0), m_Name(name)
 	{
+		VL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 
 		sources[GL_VERTEX_SHADER] = vertexSource;
@@ -61,8 +67,17 @@ namespace Vinyl
 		Compile(sources);
 	}
 
+	OpenGLShader::~OpenGLShader()
+	{
+		VL_PROFILE_FUNCTION();
+
+		glDeleteProgram(m_RendererID);
+	}
+
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		VL_PROFILE_FUNCTION();
+
 		std::string result;
 
 		std::ifstream in(filePath, std::ios::in | std::ios::binary);
@@ -70,10 +85,19 @@ namespace Vinyl
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
-			result.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
-			in.close();
+			size_t size = in.tellg();
+
+			if (size != -1)
+			{
+				result.resize(in.tellg());
+				in.seekg(0, std::ios::beg);
+				in.read(&result[0], result.size());
+				in.close();
+			}
+			else
+			{
+				VL_CORE_ERROR("Could not read from file '{0}'", filePath);
+			}
 		}
 		else
 		{
@@ -85,6 +109,8 @@ namespace Vinyl
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		VL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -108,6 +134,8 @@ namespace Vinyl
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		VL_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 
 		VL_CORE_ASSERT(shaderSources.size() <= 2, "We are only supporting 2 shader types for now");
@@ -180,53 +208,64 @@ namespace Vinyl
 		m_RendererID = program;
 	}
 
-	OpenGLShader::~OpenGLShader()
-	{
-		glDeleteProgram(m_RendererID);
-	}
-
 	void OpenGLShader::Bind() const
 	{
+		VL_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::UnBind() const
 	{
+		VL_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 
 	void OpenGLShader::SetBool(const std::string& name, bool value)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value ? 1 : 0);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform3f(location, value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::SetMat3(const std::string& name, const glm::mat3& matrix)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix)
 	{
+		VL_PROFILE_FUNCTION();
+
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}

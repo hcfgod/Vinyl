@@ -19,6 +19,8 @@ namespace Vinyl
 
 	void ImGuiLayer::OnAttach()
 	{
+		VL_PROFILE_FUNCTION();
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -54,12 +56,12 @@ namespace Vinyl
 
 	void ImGuiLayer::OnDetach()
 	{
+		VL_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
-
-	void ImGuiLayer::OnImGuiRender() {}
 
 	void ImGuiLayer::OnEvent(Event& e)
 	{
@@ -73,6 +75,8 @@ namespace Vinyl
 
 	void ImGuiLayer::Begin()
 	{
+		VL_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -80,6 +84,8 @@ namespace Vinyl
 
 	void ImGuiLayer::End()
 	{
+		VL_PROFILE_FUNCTION();
+
 		// Rendering
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();

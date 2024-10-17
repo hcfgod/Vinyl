@@ -9,17 +9,17 @@ namespace Vinyl
 	{
 		switch (type)
 		{
-		case Vinyl::ShaderDataType::Bool:      return GL_BOOL;
-		case Vinyl::ShaderDataType::Int:       return GL_INT;
-		case Vinyl::ShaderDataType::Int2:      return GL_INT;
-		case Vinyl::ShaderDataType::Int3:      return GL_INT;
-		case Vinyl::ShaderDataType::Int4:      return GL_INT;
-		case Vinyl::ShaderDataType::Float:     return GL_FLOAT;
-		case Vinyl::ShaderDataType::Float2:    return GL_FLOAT;
-		case Vinyl::ShaderDataType::Float3:    return GL_FLOAT;
-		case Vinyl::ShaderDataType::Float4:    return GL_FLOAT;
-		case Vinyl::ShaderDataType::Mat3:      return GL_FLOAT;
-		case Vinyl::ShaderDataType::Mat4:      return GL_FLOAT;
+			case ShaderDataType::Bool:      return GL_BOOL;
+			case ShaderDataType::Int:       return GL_INT;
+			case ShaderDataType::Int2:      return GL_INT;
+			case ShaderDataType::Int3:      return GL_INT;
+			case ShaderDataType::Int4:      return GL_INT;
+			case ShaderDataType::Float:     return GL_FLOAT;
+			case ShaderDataType::Float2:    return GL_FLOAT;
+			case ShaderDataType::Float3:    return GL_FLOAT;
+			case ShaderDataType::Float4:    return GL_FLOAT;
+			case ShaderDataType::Mat3:      return GL_FLOAT;
+			case ShaderDataType::Mat4:      return GL_FLOAT;
 		}
 
 		VL_CORE_ASSERT(false, "Unknown ShaderDataType.");
@@ -28,26 +28,36 @@ namespace Vinyl
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		VL_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		VL_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
+		VL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererID);
 	}
 
 	void OpenGLVertexArray::Unbind() const
 	{
+		VL_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
+		VL_PROFILE_FUNCTION();
+
 		VL_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer does not have a layout.");
 
 		glBindVertexArray(m_RendererID);
@@ -68,6 +78,8 @@ namespace Vinyl
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
+		VL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();
 
