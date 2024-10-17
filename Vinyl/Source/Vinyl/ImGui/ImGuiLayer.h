@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Layer/Layer.h"
+#include "Vinyl/Core/Layer/Layer.h"
 
 #include "Vinyl/Events/ApplicationEvent.h"
 #include "Vinyl/Events/KeyEvent.h"

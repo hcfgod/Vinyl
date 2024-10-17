@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vinyl/Events/Event.h"
-#include "Vinyl/Core/MouseCodes.h"
+#include "Vinyl/Core/Input/MouseCodes.h"
 
 namespace Vinyl {
 

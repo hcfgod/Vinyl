@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "Window.h"
 
-#include "Vinyl/Layer/LayerStack.h"
+#include "Vinyl/Core/Layer/LayerStack.h"
 
 #include "Vinyl/Events/Event.h"
 #include "Vinyl/Events/ApplicationEvent.h"

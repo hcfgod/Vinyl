@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
-#include "Core/Core.h"
+#include "Vinyl/Core/Core.h"
 
 namespace Vinyl
 {

@@ -94,10 +94,10 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Application.h">
-      <Filter>Source\Vinyl</Filter>
+      <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Core.h">
-      <Filter>Source\Vinyl</Filter>
+      <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\KeyCodes.h">
       <Filter>Source\Vinyl\Core</Filter>
@@ -106,6 +106,9 @@
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\TimeStep.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Window.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\EntryPoint.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="Source\Vinyl\Log.h">
       <Filter>Source\Vinyl</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\OrthographicCameraController.h">
+      <Filter>Source\Vinyl</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
@@ -164,9 +170,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h">
       <Filter>Source\Vinyl\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\Window.h">
-      <Filter>Source\Vinyl</Filter>
     </ClInclude>
     <ClInclude Include="Source\vlpch.h">
       <Filter>Source</Filter>
@@ -1422,7 +1425,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1450,7 +1452,7 @@
       <Filter>Source\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Core\Application.cpp">
-      <Filter>Source\Vinyl</Filter>
+      <Filter>Source\Vinyl\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp">
       <Filter>Source\Vinyl\ImGui</Filter>
@@ -1465,6 +1467,9 @@
       <Filter>Source\Vinyl\Layer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Log.cpp">
+      <Filter>Source\Vinyl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\OrthographicCameraController.cpp">
       <Filter>Source\Vinyl</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp">
@@ -1497,6 +1502,5 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

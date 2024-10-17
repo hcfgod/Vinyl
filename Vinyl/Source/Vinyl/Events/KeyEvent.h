@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vinyl/Events/Event.h"
-#include "Vinyl/Core/KeyCodes.h"
+#include "Vinyl/Core/Input/KeyCodes.h"
 
 namespace Vinyl {
 

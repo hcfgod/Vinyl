@@ -2,7 +2,7 @@
 #include "OrthographicCameraController.h"
 
 #include "Vinyl/Core/Core.h"
-#include "Vinyl/Input.h"
+#include "Vinyl/Core/Input/Input.h"
 
 namespace Vinyl
 {

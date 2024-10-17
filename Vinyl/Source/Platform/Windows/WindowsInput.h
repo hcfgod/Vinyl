@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Vinyl/Input.h"
-#include "Vinyl/Core/KeyCodes.h"
-#include "Vinyl/Core/MouseCodes.h"
+#include "Vinyl/Core/Input/Input.h"
+#include "Vinyl/Core/Input/KeyCodes.h"
+#include "Vinyl/Core/Input/MouseCodes.h"
 
 namespace Vinyl
 {

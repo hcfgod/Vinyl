@@ -1,7 +1,7 @@
 #include "vlpch.h"
 #include "Application.h"
 
-#include "Vinyl/Input.h"
+#include "Vinyl/Core/Input/Input.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 

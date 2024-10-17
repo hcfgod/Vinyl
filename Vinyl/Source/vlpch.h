@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Vinyl/Log.h"
+#include "Vinyl/Core/Log.h"
 
 #ifdef VL_PLATFORM_WINDOWS
 

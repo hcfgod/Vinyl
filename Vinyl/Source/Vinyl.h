@@ -3,17 +3,15 @@
 // For use Vinyl applications
 
 #include "Vinyl/Core/Application.h"
-#include "Vinyl/Layer/Layer.h"
+#include "Vinyl/Core/Layer/Layer.h"
 #include "Vinyl/ImGui/ImGuiLayer.h"
-#include "Vinyl/Log.h"
+#include "Vinyl/Core/Log.h"
 
 #include "Vinyl/Core/TimeStep.h"
 
-#include "Vinyl/Input.h"
-#include "Vinyl/Core/KeyCodes.h"
-#include "Vinyl/Core/MouseCodes.h"
-
-#include "Vinyl/OrthographicCameraController.h"
+#include "Vinyl/Core/Input/Input.h"
+#include "Vinyl/Core/Input/KeyCodes.h"
+#include "Vinyl/Core/Input/MouseCodes.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 #include "Vinyl/Rendering/Renderer/RenderCommand.h"
@@ -24,7 +22,8 @@
 #include "Vinyl/Rendering/Texture.h"
 
 #include "Vinyl/Rendering/Camera/OrthographicCamera.h"
+#include "Vinyl/Rendering/Camera/OrthographicCameraController.h"
 
 //--------EntryPoint-------//
-#include "Vinyl/EntryPoint.h"
+#include "Vinyl/Core/EntryPoint.h"
 //--------EntryPoint-------//
