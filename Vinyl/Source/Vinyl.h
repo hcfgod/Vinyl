@@ -23,7 +23,3 @@
 
 #include "Vinyl/Rendering/Camera/OrthographicCamera.h"
 #include "Vinyl/Rendering/Camera/OrthographicCameraController.h"
-
-//--------EntryPoint-------//
-#include "Vinyl/Core/EntryPoint.h"
-//--------EntryPoint-------//
