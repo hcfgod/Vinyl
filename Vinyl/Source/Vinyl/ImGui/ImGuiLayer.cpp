@@ -59,11 +59,7 @@ namespace Vinyl
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnImGuiRender()
-	{
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-	}
+	void ImGuiLayer::OnImGuiRender() {}
 
 	void ImGuiLayer::OnEvent(Event& e)
 	{

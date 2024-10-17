@@ -23,4 +23,6 @@ private:
 	Vinyl::OrthographicCameraController m_OrthographicCameraController;
 
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+
+	Vinyl::Ref<Vinyl::Texture2D> m_SqaureTexture;
 };

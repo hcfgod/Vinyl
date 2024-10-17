@@ -22,14 +22,17 @@
     <Filter Include="Source\Vinyl\Core">
       <UniqueIdentifier>{2F4381E7-9B59-7F7D-E4D0-0A9F50265005}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Core\Input">
+      <UniqueIdentifier>{6E5A22D7-DA91-6A6E-E39B-CE914F529167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Vinyl\Core\Layer">
+      <UniqueIdentifier>{3BA751D7-A7DE-996E-B0E8-FD911C9FC067}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Events">
       <UniqueIdentifier>{7BDC00D2-E73D-DEDF-70AB-2492DC0B159F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Vinyl\ImGui">
       <UniqueIdentifier>{E16E14D8-CD52-D52D-36B3-CF8022B6BFAF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Vinyl\Layer">
-      <UniqueIdentifier>{83F644D8-6FDA-052E-D83A-0081C43DF0AF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Vinyl\Rendering">
       <UniqueIdentifier>{84C643E1-70C0-6C33-592D-034445C6D29F}</UniqueIdentifier>
@@ -99,10 +102,25 @@
     <ClInclude Include="Source\Vinyl\Core\Core.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\KeyCodes.h">
+    <ClInclude Include="Source\Vinyl\Core\EntryPoint.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\MouseCodes.h">
+    <ClInclude Include="Source\Vinyl\Core\Input\Input.h">
+      <Filter>Source\Vinyl\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h">
+      <Filter>Source\Vinyl\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Input\MouseCodes.h">
+      <Filter>Source\Vinyl\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Layer\Layer.h">
+      <Filter>Source\Vinyl\Core\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Layer\LayerStack.h">
+      <Filter>Source\Vinyl\Core\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Log.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\TimeStep.h">
@@ -110,9 +128,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Window.h">
       <Filter>Source\Vinyl\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\EntryPoint.h">
-      <Filter>Source\Vinyl</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Events\ApplicationEvent.h">
       <Filter>Source\Vinyl\Events</Filter>
@@ -129,25 +144,13 @@
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h">
       <Filter>Source\Vinyl\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Input.h">
-      <Filter>Source\Vinyl</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\Layer\Layer.h">
-      <Filter>Source\Vinyl\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\Layer\LayerStack.h">
-      <Filter>Source\Vinyl\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\Log.h">
-      <Filter>Source\Vinyl</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\OrthographicCameraController.h">
-      <Filter>Source\Vinyl</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h">
+      <Filter>Source\Vinyl\Rendering\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h">
@@ -157,6 +160,9 @@
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer.h">
+      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer2D.h">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RendererAPI.h">
@@ -1454,23 +1460,20 @@
     <ClCompile Include="Source\Vinyl\Core\Application.cpp">
       <Filter>Source\Vinyl\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp">
+      <Filter>Source\Vinyl\Core\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Core\Layer\LayerStack.cpp">
+      <Filter>Source\Vinyl\Core\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Core\Log.cpp">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp">
       <Filter>Source\Vinyl\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp">
       <Filter>Source\Vinyl\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vinyl\Layer\Layer.cpp">
-      <Filter>Source\Vinyl\Layer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vinyl\Layer\LayerStack.cpp">
-      <Filter>Source\Vinyl\Layer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vinyl\Log.cpp">
-      <Filter>Source\Vinyl</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vinyl\OrthographicCameraController.cpp">
-      <Filter>Source\Vinyl</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
@@ -1478,10 +1481,16 @@
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp">
+      <Filter>Source\Vinyl\Rendering\Camera</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp">
+      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer2D.cpp">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RendererAPI.cpp">

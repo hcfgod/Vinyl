@@ -14,6 +14,7 @@
 #include "Vinyl/Core/Input/MouseCodes.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
+#include "Vinyl/Rendering/Renderer/Renderer2D.h"
 #include "Vinyl/Rendering/Renderer/RenderCommand.h"
 
 #include "Vinyl/Rendering/Buffer.h"
