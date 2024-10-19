@@ -238,6 +238,14 @@ namespace Vinyl
 		glUniform1i(location, value ? 1 : 0);
 	}
 
+	void OpenGLShader::SetFloat(const std::string& name, float value)
+	{
+		VL_PROFILE_FUNCTION();
+
+		int location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1f(location, value);
+	}
+
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
 		VL_PROFILE_FUNCTION();

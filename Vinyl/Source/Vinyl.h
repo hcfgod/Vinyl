@@ -24,3 +24,8 @@
 
 #include "Vinyl/Rendering/Camera/OrthographicCamera.h"
 #include "Vinyl/Rendering/Camera/OrthographicCameraController.h"
+
+#include <imgui/imgui.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>

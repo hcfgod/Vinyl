@@ -1,10 +1,5 @@
 #include "Sandbox2D.h"
 
-#include <imgui/imgui.h>
-
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_OrthographicCameraController(1280.0f / 720.0f) {}
 
 void Sandbox2D::OnAttach()
@@ -33,8 +28,8 @@ void Sandbox2D::OnUpdate(Vinyl::TimeStep timestep)
 	Vinyl::Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
 
 	Vinyl::Renderer2D::DrawQuad({ -1.5f,  0.0f }, { 0.5f, 0.5f }, m_SquareColor);
-	Vinyl::Renderer2D::DrawQuad({ -0.5f, -0.3f }, { 0.5f, 1.0f }, m_SquareColor);
-	Vinyl::Renderer2D::DrawQuad({ 1.0f,  0.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture);
+	Vinyl::Renderer2D::DrawQuad({ 1.0f,  0.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture, m_SquareColor);
+	Vinyl::Renderer2D::DrawRotatedQuad({ -0.5f, -0.3f }, { 0.5f, 1.0f }, 45.0f, m_SquareColor);
 
 	Vinyl::Renderer2D::EndScene();
 }
