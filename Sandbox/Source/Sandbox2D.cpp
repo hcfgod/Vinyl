@@ -16,6 +16,9 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Vinyl::TimeStep timestep)
 {
+	static float rotation = 0.0f;
+	rotation += timestep * 50.0f;
+
 	VL_PROFILE_FUNCTION();
 
 	// Update
@@ -27,11 +30,11 @@ void Sandbox2D::OnUpdate(Vinyl::TimeStep timestep)
 
 	Vinyl::Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
 
-	Vinyl::Renderer2D::DrawQuad({ -5.0f,  -5.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture, m_SquareColor);
-	Vinyl::Renderer2D::DrawQuad({ -1.5f,  -5.0f }, { 3.0f, 3.0f }, m_SqaureTexture, 10.0f, m_SquareColor);
-	Vinyl::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	Vinyl::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
-	//Vinyl::Renderer2D::DrawRotatedQuad({ -0.5f, -0.3f }, { 0.5f, 1.0f }, 45.0f, m_SquareColor);
+	Vinyl::Renderer2D::DrawRotatedQuad({ 1.5f, 0.0f }, { 0.8f, 0.8f }, -45.0f, m_SquareColor);
+	Vinyl::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
+	Vinyl::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	Vinyl::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_SqaureTexture);
+	Vinyl::Renderer2D::DrawRotatedQuad({ -2.5f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_SqaureTexture, 5.0f);
 
 	Vinyl::Renderer2D::EndScene();
 }
