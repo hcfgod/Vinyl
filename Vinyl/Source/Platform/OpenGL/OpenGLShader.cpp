@@ -230,6 +230,14 @@ namespace Vinyl
 		glUniform1i(location, value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		VL_PROFILE_FUNCTION();
+
+		int location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1iv(location, count, values);
+	}
+
 	void OpenGLShader::SetBool(const std::string& name, bool value)
 	{
 		VL_PROFILE_FUNCTION();

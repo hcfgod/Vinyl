@@ -21,6 +21,8 @@ namespace Vinyl
 		virtual void UnBind() const override;
 
 		virtual void SetInt(const std::string& name, int value) override;
+		virtual void SetIntArray(const std::string& name, int* values, uint32_t count) override;
+
 		virtual void SetBool(const std::string& name, bool value) override;
 
 		virtual void SetFloat(const std::string& name, float value) override;

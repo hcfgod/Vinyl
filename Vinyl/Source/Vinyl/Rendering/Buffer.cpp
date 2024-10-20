@@ -8,6 +8,18 @@
 
 namespace Vinyl
 {
+	Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
+	{
+		switch (Renderer::GetAPI())
+		{
+			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLVertexBuffer>(size);
+		}
+
+		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
+		return nullptr;
+	}
+
 	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 	{
 		switch (Renderer::GetAPI())
