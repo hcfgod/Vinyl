@@ -1,4 +1,4 @@
-// Basic texture shader
+// Default shader
 
 #type vertex
 #version 330 core
