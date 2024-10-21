@@ -60,10 +60,10 @@ namespace Vinyl
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(*--it)->OnEvent(e);
-
 			if (e.Handled)
 				break;
+
+			(*--it)->OnEvent(e);
 		}
 	}
 
@@ -103,6 +103,11 @@ namespace Vinyl
 
 			m_Window->OnUpdate();
 		}
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

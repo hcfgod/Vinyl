@@ -16,18 +16,19 @@ public:
 
 	void OnEvent(Vinyl::Event& event) override;
 private:
-	Vinyl::Ref<Vinyl::Shader> m_FlatColorShader;
-
-	Vinyl::Ref<Vinyl::VertexArray> m_SquareVertexArray;
-
 	Vinyl::OrthographicCameraController m_OrthographicCameraController;
-
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
-
-	Vinyl::Ref<Vinyl::Texture2D> m_SqaureTexture;
+	Vinyl::Ref<Vinyl::Texture2D> m_BabyTexture;
+	Vinyl::Ref<Vinyl::Texture2D> m_SpriteSheet;
+	Vinyl::Ref<Vinyl::SubTexture2D> m_WaterTexture;
+	Vinyl::Ref<Vinyl::SubTexture2D> m_DirtTexture;
+	Vinyl::Ref<Vinyl::SubTexture2D> m_TreeTexture;
 
 	// Grid customization parameters
 	int m_GridSize = 5;             // Grid dimension, i.e., number of quads per row/column
 	float m_RotationSpeed = 50.0f;  // Speed of rotation
 	bool m_UseTexture = true;
+
+	uint32_t m_MapWidth = 0, m_MapHeight = 0;
+	std::unordered_map<char, Vinyl::Ref<Vinyl::SubTexture2D>> s_TextureMap;
 };

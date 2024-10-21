@@ -153,7 +153,7 @@
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\Vinyl.h" />
     <ClInclude Include="Source\Vinyl\Core\Application.h" />
-    <ClInclude Include="Source\Vinyl\Core\Core.h" />
+    <ClInclude Include="Source\Vinyl\Core\Base.h" />
     <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h" />
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h" />
@@ -178,6 +178,7 @@
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer2D.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RendererAPI.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Shader.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h" />
     <ClInclude Include="Source\vlpch.h" />
@@ -623,6 +624,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RendererAPI.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Shader.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\VertexArray.cpp" />
     <ClCompile Include="Source\vlpch.cpp">

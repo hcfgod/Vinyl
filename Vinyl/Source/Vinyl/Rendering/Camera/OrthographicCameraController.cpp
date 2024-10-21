@@ -1,12 +1,12 @@
 #include "vlpch.h"
 #include "OrthographicCameraController.h"
 
-#include "Vinyl/Core/Core.h"
+#include "Vinyl/Core/Base.h"
 #include "Vinyl/Core/Input/Input.h"
 
 namespace Vinyl
 {
-	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool useRotation) : m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_UseRotation(useRotation)
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool useRotation) : m_AspectRatio(aspectRatio), m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }), m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top), m_UseRotation(useRotation)
 	{
 
 	}
@@ -61,13 +61,20 @@ namespace Vinyl
 		eventDispatcher.Dispatch<WindowResizeEvent>(VL_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
+	void OrthographicCameraController::CalculateView()
+	{
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+	}
+
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
 	{
 		VL_PROFILE_FUNCTION();
 
 		m_ZoomLevel -= event.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+
+		CalculateView();
 
 		return false;
 	}
@@ -77,7 +84,9 @@ namespace Vinyl
 		VL_PROFILE_FUNCTION();
 
 		m_AspectRatio = (float)event.GetWidth() / (float)event.GetHeight();
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+
+		CalculateView();
+
 		return false;
 	}
 }

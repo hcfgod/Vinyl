@@ -21,6 +21,7 @@
 #include "Vinyl/Rendering/Shader.h"
 #include "Vinyl/Rendering/VertexArray.h"
 #include "Vinyl/Rendering/Texture.h"
+#include "Vinyl/Rendering/SubTexture2D.h"
 
 #include "Vinyl/Rendering/Camera/OrthographicCamera.h"
 #include "Vinyl/Rendering/Camera/OrthographicCameraController.h"

@@ -2,7 +2,7 @@
 
 #include "vlpch.h"
 
-#include "Vinyl/Core/Core.h"
+#include "Vinyl/Core/Base.h"
 #include "Vinyl/Events/Event.h"
 
 namespace Vinyl

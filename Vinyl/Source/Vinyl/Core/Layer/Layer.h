@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Core/Core.h"
+#include "Vinyl/Core/Base.h"
 #include "Vinyl/Events/Event.h"
 
 #include "Vinyl/Core/TimeStep.h"

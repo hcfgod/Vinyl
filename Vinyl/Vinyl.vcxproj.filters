@@ -99,7 +99,7 @@
     <ClInclude Include="Source\Vinyl\Core\Application.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\Core.h">
+    <ClInclude Include="Source\Vinyl\Core\Base.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h">
@@ -148,9 +148,6 @@
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h">
-      <Filter>Source\Vinyl\Rendering\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h">
@@ -1431,6 +1428,9 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1511,5 +1511,7 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp" />
   </ItemGroup>
 </Project>

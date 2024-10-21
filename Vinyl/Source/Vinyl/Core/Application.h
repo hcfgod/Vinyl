@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vinyl/Core/Core.h"
+#include "Vinyl/Core/Base.h"
 #include "Vinyl/Core/Window.h"
 
 #include "Vinyl/Core/Layer/LayerStack.h"
@@ -23,6 +23,7 @@ namespace Vinyl
 		static Application& Get() { return *s_Instance; }
 
 		void Run();
+		void Close();
 
 		void OnEvent(Event& e);
 
