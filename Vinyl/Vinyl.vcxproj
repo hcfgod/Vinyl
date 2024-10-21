@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer.h" />
@@ -602,6 +604,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
@@ -618,6 +621,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp" />

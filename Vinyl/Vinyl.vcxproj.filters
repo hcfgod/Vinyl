@@ -22,6 +22,9 @@
     <Filter Include="Source\Vinyl\Core">
       <UniqueIdentifier>{2F4381E7-9B59-7F7D-E4D0-0A9F50265005}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Core\Debug">
+      <UniqueIdentifier>{E5B4C2D6-51EC-0A6E-5AF6-6E91C6AC3167}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Core\Input">
       <UniqueIdentifier>{6E5A22D7-DA91-6A6E-E39B-CE914F529167}</UniqueIdentifier>
     </Filter>
@@ -72,6 +75,9 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLFramebuffer.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClInclude>
@@ -101,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Base.h">
       <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h">
+      <Filter>Source\Vinyl\Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h">
       <Filter>Source\Vinyl\Core</Filter>
@@ -150,6 +159,12 @@
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h">
+      <Filter>Source\Vinyl\Rendering\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h">
+      <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
@@ -166,6 +181,9 @@
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Shader.h">
+      <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h">
@@ -1428,12 +1446,12 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h" />
-    <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
-    <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp">
@@ -1484,6 +1502,12 @@
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp">
+      <Filter>Source\Vinyl\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp">
+      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClCompile>
@@ -1499,6 +1523,9 @@
     <ClCompile Include="Source\Vinyl\Rendering\Shader.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp">
+      <Filter>Source\Vinyl\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClCompile>
@@ -1511,7 +1538,5 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
-    <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp" />
   </ItemGroup>
 </Project>

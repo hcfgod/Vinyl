@@ -24,6 +24,7 @@ namespace Vinyl
 
 		void OnUpdate(TimeStep timeStep);
 		void OnEvent(Event& event);
+		void OnResize(float width, float height);
 
 		inline OrthographicCamera& GetCamera() { return m_Camera; }
 		inline const OrthographicCamera& GetCamera() const { return m_Camera; }

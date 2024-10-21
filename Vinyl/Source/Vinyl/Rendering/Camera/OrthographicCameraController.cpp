@@ -61,6 +61,12 @@ namespace Vinyl
 		eventDispatcher.Dispatch<WindowResizeEvent>(VL_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		CalculateView();
+	}
+
 	void OrthographicCameraController::CalculateView()
 	{
 		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
@@ -82,10 +88,8 @@ namespace Vinyl
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& event)
 	{
 		VL_PROFILE_FUNCTION();
-
-		m_AspectRatio = (float)event.GetWidth() / (float)event.GetHeight();
-
-		CalculateView();
+		
+		OnResize((float)event.GetWidth(), (float)event.GetHeight());
 
 		return false;
 	}

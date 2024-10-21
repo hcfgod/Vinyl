@@ -19,6 +19,7 @@
 
 #include "Vinyl/Rendering/Buffer.h"
 #include "Vinyl/Rendering/Shader.h"
+#include "Vinyl/Rendering/Framebuffer.h"
 #include "Vinyl/Rendering/VertexArray.h"
 #include "Vinyl/Rendering/Texture.h"
 #include "Vinyl/Rendering/SubTexture2D.h"

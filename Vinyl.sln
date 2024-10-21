@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Vinyl\Vendor\imgui
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vinyl", "Vinyl\Vinyl.vcxproj", "{37B34E0E-A3C7-76BF-6C49-1A1FD81C73F0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vinyl-Editor", "Vinyl-Editor\Vinyl-Editor.vcxproj", "{0BD3C924-F735-59C9-A0BB-917F8CFD244C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -50,6 +52,12 @@ Global
 		{37B34E0E-A3C7-76BF-6C49-1A1FD81C73F0}.Dist|x64.Build.0 = Dist|x64
 		{37B34E0E-A3C7-76BF-6C49-1A1FD81C73F0}.Release|x64.ActiveCfg = Release|x64
 		{37B34E0E-A3C7-76BF-6C49-1A1FD81C73F0}.Release|x64.Build.0 = Release|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Debug|x64.ActiveCfg = Debug|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Debug|x64.Build.0 = Debug|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Dist|x64.ActiveCfg = Dist|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Dist|x64.Build.0 = Dist|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Release|x64.ActiveCfg = Release|x64
+		{0BD3C924-F735-59C9-A0BB-917F8CFD244C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

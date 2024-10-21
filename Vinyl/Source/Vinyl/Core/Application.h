@@ -17,7 +17,7 @@ namespace Vinyl
 	class Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Vinyl App");
 		virtual ~Application();
 
 		static Application& Get() { return *s_Instance; }

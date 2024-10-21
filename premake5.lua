@@ -1,6 +1,6 @@
 workspace "Vinyl"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "Vinyl-Editor"
 
 	configurations
 	{
@@ -23,7 +23,6 @@ group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
 	include "Vinyl/Vendor/Glad"
 	include "Vinyl/Vendor/imgui"
-
 group ""
 
 project "Vinyl"
@@ -102,6 +101,58 @@ project "Vinyl"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++20"
+	staticruntime "on"
+
+	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/Source/**.h",
+		"%{prj.name}/Source/**.cpp",
+	}
+
+	includedirs
+	{
+		"Vinyl/Vendor/SpdLog/include",
+		"Vinyl/Source",
+		"Vinyl/Vendor/",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Vinyl"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	defines
+	{
+		"VL_PLATFORM_WINDOWS"
+	}
+
+	filter "configurations:Debug"
+		defines "VL_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "VL_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "VL_DIST"
+		runtime "Release"
+		optimize "on"
+
+project "Vinyl-Editor"
+	location "Vinyl-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
