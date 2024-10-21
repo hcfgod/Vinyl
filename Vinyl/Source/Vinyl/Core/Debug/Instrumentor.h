@@ -29,16 +29,9 @@ namespace Vinyl
 
     class Instrumentor
     {
-    private:
-        std::mutex m_Mutex;
-        InstrumentationSession* m_CurrentSession;
-        std::ofstream m_OutputStream;
-        int m_ProfileCount;
     public:
-        Instrumentor()
-            : m_CurrentSession(nullptr), m_ProfileCount(0)
-        {
-        }
+        Instrumentor(const Instrumentor&) = delete;
+        Instrumentor(Instrumentor&&) = delete;
 
         void BeginSession(const std::string& name, const std::string& filepath = "results.json")
         {
@@ -80,14 +73,11 @@ namespace Vinyl
         {
             std::stringstream json;
 
-            std::string name = result.Name;
-            std::replace(name.begin(), name.end(), '"', '\'');
-
             json << std::setprecision(3) << std::fixed;
             json << ",{";
             json << "\"cat\":\"function\",";
             json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
-            json << "\"name\":\"" << name << "\",";
+            json << "\"name\":\"" << result.Name << "\",";
             json << "\"ph\":\"X\",";
             json << "\"pid\":0,";
             json << "\"tid\":" << result.ThreadID << ",";
@@ -95,8 +85,7 @@ namespace Vinyl
             json << "}";
 
             std::lock_guard lock(m_Mutex);
-
-            if (m_CurrentSession) 
+            if (m_CurrentSession)
             {
                 m_OutputStream << json.str();
                 m_OutputStream.flush();
@@ -131,13 +120,27 @@ namespace Vinyl
                 m_CurrentSession = nullptr;
             }
         }
+
+    private:
+        Instrumentor()
+            : m_CurrentSession(nullptr), m_ProfileCount(0)
+        {
+        }
+        ~Instrumentor()
+        {
+            EndSession();
+        }
+    private:
+        std::mutex m_Mutex;
+        InstrumentationSession* m_CurrentSession;
+        std::ofstream m_OutputStream;
+        int m_ProfileCount;
     };
 
     class InstrumentationTimer
     {
     public:
-        InstrumentationTimer(const char* name)
-            : m_Name(name), m_Stopped(false)
+        InstrumentationTimer(const char* name) : m_Name(name), m_Stopped(false)
         {
             m_StartTimepoint = std::chrono::steady_clock::now();
         }
@@ -165,37 +168,39 @@ namespace Vinyl
     };
 }
 
-#define VL_PROFILE 1
-
+#define VL_PROFILE 0
 #if VL_PROFILE
-    // Resolve which function signature macro will be used. Note that this only
-    // is resolved when the (pre)compiler starts, so the syntax highlighting
-    // could mark the wrong one in your editor!
-    #if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
-    #define VL_FUNC_SIG __PRETTY_FUNCTION__
-    #elif defined(__DMC__) && (__DMC__ >= 0x810)
-    #define VL_FUNC_SIG __PRETTY_FUNCTION__
-    #elif defined(__FUNCSIG__)
-    #define VL_FUNC_SIG __FUNCSIG__
-    #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
-    #define VL_FUNC_SIG __FUNCTION__
-    #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
-    #define VL_FUNC_SIG __FUNC__
-    #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
-    #define VL_FUNC_SIG __func__
-    #elif defined(__cplusplus) && (__cplusplus >= 201103)
-    #define VL_FUNC_SIG __func__
-    #else
-    #define VL_FUNC_SIG "VL_FUNC_SIG unknown!"
-    #endif
-
-    #define VL_PROFILE_BEGIN_SESSION(name, filepath) ::Vinyl::Instrumentor::Get().BeginSession(name, filepath)
-    #define VL_PROFILE_END_SESSION() ::Vinyl::Instrumentor::Get().EndSession()
-    #define VL_PROFILE_SCOPE(name) ::Vinyl::InstrumentationTimer timer##__LINE__(name);
-    #define VL_PROFILE_FUNCTION() VL_PROFILE_SCOPE(VL_FUNC_SIG)
+// Resolve which function signature macro will be used. Note that this only
+// is resolved when the (pre)compiler starts, so the syntax highlighting
+// could mark the wrong one in your editor!
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+#define VL_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__DMC__) && (__DMC__ >= 0x810)
+#define VL_FUNC_SIG __PRETTY_FUNCTION__
+#elif (defined(__FUNCSIG__) || (_MSC_VER))
+#define VL_FUNC_SIG __FUNCSIG__
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+#define VL_FUNC_SIG __FUNCTION__
+#elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+#define VL_FUNC_SIG __FUNC__
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+#define VL_FUNC_SIG __func__
+#elif defined(__cplusplus) && (__cplusplus >= 201103)
+#define VL_FUNC_SIG __func__
 #else
-    #define VL_PROFILE_BEGIN_SESSION(name, filePath)
-    #define VL_PROFILE_END_SESSION()
-    #define VL_PROFILE_SCOPE(name)
-    #define VL_PROFILE_FUNCTION()
+#define VL_FUNC_SIG "VL_FUNC_SIG unknown!"
+#endif
+
+#define VL_PROFILE_BEGIN_SESSION(name, filepath) ::Vinyl::Instrumentor::Get().BeginSession(name, filepath)
+#define VL_PROFILE_END_SESSION() ::Vinyl::Instrumentor::Get().EndSession()
+#define VL_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::Vinyl::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+											   ::Vinyl::InstrumentationTimer timer##line(fixedName##line.Data)
+#define VL_PROFILE_SCOPE_LINE(name, line) VL_PROFILE_SCOPE_LINE2(name, line)
+#define VL_PROFILE_SCOPE(name) VL_PROFILE_SCOPE_LINE(name, __LINE__)
+#define VL_PROFILE_FUNCTION() VL_PROFILE_SCOPE(VL_FUNC_SIG)
+#else
+#define VL_PROFILE_BEGIN_SESSION(name, filepath)
+#define VL_PROFILE_END_SESSION()
+#define VL_PROFILE_SCOPE(name)
+#define VL_PROFILE_FUNCTION()
 #endif
