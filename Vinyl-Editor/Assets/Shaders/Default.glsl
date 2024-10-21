@@ -49,6 +49,7 @@ void main()
 		case 1: textureColor *= texture(u_Textures[1], v_TextureCoord * v_TilingFactor); break;
 		case 2: textureColor *= texture(u_Textures[2], v_TextureCoord * v_TilingFactor); break;
 		case 3: textureColor *= texture(u_Textures[3], v_TextureCoord * v_TilingFactor); break;
+		case 4: textureColor *= texture(u_Textures[4], v_TextureCoord * v_TilingFactor); break;
 		case 5: textureColor *= texture(u_Textures[5], v_TextureCoord * v_TilingFactor); break;
 		case 6: textureColor *= texture(u_Textures[6], v_TextureCoord * v_TilingFactor); break;
 		case 7: textureColor *= texture(u_Textures[7], v_TextureCoord * v_TilingFactor); break;

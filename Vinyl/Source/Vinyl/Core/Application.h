@@ -22,14 +22,15 @@ namespace Vinyl
 
 		static Application& Get() { return *s_Instance; }
 
-		void Run();
-		void Close();
-
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
+		void Run();
+		void Close();
+
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		Window& GetWindow() { return *m_Window; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
