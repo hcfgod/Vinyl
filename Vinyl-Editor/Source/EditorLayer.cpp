@@ -1,4 +1,5 @@
 #include "EditorLayer.h"
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Vinyl
 {
@@ -17,11 +18,9 @@ namespace Vinyl
 		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
-		auto squareEntity = m_ActiveScene->CreateEntity();
-		m_ActiveScene->Reg().emplace<TransformComponent>(squareEntity);
-		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(squareEntity, glm::vec4(0.25f, 0.25f, 0.35f, 1.0f));
-
-		m_SquareEntity = squareEntity;
+		auto square = m_ActiveScene->CreateEntity("Colored Square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+		m_SquareEntity = square;
 	}
 
 	void EditorLayer::OnDetach()
@@ -128,9 +127,15 @@ namespace Vinyl
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		// Color picker for the square color
-		auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
-		ImGui::ColorEdit4("SqaureColor", glm::value_ptr(squareColor));
+		if (m_SquareEntity)
+		{
+			ImGui::Separator();
+			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
+			ImGui::Text("%s", tag.c_str());
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+			ImGui::Separator();
+		}
 
 		ImGui::End();
 

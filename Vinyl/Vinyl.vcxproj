@@ -183,6 +183,7 @@
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h" />
     <ClInclude Include="Source\Vinyl\Scene\Components.h" />
+    <ClInclude Include="Source\Vinyl\Scene\Entity.h" />
     <ClInclude Include="Source\Vinyl\Scene\Scene.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
@@ -632,6 +633,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\VertexArray.cpp" />
+    <ClCompile Include="Source\Vinyl\Scene\Entity.cpp" />
     <ClCompile Include="Source\Vinyl\Scene\Scene.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

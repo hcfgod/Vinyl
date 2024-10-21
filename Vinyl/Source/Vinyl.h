@@ -8,6 +8,7 @@
 #include "Vinyl/Core/Log.h"
 
 #include "Vinyl/Scene/Scene.h"
+#include "Vinyl/Scene/Entity.h"
 #include "Vinyl/Scene/Components.h"
 
 #include "Vinyl/Core/TimeStep.h"
