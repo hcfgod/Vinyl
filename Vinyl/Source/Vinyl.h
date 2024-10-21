@@ -7,6 +7,9 @@
 #include "Vinyl/ImGui/ImGuiLayer.h"
 #include "Vinyl/Core/Log.h"
 
+#include "Vinyl/Scene/Scene.h"
+#include "Vinyl/Scene/Components.h"
+
 #include "Vinyl/Core/TimeStep.h"
 
 #include "Vinyl/Core/Input/Input.h"

@@ -18,6 +18,7 @@ IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
 IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
+IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -63,7 +64,8 @@ project "Vinyl"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -120,7 +122,8 @@ project "Sandbox"
 		"Vinyl/Vendor/SpdLog/include",
 		"Vinyl/Source",
 		"Vinyl/Vendor/",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -172,7 +175,8 @@ project "Vinyl-Editor"
 		"Vinyl/Vendor/SpdLog/include",
 		"Vinyl/Source",
 		"Vinyl/Vendor/",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links

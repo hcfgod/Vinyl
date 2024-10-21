@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -182,6 +182,8 @@
     <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h" />
+    <ClInclude Include="Source\Vinyl\Scene\Components.h" />
+    <ClInclude Include="Source\Vinyl\Scene\Scene.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
@@ -630,6 +632,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\VertexArray.cpp" />
+    <ClCompile Include="Source\Vinyl\Scene\Scene.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

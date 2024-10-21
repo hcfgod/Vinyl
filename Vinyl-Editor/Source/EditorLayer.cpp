@@ -8,17 +8,20 @@ namespace Vinyl
 	{
 		VL_PROFILE_FUNCTION();
 
-		m_BabyTexture = Vinyl::Texture2D::Create("Assets/Textures/baby.jpg");
-		m_SpriteSheet = Vinyl::Texture2D::Create("Assets/Textures/RPGpack_sheet_2X.png");
-		m_TreeTexture = Vinyl::SubTexture2D::CreateFromCoords(m_SpriteSheet, glm::vec2(2, 1), glm::vec2(128, 128), glm::vec2(1, 2));
-
 		m_OrthographicCameraController.SetZoomLevel(5.0f);
 
-		Vinyl::FramebufferSpecification frameBufferSpec;
+		FramebufferSpecification frameBufferSpec;
 		frameBufferSpec.Width = 1280;
 		frameBufferSpec.Height = 720;
 
-		m_FrameBuffer = Vinyl::Framebuffer::Create(frameBufferSpec);
+		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
+
+		m_ActiveScene = CreateRef<Scene>();
+		auto squareEntity = m_ActiveScene->CreateEntity();
+		m_ActiveScene->Reg().emplace<TransformComponent>(squareEntity);
+		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(squareEntity, glm::vec4(0.25f, 0.25f, 0.35f, 1.0f));
+
+		m_SquareEntity = squareEntity;
 	}
 
 	void EditorLayer::OnDetach()
@@ -26,69 +29,37 @@ namespace Vinyl
 		VL_PROFILE_FUNCTION();
 	}
 
-	void EditorLayer::OnUpdate(Vinyl::TimeStep timestep)
+	void EditorLayer::OnUpdate(TimeStep timestep)
 	{
 		VL_PROFILE_FUNCTION();
 
-		static float rotation = 0.0f;
-		rotation += timestep * m_RotationSpeed;
-
 		// Update
+
 		if(m_ViewportFocused && m_ViewportHovered)
 			m_OrthographicCameraController.OnUpdate(timestep);
 
-		// Reset render Statistics here
-		Vinyl::Renderer2D::ResetStatistics();
-
-		// Render
-		m_FrameBuffer->Bind();
-
-		Vinyl::RenderCommand::SetClearColor(glm::vec4(0.1, 0.1, 0.1, 1.0));
-		Vinyl::RenderCommand::Clear();
-
-		Vinyl::Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
-
-		Vinyl::Renderer2D::DrawRotatedQuad({ 1.5f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-45.0f), m_SquareColor);
-		Vinyl::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
-		Vinyl::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		Vinyl::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_BabyTexture);
-		Vinyl::Renderer2D::DrawRotatedQuad({ -2.5f, 0.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(rotation), m_BabyTexture, 5.0f);
-
-		Vinyl::Renderer2D::EndScene();
-
-		Vinyl::Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
-
-		// Draw grid
-		float spacing = 1.5f; // Spacing between quads
-		for (int y = 0; y < m_GridSize; ++y)
+		FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)) // zero sized framebuffer is invalid
 		{
-			for (int x = 0; x < m_GridSize; ++x)
-			{
-				// Calculate position for each quad in the grid
-				glm::vec2 position = { x * spacing - (m_GridSize * spacing) / 2.0f, y * spacing - (m_GridSize * spacing) / 2.0f };
-				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.3f, (y + 5.0f) / 10.0f, 0.5f };
-
-				if (m_UseTexture)
-				{
-					// Draw textured quad
-					Vinyl::Renderer2D::DrawQuad({ position.x, position.y, 0.0f }, { 0.8f, 0.8f }, m_BabyTexture, color);
-				}
-				else
-				{
-					// Draw colored quad
-					Vinyl::Renderer2D::DrawQuad({ position.x, position.y, 0.0f }, { 0.8f, 0.8f }, color);
-				}
-			}
+			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_OrthographicCameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 
-		Vinyl::Renderer2D::EndScene();
 
-		Vinyl::Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
+		// Render
+		
+		Renderer2D::ResetStatistics(); // Reset render Statistics here
 
-		Vinyl::Renderer2D::DrawQuad({ 0.0f, 1.0f }, { 1.0f, 1.0f }, m_BabyTexture);
-		Vinyl::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_TreeTexture);
+		m_FrameBuffer->Bind();
 
-		Vinyl::Renderer2D::EndScene();
+		RenderCommand::SetClearColor(glm::vec4(0.1, 0.1, 0.1, 1.0));
+		RenderCommand::Clear();
+
+		Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
+
+		m_ActiveScene->OnUpdate(timestep);
+
+		Renderer2D::EndScene();
 
 		m_FrameBuffer->Unbind();
 	}
@@ -140,7 +111,7 @@ namespace Vinyl
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("Exit")) Vinyl::Application::Get().Close();
+				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
 
@@ -150,13 +121,16 @@ namespace Vinyl
 		//Settings
 		ImGui::Begin("Settings");
 
-		auto stats = Vinyl::Renderer2D::GetStatistics();
+		auto stats = Renderer2D::GetStatistics();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+
+		// Color picker for the square color
+		auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
+		ImGui::ColorEdit4("SqaureColor", glm::value_ptr(squareColor));
 
 		ImGui::End();
 
@@ -169,17 +143,10 @@ namespace Vinyl
 		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
-		{
-			m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
-			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
-			m_OrthographicCameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-		}
 
 		ImGui::End();
 		ImGui::PopStyleVar();
@@ -188,7 +155,7 @@ namespace Vinyl
 		ImGui::End();
 	}
 
-	void EditorLayer::OnEvent(Vinyl::Event& event)
+	void EditorLayer::OnEvent(Event& event)
 	{
 		VL_PROFILE_FUNCTION();
 
