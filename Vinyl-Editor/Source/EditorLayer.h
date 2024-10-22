@@ -1,6 +1,8 @@
 #pragma once
 #include <Vinyl.h>
 
+#include "Panels/SceneHierarchyPanel.h"
+
 namespace Vinyl
 {
 	class EditorLayer : public Layer
@@ -29,5 +31,8 @@ namespace Vinyl
 		Entity m_SecondCamera;
 
 		bool m_MainCamera = true;
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 }
