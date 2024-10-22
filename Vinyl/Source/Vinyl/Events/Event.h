@@ -1,6 +1,8 @@
 #pragma once
 
-#include "vlpch.h"
+#include <functional>
+
+#include "Vinyl/Core/Debug/Instrumentor.h"
 #include "Vinyl/Core/Base.h"
 
 namespace Vinyl

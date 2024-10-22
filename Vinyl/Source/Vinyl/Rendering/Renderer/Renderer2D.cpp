@@ -95,6 +95,7 @@ namespace Vinyl
 		}
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
+		// Set first texture slot to 0
 		s_Data.TextureSlots[0] = s_Data.DefaultTexture;
 
 		s_Data.QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };

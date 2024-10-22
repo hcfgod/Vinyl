@@ -191,7 +191,7 @@ namespace Vinyl
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+		uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		ImGui::End();

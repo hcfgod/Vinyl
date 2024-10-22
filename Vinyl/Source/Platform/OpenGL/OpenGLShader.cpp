@@ -80,7 +80,7 @@ namespace Vinyl
 
 		std::string result;
 
-		std::ifstream in(filePath, std::ios::in | std::ios::binary);
+		std::ifstream in(filePath, std::ios::in | std::ios::binary); // ifstream closes itself due to RAII
 
 		if (in)
 		{

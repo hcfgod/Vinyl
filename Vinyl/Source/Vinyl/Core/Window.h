@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vlpch.h"
+#include <sstream>
 
 #include "Vinyl/Core/Base.h"
 #include "Vinyl/Events/Event.h"

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
-#include <chrono>
-#include <algorithm>
-#include <fstream>
 #include <iomanip>
-
+#include <string>
 #include <thread>
+#include <mutex>
+#include <sstream>
+
+#include "Vinyl/Core/Log.h"
 
 namespace Vinyl
 {
