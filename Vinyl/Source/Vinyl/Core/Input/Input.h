@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Vinyl/Core/Base.h"
-
+#include <glm/glm.hpp>
 #include "Vinyl/Core/Input/KeyCodes.h"
 #include "Vinyl/Core/Input/MouseCodes.h"
 
@@ -13,7 +12,7 @@ namespace Vinyl
 		static bool IsKeyPressed(KeyCode key);
 
 		static bool IsMouseButtonPressed(MouseCode button);
-		static std::pair<float, float> GetMousePosition();
+		static glm::vec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
 	};

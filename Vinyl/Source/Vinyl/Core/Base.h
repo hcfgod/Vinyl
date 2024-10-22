@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "Vinyl/Core/PlatformDetection.h"
 
 #ifdef VL_PLATFORM_WINDOWS
 #if VL_DYNAMIC_LINK
