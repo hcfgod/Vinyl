@@ -1448,6 +1448,7 @@
     <ClInclude Include="Source\Vinyl\Scene\Entity.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h" />
     <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
+    <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">

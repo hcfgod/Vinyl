@@ -9,12 +9,6 @@
 
 namespace Vinyl
 {
-	static void DoMath(const glm::mat4& transform)
-	{
-	}
-	static void OnTransformConstruct(entt::registry& registry, entt::entity entity)
-	{
-	}
 	Scene::Scene()
 	{
 		#if ENTT_EXAMPLE_CODE
@@ -68,8 +62,27 @@ namespace Vinyl
 		}
 	}
 
-	void Scene::OnUpdate(TimeStep ts)
+	void Scene::OnUpdate(TimeStep timestep)
 	{
+		// Update scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			{
+					if (!nsc.Instance)
+					{
+						nsc.InstantiateFunction();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+
+						if (nsc.OnCreateFunction)
+							nsc.OnCreateFunction(nsc.Instance);
+					}
+					if (nsc.OnUpdateFunction)
+					{
+						nsc.OnUpdateFunction(nsc.Instance, timestep);
+					}
+			});
+		}
+
 		// Render 2D Scene
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;

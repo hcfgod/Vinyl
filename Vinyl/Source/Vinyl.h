@@ -9,6 +9,7 @@
 
 #include "Vinyl/Scene/Scene.h"
 #include "Vinyl/Scene/Entity.h"
+#include "Vinyl/Scene/ScriptableEntity.h"
 #include "Vinyl/Scene/Components.h"
 
 #include "Vinyl/Core/TimeStep.h"

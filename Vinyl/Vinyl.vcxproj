@@ -187,6 +187,7 @@
     <ClInclude Include="Source\Vinyl\Scene\Entity.h" />
     <ClInclude Include="Source\Vinyl\Scene\Scene.h" />
     <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
+    <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
