@@ -6,6 +6,7 @@
 #include "Vinyl/Core/Layer/Layer.h"
 #include "Vinyl/ImGui/ImGuiLayer.h"
 #include "Vinyl/Core/Log.h"
+#include "Vinyl/Core/Assert.h"
 
 #include "Vinyl/Scene/Scene.h"
 #include "Vinyl/Scene/Entity.h"

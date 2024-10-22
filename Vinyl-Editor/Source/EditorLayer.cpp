@@ -18,18 +18,18 @@ namespace Vinyl
 		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
-		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square");
+		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square - 1");
 		coloredSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
 		m_SquareEntity = coloredSquare;
 
-		auto blueSquare = m_ActiveScene->CreateEntity("Colored Square2");
-		blueSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.25f, 0.35f, 0.65f, 1.0f });
+		auto coloredSquare2 = m_ActiveScene->CreateEntity("Colored Square - 2");
+		coloredSquare2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.25f, 0.35f, 0.65f, 1.0f });
 
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
 		auto& mainCamera = m_CameraEntity.AddComponent<CameraComponent>();
 		mainCamera.MainCamera = true;
 
-		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
+		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.MainCamera = false;
 
@@ -38,22 +38,24 @@ namespace Vinyl
 		public:
 			void OnCreate()
 			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+				translation.x = rand() % 10 - 5.0f;
 			}
 			void OnDestroy()
 			{
 			}
 			void OnUpdate(TimeStep timestep)
 			{
-				auto& transform = GetComponent<TransformComponent>().Transform;
+				auto& translation = GetComponent<TransformComponent>().Translation;
 				float speed = 5.0f;
 				if (Input::IsKeyPressed(Key::A))
-					transform[3][0] -= speed * timestep;
+					translation.x -= speed * timestep;
 				if (Input::IsKeyPressed(Key::D))
-					transform[3][0] += speed * timestep;
+					translation.x += speed * timestep;
 				if (Input::IsKeyPressed(Key::W))
-					transform[3][1] += speed * timestep;
+					translation.y += speed * timestep;
 				if (Input::IsKeyPressed(Key::S))
-					transform[3][1] -= speed * timestep;
+					translation.y -= speed * timestep;
 			}
 		};
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
@@ -155,35 +157,13 @@ namespace Vinyl
 		m_SceneHierarchyPanel.OnImGuiRender();
 
 		//Settings
-		ImGui::Begin("Settings");
+		ImGui::Begin("Renderer2D Stats");
 
 		auto stats = Renderer2D::GetStatistics();
-		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-		if (m_SquareEntity)
-		{
-			ImGui::Separator();
-			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
-			ImGui::Text("%s", tag.c_str());
-			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
-			ImGui::Separator();
-		}
-
-		if (ImGui::Checkbox("Camera A", &m_MainCamera))
-		{
-			m_CameraEntity.GetComponent<CameraComponent>().MainCamera = m_MainCamera;
-			m_SecondCamera.GetComponent<CameraComponent>().MainCamera = !m_MainCamera;
-		}
-
-		auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-		float orthoSize = camera.GetOrthographicSize();
-		if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
-			camera.SetOrthographicSize(orthoSize);
 
 		ImGui::End();
 

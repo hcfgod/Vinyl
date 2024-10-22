@@ -1,6 +1,5 @@
 #pragma once
 #include "Vinyl/Core/Base.h"
-#include "Vinyl/Core/Log.h"
 #include "Vinyl/Scene/Scene.h"
 #include "Vinyl/Scene/Entity.h"
 

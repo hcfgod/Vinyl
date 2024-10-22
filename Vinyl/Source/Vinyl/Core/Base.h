@@ -21,14 +21,8 @@
 	#define VL_ENABLE_ASSERTS
 #endif
 
-// TODO: make this macro optionally take in no arguments except condition
-#ifdef VL_ENABLE_ASSERTS
-#define VL_ASSERT(x, ...) { if(!(x)) { VL_ERROR("Assertion Failed: {}", fmt::format(__VA_ARGS__)); __debugbreak(); } }
-#define VL_CORE_ASSERT(x, ...) { if(!(x)) { VL_CORE_ERROR("Assertion Failed: {}", fmt::format(__VA_ARGS__)); __debugbreak(); } }
-#else
-#define VL_ASSERT(x, ...)
-#define VL_CORE_ASSERT(x, ...)
-#endif
+#define VL_EXPAND_MACRO(x) x
+#define VL_STRINGIFY_MACRO(x) #x
 
 #define BIT(x) (1 << x)
 
@@ -52,3 +46,6 @@ namespace Vinyl
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }
+
+#include "Vinyl/Core/Log.h"
+#include "Vinyl/Core/Assert.h"

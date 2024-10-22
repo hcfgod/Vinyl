@@ -60,6 +60,7 @@ namespace Vinyl
 				{ShaderDataType::Float, "a_TextureIndex" },
 				{ShaderDataType::Float, "a_TilingFactor" },
 		});
+
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
