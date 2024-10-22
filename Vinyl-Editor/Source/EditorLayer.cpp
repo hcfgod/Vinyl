@@ -18,9 +18,12 @@ namespace Vinyl
 		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
-		auto square = m_ActiveScene->CreateEntity("Colored Square");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
-		m_SquareEntity = square;
+		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square");
+		coloredSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+		m_SquareEntity = coloredSquare;
+
+		auto blueSquare = m_ActiveScene->CreateEntity("Colored Square2");
+		blueSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.25f, 0.35f, 0.65f, 1.0f });
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
 		auto& mainCamera = m_CameraEntity.AddComponent<CameraComponent>();
