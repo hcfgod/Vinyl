@@ -1446,6 +1446,8 @@
     <ClInclude Include="Source\Vinyl\Scene\Scene.h" />
     <ClInclude Include="Source\Vinyl\Scene\Components.h" />
     <ClInclude Include="Source\Vinyl\Scene\Entity.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h" />
+    <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1540,5 +1542,6 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Scene\Scene.cpp" />
     <ClCompile Include="Source\Vinyl\Scene\Entity.cpp" />
+    <ClCompile Include="Source\Vinyl\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

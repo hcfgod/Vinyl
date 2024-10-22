@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 
+#include "Vinyl/Scene/SceneCamera.h"
+
 namespace Vinyl 
 {
 	struct TagComponent
@@ -27,5 +29,15 @@ namespace Vinyl
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
+	};
+
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool MainCamera = false;
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
 	};
 }

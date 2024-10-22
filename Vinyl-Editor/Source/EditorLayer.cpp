@@ -21,6 +21,14 @@ namespace Vinyl
 		auto square = m_ActiveScene->CreateEntity("Colored Square");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
 		m_SquareEntity = square;
+
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+		auto& mainCamera = m_CameraEntity.AddComponent<CameraComponent>();
+		mainCamera.MainCamera = true;
+
+		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
+		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
+		cc.MainCamera = false;
 	}
 
 	void EditorLayer::OnDetach()
@@ -42,8 +50,9 @@ namespace Vinyl
 		{
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_OrthographicCameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-		}
 
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
 
 		// Render
 		
@@ -54,11 +63,7 @@ namespace Vinyl
 		RenderCommand::SetClearColor(glm::vec4(0.1, 0.1, 0.1, 1.0));
 		RenderCommand::Clear();
 
-		Renderer2D::BeginScene(m_OrthographicCameraController.GetCamera());
-
 		m_ActiveScene->OnUpdate(timestep);
-
-		Renderer2D::EndScene();
 
 		m_FrameBuffer->Unbind();
 	}
@@ -136,6 +141,17 @@ namespace Vinyl
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 			ImGui::Separator();
 		}
+
+		if (ImGui::Checkbox("Camera A", &m_MainCamera))
+		{
+			m_CameraEntity.GetComponent<CameraComponent>().MainCamera = m_MainCamera;
+			m_SecondCamera.GetComponent<CameraComponent>().MainCamera = !m_MainCamera;
+		}
+
+		auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+		float orthoSize = camera.GetOrthographicSize();
+		if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
+			camera.SetOrthographicSize(orthoSize);
 
 		ImGui::End();
 
