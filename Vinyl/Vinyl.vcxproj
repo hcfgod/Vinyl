@@ -191,6 +191,7 @@
     <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
     <ClInclude Include="Source\Vinyl\Scene\SceneSerializer.h" />
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
+    <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
@@ -619,6 +620,7 @@
     <ClCompile Include="Source\Platform\OpenGL\Renderer\OpenGLContext.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\Renderer\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Application.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp" />

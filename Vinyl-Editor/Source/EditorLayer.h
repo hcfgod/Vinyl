@@ -20,6 +20,11 @@ namespace Vinyl
 
 		void OnEvent(Event& event) override;
 	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
+	private:
 		OrthographicCameraController m_OrthographicCameraController;
 		Ref<Framebuffer> m_FrameBuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
