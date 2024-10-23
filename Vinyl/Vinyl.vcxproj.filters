@@ -46,6 +46,9 @@
     <Filter Include="Source\Vinyl\Rendering\Renderer">
       <UniqueIdentifier>{AA9EE0B4-1682-EFF4-1F85-1D318BE7B545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Scene">
+      <UniqueIdentifier>{D466C4D8-C04A-852E-29AB-7F8115AE6FB0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Vendor">
       <UniqueIdentifier>{935FDCD7-7F01-07AE-68BC-1A0254FD8DFE}</UniqueIdentifier>
     </Filter>
@@ -102,6 +105,9 @@
     <ClInclude Include="Source\Vinyl\Core\Application.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Assert.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Base.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
@@ -129,6 +135,9 @@
     <ClInclude Include="Source\Vinyl\Core\Log.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\PlatformDetection.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\TimeStep.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
@@ -152,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h">
+      <Filter>Source\Vinyl\Rendering\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h">
       <Filter>Source\Vinyl\Rendering\Camera</Filter>
@@ -188,6 +200,24 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\VertexArray.h">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\Components.h">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\Entity.h">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\Scene.h">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\SceneSerializer.h">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h">
+      <Filter>Source\Vinyl\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\vlpch.h">
       <Filter>Source</Filter>
@@ -1443,14 +1473,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Scene\Scene.h" />
-    <ClInclude Include="Source\Vinyl\Scene\Components.h" />
-    <ClInclude Include="Source\Vinyl\Scene\Entity.h" />
-    <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h" />
-    <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
-    <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
-    <ClInclude Include="Source\Vinyl\Core\PlatformDetection.h" />
-    <ClInclude Include="Source\Vinyl\Core\Assert.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1537,14 +1559,23 @@
     <ClCompile Include="Source\Vinyl\Rendering\VertexArray.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scene\Entity.cpp">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scene\Scene.cpp">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scene\SceneCamera.cpp">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scene\SceneSerializer.cpp">
+      <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="Source\vlpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Scene\Scene.cpp" />
-    <ClCompile Include="Source\Vinyl\Scene\Entity.cpp" />
-    <ClCompile Include="Source\Vinyl\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

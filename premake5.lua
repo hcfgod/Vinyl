@@ -19,11 +19,13 @@ IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
 IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
+IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
 	include "Vinyl/Vendor/Glad"
 	include "Vinyl/Vendor/imgui"
+	include "Vinyl/Vendor/yaml-cpp"
 group ""
 
 project "Vinyl"
@@ -54,6 +56,7 @@ project "Vinyl"
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
+		"YAML_CPP_STATIC_DEFINE"
 	}
 
 	includedirs
@@ -65,7 +68,8 @@ project "Vinyl"
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links
@@ -73,6 +77,7 @@ project "Vinyl"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"dwmapi.lib"
 	}
 
@@ -136,7 +141,7 @@ project "Sandbox"
 
 	defines
 	{
-		"VL_PLATFORM_WINDOWS"
+		"VL_PLATFORM_WINDOWS",
 	}
 
 	filter "configurations:Debug"
@@ -176,7 +181,8 @@ project "Vinyl-Editor"
 		"Vinyl/Source",
 		"Vinyl/Vendor/",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links

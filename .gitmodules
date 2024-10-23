@@ -11,3 +11,6 @@
 [submodule "Vinyl/Vendor/glm"]
 	path = Vinyl/Vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Vinyl/Vendor/yaml-cpp"]
+	path = Vinyl/Vendor/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp

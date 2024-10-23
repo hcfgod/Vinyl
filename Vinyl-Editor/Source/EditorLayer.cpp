@@ -1,4 +1,7 @@
 #include "EditorLayer.h"
+
+#include "Vinyl/Scene/SceneSerializer.h"
+
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Vinyl
@@ -18,6 +21,8 @@ namespace Vinyl
 		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+#if 0
 		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square - 1");
 		coloredSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
 		m_SquareEntity = coloredSquare;
@@ -59,6 +64,7 @@ namespace Vinyl
 			}
 		};
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
@@ -153,6 +159,18 @@ namespace Vinyl
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+	
+				if (ImGui::MenuItem("Serialize"))
+				{
+					SceneSerializer sceneSerializer(m_ActiveScene);
+					sceneSerializer.Serialize("Assets/Scenes/Example.Vinyl");
+				}
+
+				if (ImGui::MenuItem("Deserialize"))
+				{
+					SceneSerializer sceneSerializer(m_ActiveScene);
+					sceneSerializer.Deserialize("Assets/Scenes/Example.Vinyl");
+				}
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
