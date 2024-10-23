@@ -16,6 +16,7 @@ namespace Vinyl
 		VL_PROFILE_FUNCTION();
 
 		FramebufferSpecification frameBufferSpec;
+		frameBufferSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		frameBufferSpec.Width = 1280;
 		frameBufferSpec.Height = 720;
 
