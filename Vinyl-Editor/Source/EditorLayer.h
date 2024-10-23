@@ -37,6 +37,8 @@ namespace Vinyl
 
 		bool m_MainCamera = true;
 
+		int m_GizmoType = -1;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};

@@ -20,6 +20,7 @@ IncludeDir["glm"] = "Vinyl/Vendor/glm"
 IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -51,12 +52,16 @@ project "Vinyl"
 
 		"%{prj.name}/Vendor/glm/glm/**.hpp",
 		"%{prj.name}/Vendor/glm/glm/**.inl",
+
+		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.cpp",
 	}
 
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
-		"YAML_CPP_STATIC_DEFINE"
+		"YAML_CPP_STATIC_DEFINE",
+		"IMGUI_DEFINE_MATH_OPERATORS"
 	}
 
 	includedirs
@@ -69,7 +74,8 @@ project "Vinyl"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -80,6 +86,9 @@ project "Vinyl"
 		"yaml-cpp",
 		"dwmapi.lib"
 	}
+
+	filter "files:Vinyl/Vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -182,7 +191,8 @@ project "Vinyl-Editor"
 		"Vinyl/Vendor/",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}",
 	}
 
 	links

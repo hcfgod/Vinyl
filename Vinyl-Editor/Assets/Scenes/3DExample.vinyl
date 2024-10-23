@@ -2,6 +2,24 @@ Scene: Untitled
 Entities:
   - Entity: 12837192831273
     TagComponent:
+      Tag: Colored Square - 1
+    TransformComponent:
+      Translation: [2.62420654, 0.227218986, -8.8311739]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 1, 0, 1]
+  - Entity: 12837192831273
+    TagComponent:
+      Tag: Colored Square - 2
+    TransformComponent:
+      Translation: [-0.932032287, -0.0145153701, 5.19999981]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.25, 0.349999994, 0.649999976, 1]
+  - Entity: 12837192831273
+    TagComponent:
       Tag: Camera
     TransformComponent:
       Translation: [0, 0, 10]
@@ -18,21 +36,3 @@ Entities:
         OrthographicFar: 1
       MainCamera: true
       FixedAspectRatio: false
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Colored Square - 2
-    TransformComponent:
-      Translation: [-0.600000024, 0, 5.19999981]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.25, 0.349999994, 0.649999976, 1]
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Colored Square - 1
-    TransformComponent:
-      Translation: [2, 0, -24.5]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 1, 0, 1]

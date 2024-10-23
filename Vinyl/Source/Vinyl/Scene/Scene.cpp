@@ -49,6 +49,23 @@ namespace Vinyl
 		}
 	}
 
+	Entity Scene::GetMainCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+
+		for (auto entity : view)
+		{
+			const auto& camrea = view.get<CameraComponent>(entity);
+
+			if (camrea.MainCamera)
+			{
+				return Entity{ entity, this };
+			}
+		}
+
+		return {};
+	}
+
 	void Scene::OnUpdate(TimeStep timestep)
 	{
 		// Update scripts

@@ -14,3 +14,9 @@
 [submodule "Vinyl/Vendor/yaml-cpp"]
 	path = Vinyl/Vendor/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
+[submodule "Vinyl/Vender/ImGuizmo"]
+	path = Vinyl/Vender/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo
+[submodule "Vinyl/Vendor/ImGuizmo"]
+	path = Vinyl/Vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo

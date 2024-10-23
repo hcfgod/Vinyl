@@ -15,8 +15,10 @@ namespace Vinyl
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
-		void OnViewportResize(uint32_t width, uint32_t height);
 		void OnUpdate(TimeStep timestep);
+		void OnViewportResize(uint32_t width, uint32_t height);
+
+		Entity GetMainCameraEntity();
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

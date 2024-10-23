@@ -1,7 +1,7 @@
 // Default shader
 
 #type vertex
-#version 330 core
+#version 450
 
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec4 a_Color;
@@ -9,12 +9,12 @@ layout(location = 2) in vec2 a_TextureCoord;
 layout(location = 3) in float a_TextureIndex;
 layout(location = 4) in float a_TilingFactor;
 
+uniform mat4 u_ViewProjection;
+
 out vec4 v_Color;
 out vec2 v_TextureCoord;
-out float v_TextureIndex;
+out flat float v_TextureIndex;
 out float v_TilingFactor;
-
-uniform mat4 u_ViewProjection;
 
 void main()
 {
@@ -28,14 +28,14 @@ void main()
 
 
 #type fragment
-#version 330 core
+#version 450
+
+out vec4 o_Color;
 
 in vec4 v_Color;
 in vec2 v_TextureCoord;
-in float v_TextureIndex;
+in flat float v_TextureIndex;
 in float v_TilingFactor;
-
-out vec4 o_Color;
 				
 uniform sampler2D u_Textures[32];
 
