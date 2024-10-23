@@ -31,8 +31,12 @@ namespace Vinyl
 
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
+		if (width == 0 || height == 0) return;
+
 		m_AspectRatio = (float)width / (float)height;
 		RecalculateProjection();
+
+		VL_CORE_TRACE("SceneCamera::SetViewportSize {0}: {1}", width, height);
 	}
 
 	void SceneCamera::RecalculateProjection()
