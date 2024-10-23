@@ -45,7 +45,9 @@ namespace Vinyl
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
 			if (!cameraComponent.FixedAspectRatio)
+			{
 				cameraComponent.Camera.SetViewportSize(width, height);
+			}
 		}
 	}
 
@@ -66,7 +68,7 @@ namespace Vinyl
 		return {};
 	}
 
-	void Scene::OnUpdate(TimeStep timestep)
+	void Scene::OnRuntimeUpdate(TimeStep timestep)
 	{
 		// Update scripts
 		{
@@ -117,6 +119,21 @@ namespace Vinyl
 
 			Renderer2D::EndScene();
 		}
+	}
+
+	void Scene::OnEditorUpdate(TimeStep timestep, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	template<typename T>

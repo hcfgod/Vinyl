@@ -1,5 +1,6 @@
 #pragma once
 #include <Vinyl.h>
+#include <Vinyl/Rendering/Camera/EditorCamera.h>
 
 #include "Panels/SceneHierarchyPanel.h"
 
@@ -25,7 +26,6 @@ namespace Vinyl
 		void OpenScene();
 		void SaveSceneAs();
 	private:
-		OrthographicCameraController m_OrthographicCameraController;
 		Ref<Framebuffer> m_FrameBuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
@@ -36,6 +36,7 @@ namespace Vinyl
 		Entity m_SecondCamera;
 
 		bool m_MainCamera = true;
+		EditorCamera m_EditorCamera;
 
 		int m_GizmoType = -1;
 

@@ -174,6 +174,7 @@
     <ClInclude Include="Source\Vinyl\Math\Math.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Camera\EditorCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h" />
@@ -632,6 +633,7 @@
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Vinyl\Math\Math.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Camera\EditorCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp" />

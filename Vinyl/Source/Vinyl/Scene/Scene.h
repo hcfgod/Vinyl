@@ -1,7 +1,8 @@
 #pragma once
 
-#include "entt.hpp"
 #include "Vinyl/Core/Timestep.h"
+#include "Vinyl/Rendering/Camera/EditorCamera.h"
+#include <entt.hpp>
 
 namespace Vinyl
 {
@@ -15,7 +16,8 @@ namespace Vinyl
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
-		void OnUpdate(TimeStep timestep);
+		void OnRuntimeUpdate(TimeStep timestep);
+		void OnEditorUpdate(TimeStep timestep, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		Entity GetMainCameraEntity();

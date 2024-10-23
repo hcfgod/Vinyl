@@ -9,13 +9,11 @@
 
 namespace Vinyl
 {
-	EditorLayer::EditorLayer() : Layer("EditorLayer"), m_OrthographicCameraController(1280.0f / 720.0f) {}
+	EditorLayer::EditorLayer() : Layer("EditorLayer") {}
 
 	void EditorLayer::OnAttach()
 	{
 		VL_PROFILE_FUNCTION();
-
-		m_OrthographicCameraController.SetZoomLevel(5.0f);
 
 		FramebufferSpecification frameBufferSpec;
 		frameBufferSpec.Width = 1280;
@@ -24,6 +22,8 @@ namespace Vinyl
 		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.01f, 1000.0f);
 
 #if 0
 		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square - 1");
@@ -83,16 +83,18 @@ namespace Vinyl
 
 		// Update
 
-		if(m_ViewportFocused && m_ViewportHovered)
-			m_OrthographicCameraController.OnUpdate(timestep);
-
 		FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
 		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)) // zero sized framebuffer is invalid
 		{
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_OrthographicCameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
+
+		if (m_ViewportFocused && m_ViewportHovered)
+		{
+			m_EditorCamera.OnUpdate(timestep);
 		}
 
 		// Render
@@ -104,7 +106,7 @@ namespace Vinyl
 		RenderCommand::SetClearColor(glm::vec4(0.1, 0.1, 0.1, 1.0));
 		RenderCommand::Clear();
 
-		m_ActiveScene->OnUpdate(timestep);
+		m_ActiveScene->OnEditorUpdate(timestep, m_EditorCamera);
 
 		m_FrameBuffer->Unbind();
 	}
@@ -119,6 +121,7 @@ namespace Vinyl
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+
 		if (opt_fullscreen)
 		{
 			ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -132,14 +135,18 @@ namespace Vinyl
 		}
 
 		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+		{
 			window_flags |= ImGuiWindowFlags_NoBackground;
+		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
+		{
 			ImGui::PopStyleVar(2);
+		}
 
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -218,11 +225,15 @@ namespace Vinyl
 
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-			//Camera
-			auto cameraEntity = m_ActiveScene->GetMainCameraEntity();
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			const glm::mat4& cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			//Runtime Camera from entity
+			//auto cameraEntity = m_ActiveScene->GetMainCameraEntity();
+			//const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			//const glm::mat4& cameraProjection = camera.GetProjection();
+			//glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Editor Camera
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
 			auto& entityTransformComponent = selectedEntity.GetComponent<TransformComponent>();
 			glm::mat4 transform = entityTransformComponent.GetTransform();
@@ -266,7 +277,7 @@ namespace Vinyl
 	{
 		VL_PROFILE_FUNCTION();
 
-		m_OrthographicCameraController.OnEvent(event);
+		m_EditorCamera.OnEvent(event);
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(VL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));

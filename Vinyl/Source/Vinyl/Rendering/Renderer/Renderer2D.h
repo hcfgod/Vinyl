@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vinyl/Rendering/Camera/Camera.h"
-#include "Vinyl/Rendering/Camera/OrthographicCamera.h"
+#include "Vinyl/Rendering/Camera/EditorCamera.h"
 #include "Vinyl/Rendering/Texture.h"
 #include "Vinyl/Rendering/SubTexture2D.h"
 
@@ -14,7 +14,7 @@ namespace Vinyl
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, glm::mat4 transform);
-		static void BeginScene(const OrthographicCamera& camera); // TODO: Remove.
+		static void BeginScene(const EditorCamera& camera);
 		static void EndScene();
 
 		static void Flush();
@@ -59,7 +59,8 @@ namespace Vinyl
 		static void ResetStatistics();
 		static Statistics& GetStatistics();
 	private:
-		static void FlushAndReset();
+		static void StartBatch();
+		static void NextBatch();
 
 		static void DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 	};
