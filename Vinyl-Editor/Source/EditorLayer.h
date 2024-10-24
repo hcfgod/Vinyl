@@ -29,18 +29,18 @@ namespace Vinyl
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
+		void SaveScene();
 	private:
+		EditorCamera m_EditorCamera;
 		Ref<Framebuffer> m_FrameBuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2] = {};
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
 		Ref<Scene> m_ActiveScene;
+		std::filesystem::path m_CurrentScenePath;
 
 		Entity m_HoveredEntity;
-
-		bool m_MainCamera = true;
-		EditorCamera m_EditorCamera;
 
 		int m_GizmoType = -1;
 

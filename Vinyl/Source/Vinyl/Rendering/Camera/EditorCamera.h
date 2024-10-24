@@ -32,6 +32,7 @@ namespace Vinyl
 		glm::vec3 GetForwardDirection() const;
 
 		const glm::vec3& GetPosition() const { return m_Position; }
+		void SetPosition(glm::vec3 pos) { m_Position = pos; }
 
 		glm::quat GetOrientation() const;
 

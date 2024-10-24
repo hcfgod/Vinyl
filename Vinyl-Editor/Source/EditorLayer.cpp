@@ -34,8 +34,6 @@ namespace Vinyl
 			serializer.Deserialize(sceneFilePath);
 		}
 
-		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.01f, 1000.0f);
-
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 		m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
@@ -313,21 +311,34 @@ namespace Vinyl
 			case Key::N:
 			{
 				if (control)
+				{
 					NewScene();
+				}
+
 				break;
 			}
 
 			case Key::O:
 			{
 				if (control)
+				{
 					OpenScene();
+				}
+
 				break;
 			}
 
 			case Key::S:
 			{
 				if (control && shift)
+				{
 					SaveSceneAs();
+				}
+				else if (control)
+				{
+					SaveScene();
+				}
+
 				break;
 			}
 
@@ -347,6 +358,7 @@ namespace Vinyl
 				{
 					m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 				}
+
 				break;
 			}
 
@@ -356,6 +368,7 @@ namespace Vinyl
 				{
 					m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 				}
+
 				break;
 			}
 
@@ -365,6 +378,7 @@ namespace Vinyl
 				{
 					m_GizmoType = ImGuizmo::OPERATION::SCALE;
 				}
+
 				break;
 			}
 
@@ -410,6 +424,8 @@ namespace Vinyl
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		SceneSerializer serializer(m_ActiveScene);
 		serializer.Deserialize(path.string());
+
+		m_CurrentScenePath = path;
 	}
 
 	void EditorLayer::SaveSceneAs()
@@ -420,6 +436,21 @@ namespace Vinyl
 		{
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Serialize(filepath);
+
+			m_CurrentScenePath = filepath;
+		}
+	}
+
+	void EditorLayer::SaveScene()
+	{
+		if (!m_CurrentScenePath.empty())
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(m_CurrentScenePath.string());
+		}
+		else
+		{
+			SaveSceneAs();
 		}
 	}
 }

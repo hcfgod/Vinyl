@@ -8,6 +8,14 @@ namespace Vinyl
 	// Once we have projects, change this
 	extern const std::filesystem::path g_AssetPath = "Assets";
 
+	static void Spacing(int spacing)
+	{
+		for (int i = 0; i < spacing; i++)
+		{
+			ImGui::Spacing();
+		}
+	}
+
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_CurrentDirectory(g_AssetPath)
 	{
@@ -28,7 +36,7 @@ namespace Vinyl
 		}
 
 		static float padding = 16.0f;
-		static float thumbnailSize = 128.0f;
+		static float thumbnailSize = 70.0f;
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -72,6 +80,8 @@ namespace Vinyl
 		}
 
 		ImGui::Columns(1);
+
+		Spacing(8);
 
 		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 		ImGui::SliderFloat("Padding", &padding, 0, 32);

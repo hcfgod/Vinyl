@@ -293,6 +293,11 @@ namespace Vinyl
 		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
 	}
 
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
+	{
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+	}
+
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, int entityID)
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, glm::vec4(1.0f), tilingFactor, entityID);
@@ -339,6 +344,14 @@ namespace Vinyl
 	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
 		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
+	{
+		if (src.Texture)
+			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::ResetStatistics()
