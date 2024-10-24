@@ -2,7 +2,7 @@ project "Glad"
 	kind "StaticLib"
 	language "C"
 	warnings "off"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")

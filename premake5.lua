@@ -21,6 +21,14 @@ IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
+IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
+IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
+IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
+
+-- Libraries to link
+--Library = {}
+--Library["Vulkan"] = "Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib"
+
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -34,7 +42,7 @@ project "Vinyl"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++20"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
@@ -61,7 +69,8 @@ project "Vinyl"
 	{
 		"_CRT_SECURE_NO_WARNINGS",
 		"YAML_CPP_STATIC_DEFINE",
-		"IMGUI_DEFINE_MATH_OPERATORS"
+		"IMGUI_DEFINE_MATH_OPERATORS",
+		"GLM_FORCE_QUAT_DATA_WXYZ"
 	}
 
 	includedirs
@@ -75,7 +84,10 @@ project "Vinyl"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.shaderc}",
+		"%{IncludeDir.SPIRV_Cross}",
+		"%{IncludeDir.VulkanSDK}"
 	}
 
 	links
@@ -84,7 +96,14 @@ project "Vinyl"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"dwmapi.lib"
+		"dwmapi.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
+		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
 	}
 
 	filter "files:Vinyl/Vendor/ImGuizmo/**.cpp"
@@ -120,7 +139,7 @@ project "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")
@@ -173,7 +192,7 @@ project "Vinyl-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("Bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("Bin-Intermediates/" .. outputdir .. "/%{prj.name}")

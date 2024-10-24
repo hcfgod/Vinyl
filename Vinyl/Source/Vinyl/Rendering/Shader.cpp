@@ -20,18 +20,6 @@ namespace Vinyl
 		return nullptr;
 	}
 
-	Ref<Shader> Shader::Create(const std::string& name, const std::string& filePath)
-	{
-		switch (Renderer::GetAPI())
-		{
-			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(name, filePath);
-		}
-
-		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
-		return nullptr;
-	}
-
 	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
 	{
 		switch (Renderer::GetAPI())

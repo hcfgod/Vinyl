@@ -24,53 +24,19 @@ namespace Vinyl
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
+
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.01f, 1000.0f);
 
-#if 0
-		auto coloredSquare = m_ActiveScene->CreateEntity("Colored Square - 1");
-		coloredSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
-		m_SquareEntity = coloredSquare;
-
-		auto coloredSquare2 = m_ActiveScene->CreateEntity("Colored Square - 2");
-		coloredSquare2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.25f, 0.35f, 0.65f, 1.0f });
-
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
-		auto& mainCamera = m_CameraEntity.AddComponent<CameraComponent>();
-		mainCamera.MainCamera = true;
-
-		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
-		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
-		cc.MainCamera = false;
-
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			void OnCreate()
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				translation.x = rand() % 10 - 5.0f;
-			}
-			void OnDestroy()
-			{
-			}
-			void OnUpdate(TimeStep timestep)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-				if (Input::IsKeyPressed(Key::A))
-					translation.x -= speed * timestep;
-				if (Input::IsKeyPressed(Key::D))
-					translation.x += speed * timestep;
-				if (Input::IsKeyPressed(Key::W))
-					translation.y += speed * timestep;
-				if (Input::IsKeyPressed(Key::S))
-					translation.y -= speed * timestep;
-			}
-		};
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-#endif
-
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	}
 
 	void EditorLayer::OnDetach()
@@ -391,6 +357,8 @@ namespace Vinyl
 
 			default: break;
 		}
+
+		return false;
 	}
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
@@ -414,24 +382,26 @@ namespace Vinyl
 
 	void EditorLayer::OpenScene()
 	{
-		std::optional<std::string> filepath = FileDialogs::OpenFile("Vinyl Scene (*.vinyl)\0*.vinyl\0");
-		if (filepath)
+		std::string filepath = FileDialogs::OpenFile("Vinyl Scene (*.vinyl)\0*.vinyl\0");
+
+		if (!filepath.empty())
 		{
 			m_ActiveScene = CreateRef<Scene>();
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(*filepath);
+			serializer.Deserialize(filepath);
 		}
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::optional<std::string>filepath = FileDialogs::SaveFile("Vinyl Scene (*.vinyl)\0*.vinyl\0");
-		if (filepath)
+		std::string filepath = FileDialogs::SaveFile("Vinyl Scene (*.vinyl)\0*.vinyl\0");
+
+		if (!filepath.empty())
 		{
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(*filepath);
+			serializer.Serialize(filepath);
 		}
 	}
 }

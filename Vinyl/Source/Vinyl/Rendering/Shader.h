@@ -29,7 +29,6 @@ namespace Vinyl
 		virtual const std::string& GetName() const = 0;
 
 		static Ref<Shader> Create(const std::string& filePath);
-		static Ref<Shader> Create(const std::string& name, const std::string& filePath);
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource);
 	};
 

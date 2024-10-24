@@ -20,3 +20,9 @@
 [submodule "Vinyl/Vendor/ImGuizmo"]
 	path = Vinyl/Vendor/ImGuizmo
 	url = https://github.com/TheCherno/ImGuizmo
+[submodule "Vinyl/Vendor/shaderc"]
+	path = Vinyl/Vendor/shaderc
+	url = https://github.com/google/shaderc
+[submodule "Vinyl/Vendor/SPIRV-Cross"]
+	path = Vinyl/Vendor/SPIRV-Cross
+	url = https://github.com/KhronosGroup/SPIRV-Cross

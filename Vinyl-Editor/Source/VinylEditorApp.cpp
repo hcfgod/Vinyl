@@ -7,7 +7,7 @@ namespace Vinyl
 	class VinylEditor : public Vinyl::Application
 	{
 	public:
-		VinylEditor() : Application("Vinyl Editor")
+		VinylEditor(ApplicationCommandLineArgs args) : Application("Vinyl Editor", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -18,8 +18,8 @@ namespace Vinyl
 		}
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new VinylEditor();
+		return new VinylEditor(args);
 	}
 }
