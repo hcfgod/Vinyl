@@ -3,6 +3,7 @@
 #include <Vinyl/Rendering/Camera/EditorCamera.h>
 
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 namespace Vinyl
 {
@@ -26,11 +27,12 @@ namespace Vinyl
 
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 	private:
 		Ref<Framebuffer> m_FrameBuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
-		glm::vec2 m_ViewportBounds[2];
+		glm::vec2 m_ViewportBounds[2] = {};
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
 		Ref<Scene> m_ActiveScene;
@@ -44,5 +46,6 @@ namespace Vinyl
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 }
