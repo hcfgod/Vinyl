@@ -16,6 +16,9 @@ namespace Vinyl
 		glm::vec2 TextureCoord;
 		float TextureIndex;
 		float TilingFactor;
+
+		// Editor-only
+		int EntityID;
 	};
 
 	struct Renderer2DData
@@ -54,11 +57,12 @@ namespace Vinyl
 
 		s_Data.QuadVertexBuffer->SetLayout
 		({
-				{ShaderDataType::Float3, "a_Position" },
-				{ShaderDataType::Float4, "a_Color" },
-				{ShaderDataType::Float2, "a_TextureCoord" },
-				{ShaderDataType::Float, "a_TextureIndex" },
-				{ShaderDataType::Float, "a_TilingFactor" },
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color" },
+				{ ShaderDataType::Float2, "a_TextureCoord" },
+				{ ShaderDataType::Float, "a_TextureIndex" },
+				{ ShaderDataType::Float, "a_TilingFactor" },
+				{ ShaderDataType::Int,  "a_EntityID" }
 		});
 
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
@@ -176,7 +180,7 @@ namespace Vinyl
 		StartBatch();
 	}
 
-	void Renderer2D::DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		VL_PROFILE_FUNCTION();
 
@@ -215,6 +219,7 @@ namespace Vinyl
 			s_Data.QuadVertexBufferPtr->TextureCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TextureIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -222,7 +227,7 @@ namespace Vinyl
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID)
 	{
 		VL_PROFILE_FUNCTION();
 
@@ -234,20 +239,20 @@ namespace Vinyl
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, color);
+		DrawQuad(transform, color, entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, int entityID)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, color);
+		DrawQuad({ position.x, position.y, 0.0f }, size, color, entityID);
 	}
 	
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tintColor, tilingFactor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tintColor, tilingFactor, entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
 		const glm::vec2* textureCoords = subTexture->GetTextureCoords();
 		Ref<Texture2D> texture = subTexture->GetTexture();
@@ -255,76 +260,78 @@ namespace Vinyl
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, tintColor, texture, tilingFactor);
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
-		DrawQuadInternal(transform, color);
+		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor, tilingFactor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor, tilingFactor, entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuadInternal(transform, tintColor, texture, tilingFactor);
+
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuadInternal(transform, tintColor, texture, tilingFactor);
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, int entityID)
 	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, glm::vec4(1.0f), tilingFactor);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, glm::vec4(1.0f), tilingFactor, entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, int entityID)
 	{
-		DrawRotatedQuad(position, size, rotation, texture, glm::vec4(1.0f), tilingFactor);
+		DrawRotatedQuad(position, size, rotation, texture, glm::vec4(1.0f), tilingFactor, entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, int entityID)
 	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, color);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, color, entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
-	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
-			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuadInternal(transform, color);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tintColor, tilingFactor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color, int entityID)
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
 			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, tintColor, texture, tilingFactor);
+		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuadInternal(transform, color);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tintColor, tilingFactor, entityID);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuadInternal(transform, tintColor, texture, tilingFactor);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
+			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
+			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
+	{
+		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
+	{
+		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
 	}
 
 	void Renderer2D::ResetStatistics()
