@@ -64,7 +64,7 @@ namespace Vinyl
 
 		// Render
 		
-		Renderer2D::ResetStatistics(); // Reset render Statistics here
+		Renderer2D::ResetStats(); // Reset render Statistics here
 
 		m_FrameBuffer->Bind();
 
@@ -366,7 +366,7 @@ namespace Vinyl
 		ImGui::Text("Hovered Entity: %s", name.c_str());
 
 		// Draw Renderer2D Statistics
-		auto stats = Renderer2D::GetStatistics();
+		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());

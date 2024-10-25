@@ -67,13 +67,14 @@ namespace Vinyl
 	void Scene::OnRuntimeStart()
 	{
 		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
-		auto view = m_Registry.view<Rigidbody2DComponent>();
 
+		auto view = m_Registry.view<Rigidbody2DComponent>();
 		for (auto e : view)
 		{
 			Entity entity = { e, this };
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
 			b2BodyDef bodyDef;
 			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
 			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
@@ -86,8 +87,10 @@ namespace Vinyl
 			if (entity.HasComponent<BoxCollider2DComponent>())
 			{
 				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
 				b2PolygonShape boxShape;
 				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &boxShape;
 				fixtureDef.density = bc2d.Density;
@@ -136,6 +139,7 @@ namespace Vinyl
 				Entity entity = { e, this };
 				auto& transform = entity.GetComponent<TransformComponent>();
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
 				const auto& position = body->GetPosition();
 				transform.Translation.x = position.x;
@@ -143,7 +147,6 @@ namespace Vinyl
 				transform.Rotation.z = body->GetAngle();
 			}
 		}
-
 
 		// Render 2D Scene
 		Camera* mainCamera = nullptr;
@@ -168,12 +171,26 @@ namespace Vinyl
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-
-			for (auto entity : group)
+			// Draw sprites
 			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color, (int)entity);
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group)
+				{
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				}
+			}
+
+			// Draw circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view)
+				{
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+				}
 			}
 
 			Renderer2D::EndScene();
@@ -184,12 +201,26 @@ namespace Vinyl
 	{
 		Renderer2D::BeginScene(camera);
 
-		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-
-		for (auto entity : group)
+		// Draw sprites
 		{
-			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+		}
+
+		// Draw circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
 		}
 
 		Renderer2D::EndScene();
@@ -221,6 +252,7 @@ namespace Vinyl
 			UUID uuid = src.get<IDComponent>(e).ID;
 			VL_CORE_ASSERT(enttMap.find(uuid) != enttMap.end(), "enttMap.find(uuid) != enttMap.end()");
 			entt::entity dstEnttID = enttMap.at(uuid);
+
 			auto& component = src.get<Component>(e);
 			dst.emplace_or_replace<Component>(dstEnttID, component);
 		}
@@ -230,16 +262,16 @@ namespace Vinyl
 	static void CopyComponentIfExists(Entity dst, Entity src)
 	{
 		if (src.HasComponent<Component>())
-		{
 			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
-		}
 	}
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
 	{
 		Ref<Scene> newScene = CreateRef<Scene>();
+
 		newScene->m_ViewportWidth = other->m_ViewportWidth;
 		newScene->m_ViewportHeight = other->m_ViewportHeight;
+
 		auto& srcSceneRegistry = other->m_Registry;
 		auto& dstSceneRegistry = newScene->m_Registry;
 		std::unordered_map<UUID, entt::entity> enttMap;
@@ -257,6 +289,7 @@ namespace Vinyl
 		// Copy components (except IDComponent and TagComponent)
 		CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<CircleRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
@@ -269,8 +302,10 @@ namespace Vinyl
 	{
 		std::string name = entity.GetName();
 		Entity newEntity = CreateEntity(name);
+
 		CopyComponentIfExists<TransformComponent>(newEntity, entity);
 		CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleRendererComponent>(newEntity, entity);
 		CopyComponentIfExists<CameraComponent>(newEntity, entity);
 		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
@@ -321,6 +356,11 @@ namespace Vinyl
 
 	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
 	{
 	}
 

@@ -1,4 +1,4 @@
-// Default Shader
+// Renderer2D Quad
 
 #type vertex
 #version 450 core

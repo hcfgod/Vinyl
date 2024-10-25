@@ -194,12 +194,16 @@ namespace Vinyl
 		ImGui::PopID();
 	}
 
-	static void DrawVerticalEllipsis(float lineHeight)
+	static void DrawVerticalEllipsis(float lineHeight, const std::string& uniqueID)
 	{
 		ImVec2 buttonSize = ImVec2(lineHeight, lineHeight);  // Button size same as lineHeight
-		if (ImGui::Button("##xx", buttonSize))
+		
+		std::string buttonID = "##ellipsisButton_" + uniqueID;
+		std::string popupID = "ComponentSettings_" + uniqueID;
+
+		if (ImGui::Button(buttonID.c_str(), buttonSize))
 		{
-			ImGui::OpenPopup("ComponentSettings");
+			ImGui::OpenPopup(popupID.c_str());
 		}
 
 		// Manually position and render each dot, fitting them closely within the button size
@@ -236,17 +240,23 @@ namespace Vinyl
 
 			ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
 
-			DrawVerticalEllipsis(lineHeight);
+			std::string uniqueID = std::to_string(typeid(T).hash_code());
+
+			DrawVerticalEllipsis(lineHeight, uniqueID);
 
 			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
+			std::string popupID = "ComponentSettings_" + uniqueID;
+
+			if (ImGui::BeginPopup(popupID.c_str()))
 			{
 				if (ImGui::MenuItem("Remove component"))
+				{
 					removeComponent = true;
+				}
 
 				ImGui::EndPopup();
 			}
-
+	
 			if (open)
 			{
 				uiFunction(component);
@@ -310,6 +320,15 @@ namespace Vinyl
 				}
 
 				ImGui::CloseCurrentPopup();
+			}
+
+			if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
+			{
+				if (ImGui::MenuItem("Circle Renderer"))
+				{
+					m_SelectionContext.AddComponent<CircleRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
 			if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
@@ -432,6 +451,13 @@ namespace Vinyl
 				}
 
 				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+		});
+
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+		{
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+			ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
 		});
 
 		DrawComponent<Rigidbody2DComponent>("Rigidbody 2D", entity, [](auto& component)

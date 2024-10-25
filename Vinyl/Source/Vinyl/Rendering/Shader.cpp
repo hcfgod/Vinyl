@@ -7,36 +7,33 @@
 
 namespace Vinyl
 {
-	// Shader Implementation
-	Ref<Shader> Shader::Create(const std::string& filePath)
+	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(filePath);
+		case RendererAPI::API::None:    VL_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:  return CreateRef<OpenGLShader>(filepath);
 		}
 
-		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
+		VL_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
 
-	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(name, vertexSource, fragmentSource);
+		case RendererAPI::API::None:    VL_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:  return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
-		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
+		VL_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
 
-
-	// Shader Library Implementation
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
-		VL_CORE_ASSERT(!Exists(name), "{0} shader already exist", name);
+		VL_CORE_ASSERT(!Exists(name), "Shader already exists!");
 		m_Shaders[name] = shader;
 	}
 
@@ -46,23 +43,23 @@ namespace Vinyl
 		Add(name, shader);
 	}
 
-	Ref<Shader> ShaderLibrary::Load(const std::string filePath)
+	Ref<Shader> ShaderLibrary::Load(const std::string& filepath)
 	{
-		auto shader = Shader::Create(filePath);
+		auto shader = Shader::Create(filepath);
 		Add(shader);
 		return shader;
 	}
 
-	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string filePath)
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
 	{
-		auto shader = Shader::Create(filePath);
+		auto shader = Shader::Create(filepath);
 		Add(name, shader);
 		return shader;
 	}
 
 	Ref<Shader> ShaderLibrary::Get(const std::string& name)
 	{
-		VL_CORE_ASSERT(Exists(name), "{0} shader does not exist", name);
+		VL_CORE_ASSERT(Exists(name), "Shader not found!");
 		return m_Shaders[name];
 	}
 
