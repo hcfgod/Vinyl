@@ -7,7 +7,7 @@
 class Sandbox : public Vinyl::Application
 {
 public:
-	Sandbox()
+	Sandbox(const Vinyl::ApplicationSpecification& specification) : Vinyl::Application(specification)
 	{
 		PushLayer(new Sandbox2D());
 	}
@@ -18,7 +18,12 @@ public:
 	}
 };
 
-Vinyl::Application* Vinyl::CreateApplication()
+Vinyl::Application* Vinyl::CreateApplication(Vinyl::ApplicationCommandLineArgs args)
 {
-	return new Sandbox();
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../Vinyl-Editor";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }

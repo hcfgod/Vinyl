@@ -3,11 +3,10 @@
 
 namespace Vinyl
 {
-	// Sandbox App
 	class VinylEditor : public Vinyl::Application
 	{
 	public:
-		VinylEditor(ApplicationCommandLineArgs args) : Application("Vinyl Editor", args)
+		VinylEditor(const Vinyl::ApplicationSpecification& specification) : Vinyl::Application(specification)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -20,6 +19,11 @@ namespace Vinyl
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new VinylEditor(args);
+		ApplicationSpecification spec;
+		spec.Name = "Vinyl Editor";
+		spec.WorkingDirectory = "../Vinyl-Editor";
+		spec.CommandLineArgs = args;
+
+		return new VinylEditor(spec);
 	}
 }
