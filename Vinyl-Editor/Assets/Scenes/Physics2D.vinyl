@@ -41,13 +41,13 @@ Entities:
     TagComponent:
       Tag: CirclePlayer
     TransformComponent:
-      Translation: [4.30987835, 5.66118193, 0]
-      Rotation: [0, 0, 0.0508832224]
-      Scale: [0.324800432, 0.324800432, 0.324800014]
+      Translation: [4.80963135, 5.68663263, 0]
+      Rotation: [0, 0, 0.050883472]
+      Scale: [0.224112317, 0.224112317, 0.224112004]
     CircleRendererComponent:
-      Color: [1, 1, 1, 1]
-      Thickness: 1
-      Fade: 0.00499999989
+      Color: [1, 1, 1, 0.549019635]
+      Thickness: 0.275000006
+      Fade: 0.305999994
     Rigidbody2DComponent:
       BodyType: Dynamic
       FixedRotation: false
@@ -62,7 +62,7 @@ Entities:
     TagComponent:
       Tag: Floor
     TransformComponent:
-      Translation: [4.67477036, 4.84723043, 0]
+      Translation: [4.67816734, 4.84141493, -9.31322575e-10]
       Rotation: [0, 0, 0.528660655]
       Scale: [1.48422313, 0.185966194, 1]
     SpriteRendererComponent:
@@ -100,8 +100,8 @@ Entities:
     TagComponent:
       Tag: Player
     TransformComponent:
-      Translation: [4.77134752, 5.68468428, 0]
-      Rotation: [0, 0, 0.0508835055]
+      Translation: [4.98111725, 7.63383722, 0]
+      Rotation: [0, 0, 0.0508836843]
       Scale: [0.224112317, 0.224112317, 0.224112004]
     SpriteRendererComponent:
       Color: [0.0751330107, 0.535716891, 0.64864862, 1]
