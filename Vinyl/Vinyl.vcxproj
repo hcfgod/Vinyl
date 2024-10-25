@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

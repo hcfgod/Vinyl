@@ -526,7 +526,10 @@ namespace Vinyl
 	{
 		VL_PROFILE_FUNCTION();
 
-		m_EditorCamera.OnEvent(event);
+		if (m_SceneState == SceneState::Edit)
+		{
+			m_EditorCamera.OnEvent(event);
+		}
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(VL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
@@ -537,7 +540,7 @@ namespace Vinyl
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 	{
 		// Shortcuts
-		if (event.GetRepeatCount() > 0)
+		if (event.IsRepeat())
 		{
 			return false;
 		}

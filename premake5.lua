@@ -96,12 +96,6 @@ project "Vinyl"
 		"ImGui",
 		"yaml-cpp",
 		"Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
 		"opengl32.lib",
 	}
 
@@ -122,16 +116,34 @@ project "Vinyl"
 		defines "VL_DEBUG"
 		runtime "Debug"
 		symbols "on"
+		links
+		{
+			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib"
+		}
 
 	filter "configurations:Release"
 		defines "VL_RELEASE"
 		runtime "Release"
 		optimize "on"
+		links
+		{
+			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+		}
 
 	filter "configurations:Dist"
 		defines "VL_DIST"
 		runtime "Release"
 		optimize "on"
+		links
+		{
+			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+		}
 
 project "Sandbox"
 	location "Sandbox"

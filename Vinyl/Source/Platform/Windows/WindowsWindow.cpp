@@ -91,7 +91,7 @@ namespace Vinyl
 				{
 				case GLFW_PRESS:
 				{
-					KeyPressedEvent event(key, 0);
+					KeyPressedEvent event(key, false);
 					data.EventCallback(event);
 					break;
 				}
