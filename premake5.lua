@@ -13,28 +13,25 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
+IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
+IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
-IncludeDir["stb_image"] = "Vinyl/Vendor/stb_image"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
-IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
 IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
-
--- Libraries to link
---Library = {}
---Library["Vulkan"] = "Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib"
-
+IncludeDir["Box2D"] = "Vinyl/Vendor/Box2D/include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
 	include "Vinyl/Vendor/Glad"
 	include "Vinyl/Vendor/imgui"
 	include "Vinyl/Vendor/yaml-cpp"
+	include "Vinyl/Vendor/Box2D"
 group ""
 
 project "Vinyl"
@@ -63,6 +60,10 @@ project "Vinyl"
 
 		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.h",
 		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.cpp",
+
+		"Vinyl/Vendor/Box2D/src/**.h",  -- Include Box2D source files
+		"Vinyl/Vendor/Box2D/src/**.cpp",  -- Include Box2D source files
+        "Vinyl/Vendor/Box2D/include/**.h" -- Include Box2D headers
 	}
 
 	defines
@@ -77,6 +78,7 @@ project "Vinyl"
 	{
 		"%{prj.name}/Source/",
 		"%{prj.name}/Vendor/SpdLog/include",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
@@ -87,23 +89,24 @@ project "Vinyl"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.shaderc}",
 		"%{IncludeDir.SPIRV_Cross}",
-		"%{IncludeDir.VulkanSDK}"
+		"%{IncludeDir.VulkanSDK}",
 	}
 
 	links
 	{
+		"Vinyl/Vendor/Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"dwmapi.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
 		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+		"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
+		"opengl32.lib",
 	}
 
 	filter "files:Vinyl/Vendor/ImGuizmo/**.cpp"

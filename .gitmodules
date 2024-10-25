@@ -26,6 +26,3 @@
 [submodule "Vinyl/Vendor/SPIRV-Cross"]
 	path = Vinyl/Vendor/SPIRV-Cross
 	url = https://github.com/KhronosGroup/SPIRV-Cross
-[submodule "Vinyl/Vendor/Box2D"]
-	path = Vinyl/Vendor/Box2D
-	url = https://github.com/erincatto/box2d

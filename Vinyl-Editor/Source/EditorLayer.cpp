@@ -76,18 +76,18 @@ namespace Vinyl
 
 		switch (m_SceneState)
 		{
-		case SceneState::Edit:
-		{
-			if (m_ViewportFocused && m_ViewportHovered)
+			case SceneState::Edit:
 			{
+				if (m_ViewportFocused && m_ViewportHovered)
+				{
+					m_EditorCamera.OnUpdate(timestep);
+				}
+
 				m_EditorCamera.OnUpdate(timestep);
+				m_ActiveScene->OnEditorUpdate(timestep, m_EditorCamera);
+
+				break;
 			}
-
-			m_EditorCamera.OnUpdate(timestep);
-			m_ActiveScene->OnEditorUpdate(timestep, m_EditorCamera);
-
-			break;
-		}
 			case SceneState::Play:
 			{
 				m_ActiveScene->OnRuntimeUpdate(timestep);
