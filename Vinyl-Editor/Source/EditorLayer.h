@@ -25,11 +25,30 @@ namespace Vinyl
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
+		// Scene methods
 		void NewScene();
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 		void SaveScene();
+
+		void OnScenePlay();
+		void OnSceneStop();
+
+		// Dockspace
+		void StartDockspace();
+		void RenderInDockspace();
+		void EndDockspace();
+
+		// Gizmos
+		void RenderGizmos();
+
+		// UI Panels
+		void MenuBar();
+		void Viewport();
+		void UI_Toolbar();
+		void Renderer2DStats();
+
 	private:
 		EditorCamera m_EditorCamera;
 		Ref<Framebuffer> m_FrameBuffer;
@@ -44,8 +63,17 @@ namespace Vinyl
 
 		int m_GizmoType = -1;
 
+		enum class SceneState
+		{
+			Edit = 0, Play = 1
+		};
+		SceneState m_SceneState = SceneState::Edit;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+
+		// Editor resources
+		Ref<Texture2D> m_IconPlay, m_IconStop;
 	};
 }
