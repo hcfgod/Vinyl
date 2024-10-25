@@ -21,7 +21,6 @@ namespace Vinyl
 	{
 		ApplicationSpecification spec;
 		spec.Name = "Vinyl Editor";
-		spec.WorkingDirectory = "../Vinyl-Editor";
 		spec.CommandLineArgs = args;
 
 		return new VinylEditor(spec);
