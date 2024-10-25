@@ -2,10 +2,48 @@ Scene: Untitled
 Entities:
   - Entity: 12837192831273
     TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [0.290489882, 3.47956896, 0]
+      Rotation: [0, 0, 0.397378743]
+      Scale: [12.909565, 0.999999881, 1]
+    SpriteRendererComponent:
+      Color: [0.818532825, 0.360280842, 0, 1]
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 12837192831273
+    TagComponent:
+      Tag: Player
+    TransformComponent:
+      Translation: [3.30460501, 11.9645538, 0]
+      Rotation: [0, 0, 2.65385389]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 12837192831273
+    TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [0, 27.5, 11]
-      Rotation: [-1.40149939, 0, 0]
+      Translation: [0, 3.08583856, 26.9899998]
+      Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
@@ -18,21 +56,3 @@ Entities:
         OrthographicFar: 1
       MainCamera: true
       FixedAspectRatio: false
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Colored Square - 1
-    TransformComponent:
-      Translation: [2.62420654, 0.227218986, 8.27000046]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 1, 0, 1]
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Colored Square - 2
-    TransformComponent:
-      Translation: [-0.932032287, -0.0145153701, 5.19999981]
-      Rotation: [0, 0, 0]
-      Scale: [4.65753508, 2, 2]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]

@@ -60,10 +60,6 @@ project "Vinyl"
 
 		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.h",
 		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.cpp",
-
-		"Vinyl/Vendor/Box2D/src/**.h",  -- Include Box2D source files
-		"Vinyl/Vendor/Box2D/src/**.cpp",  -- Include Box2D source files
-        "Vinyl/Vendor/Box2D/include/**.h" -- Include Box2D headers
 	}
 
 	defines
@@ -94,7 +90,7 @@ project "Vinyl"
 
 	links
 	{
-		"Vinyl/Vendor/Box2D",
+		"Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",
