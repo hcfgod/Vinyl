@@ -18,16 +18,17 @@ namespace Vinyl
 		VL_PROFILE_FUNCTION();
 
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
+		m_IconSimulate = Texture2D::Create("Resources/Icons/SimulateButton.png");
 		m_IconStop = Texture2D::Create("Resources/Icons/StopButton.png");
 
-		FramebufferSpecification frameBufferSpec;
-		frameBufferSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
-		frameBufferSpec.Width = 1280;
-		frameBufferSpec.Height = 720;
+		FramebufferSpecification fbSpec;
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+		fbSpec.Width = 1280;
+		fbSpec.Height = 720;
+		m_FrameBuffer = Framebuffer::Create(fbSpec);
 
-		m_FrameBuffer = Framebuffer::Create(frameBufferSpec);
-
-		m_ActiveScene = CreateRef<Scene>();
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 
 		auto commandLineArgs = Application::Get().GetCommandLineArgs();
 		if (commandLineArgs.Count > 1)
@@ -37,9 +38,58 @@ namespace Vinyl
 			serializer.Deserialize(sceneFilePath);
 		}
 
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
-		m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+#if 0
+		// Entity
+		auto square = m_ActiveScene->CreateEntity("Green Square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+
+		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
+		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+		m_SquareEntity = square;
+
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
+		m_CameraEntity.AddComponent<CameraComponent>();
+
+		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
+		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
+		cc.Primary = false;
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			virtual void OnCreate() override
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+				translation.x = rand() % 10 - 5.0f;
+			}
+
+			virtual void OnDestroy() override
+			{
+			}
+
+			virtual void OnUpdate(Timestep ts) override
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(Key::A))
+					translation.x -= speed * ts;
+				if (Input::IsKeyPressed(Key::D))
+					translation.x += speed * ts;
+				if (Input::IsKeyPressed(Key::W))
+					translation.y += speed * ts;
+				if (Input::IsKeyPressed(Key::S))
+					translation.y -= speed * ts;
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 	}
 
 	void EditorLayer::OnDetach()
@@ -84,13 +134,21 @@ namespace Vinyl
 				}
 
 				m_EditorCamera.OnUpdate(timestep);
-				m_ActiveScene->OnEditorUpdate(timestep, m_EditorCamera);
+				m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
 
 				break;
 			}
+
+			case SceneState::Simulate:
+			{
+				m_EditorCamera.OnUpdate(timestep);
+				m_ActiveScene->OnUpdateSimulation(timestep, m_EditorCamera);
+				break;
+			}
+
 			case SceneState::Play:
 			{
-				m_ActiveScene->OnRuntimeUpdate(timestep);
+				m_ActiveScene->OnUpdateRuntime(timestep);
 				break;
 			}
 		}
@@ -330,29 +388,75 @@ namespace Vinyl
 		const auto& buttonActive = colors[ImGuiCol_ButtonActive];
 
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+
+		bool toolbarEnabled = (bool)m_ActiveScene;
+
+		ImVec4 tintColor = ImVec4(1, 1, 1, 1);
+		if (!toolbarEnabled)
+		{
+			tintColor.w = 0.5f;
+		}
+
 		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
 		float size = ImGui::GetWindowHeight() - 4.0f;
 
-		Ref<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
-
-		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
-
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-
-		if (ImGui::ImageButton("##scenestate", (ImTextureID)icon->GetRendererID(), ImVec2(size, size)))
 		{
-			if (m_SceneState == SceneState::Edit)
+			Ref<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
+
+			if (m_SceneState == SceneState::Simulate)
 			{
-				OnScenePlay();
+				icon = m_IconPlay;
 			}
-			else if (m_SceneState == SceneState::Play)
+
+			ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+
+			if (ImGui::ImageButton("##play", (ImTextureID)icon->GetRendererID(), ImVec2(size, size)))
 			{
-				OnSceneStop();
+				if (m_SceneState == SceneState::Simulate)
+				{
+					OnSceneStop();
+					m_SceneState = SceneState::Edit;
+
+					OnScenePlay();
+				}
+				else if (m_SceneState == SceneState::Edit)
+				{
+					OnScenePlay();
+				}
+				else if (m_SceneState == SceneState::Play)
+				{
+					OnSceneStop();
+				}
 			}
+
+			ImGui::PopStyleVar();
 		}
 
-		ImGui::PopStyleVar();
+		ImGui::SameLine();
+
+		{
+			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+
+			if (ImGui::ImageButton("##simulate", (ImTextureID)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+			{
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
+				{
+					OnSceneSimulate();
+				}
+				else if (m_SceneState == SceneState::Simulate)
+				{
+					OnSceneStop();
+				}
+			}
+
+			ImGui::PopStyleVar();
+		}
+
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -621,6 +725,11 @@ namespace Vinyl
 			return;
 		}
 
+		if (m_SceneState == SceneState::Simulate)
+		{
+			OnSceneStop();
+		}
+
 		m_SceneState = SceneState::Play;
 		m_ActiveScene = Scene::Copy(m_EditorScene);
 
@@ -628,10 +737,33 @@ namespace Vinyl
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
+	void EditorLayer::OnSceneSimulate()
+	{
+		if (m_SceneState == SceneState::Play)
+		{
+			OnSceneStop();
+		}
+
+		m_SceneState = SceneState::Simulate;
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnSimulationStart();
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
 	void EditorLayer::OnSceneStop()
 	{
+		VL_CORE_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate, "");
+
+		if (m_SceneState == SceneState::Play)
+		{
+			m_ActiveScene->OnRuntimeStop();
+		}
+		else if (m_SceneState == SceneState::Simulate)
+		{
+			m_ActiveScene->OnSimulationStop();
+		}
+
 		m_SceneState = SceneState::Edit;
-		m_ActiveScene->OnRuntimeStop();
 
 		m_ActiveScene = m_EditorScene;
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);

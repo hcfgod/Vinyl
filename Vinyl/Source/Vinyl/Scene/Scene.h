@@ -27,8 +27,12 @@ namespace Vinyl
 		void OnRuntimeStart();
 		void OnRuntimeStop();
 
-		void OnRuntimeUpdate(TimeStep timestep);
-		void OnEditorUpdate(TimeStep timestep, EditorCamera& camera);
+		void OnSimulationStart();
+		void OnSimulationStop();
+
+		void OnUpdateRuntime(TimeStep timestep);
+		void OnUpdateSimulation(TimeStep timestep, EditorCamera& camera);
+		void OnUpdateEditor(TimeStep timestep, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		void DuplicateEntity(Entity entity);
@@ -43,6 +47,11 @@ namespace Vinyl
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
+
+		void OnPhysics2DStart();
+		void OnPhysics2DStop();
+
+		void RenderScene(EditorCamera& camera);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
