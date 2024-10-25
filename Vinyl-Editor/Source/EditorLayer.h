@@ -25,6 +25,8 @@ namespace Vinyl
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
+		void OnOverlayRender();
+
 		// Scene methods
 		void NewScene();
 		void OpenScene();
@@ -67,6 +69,7 @@ namespace Vinyl
 		Entity m_HoveredEntity;
 
 		int m_GizmoType = -1;
+		bool m_ShowPhysicsColliders = false;
 
 		enum class SceneState
 		{
