@@ -68,6 +68,6 @@ namespace Vinyl
 		static void StartBatch();
 		static void NextBatch();
 
-		static void DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f), int entityID = -1);
+		static void DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f, int entityID = -1);
 	};
 }

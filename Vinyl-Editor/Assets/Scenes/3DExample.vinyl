@@ -8,15 +8,13 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [4.65753508, 2, 2]
     SpriteRendererComponent:
-      Color: [0.25, 0.349999994, 0.649999976, 1]
+      Color: [1, 1, 1, 1]
   - Entity: 12837192831273
     TagComponent:
       Tag: Colored Square - 1
     TransformComponent:
-      Translation: [2.62420654, 0.227218986, -8.8311739]
+      Translation: [2.62420654, 0.227218986, 8.27000046]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 1, 0, 1]
-EditorCamera:
-  Position: [13.285778, 6.78992748, 21.7525806]

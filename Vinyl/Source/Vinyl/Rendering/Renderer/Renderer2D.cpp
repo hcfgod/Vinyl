@@ -187,7 +187,7 @@ namespace Vinyl
 		StartBatch();
 	}
 
-	void Renderer2D::DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
+	void Renderer2D::DrawQuadInternal(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float tilingFactor, int entityID)
 	{
 		VL_PROFILE_FUNCTION();
 
@@ -267,12 +267,12 @@ namespace Vinyl
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
-		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
+		DrawQuadInternal(transform, color, nullptr, 1.0f, entityID);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
@@ -285,17 +285,17 @@ namespace Vinyl
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, int entityID)
@@ -319,7 +319,7 @@ namespace Vinyl
 			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
+		DrawQuadInternal(transform, color, nullptr, 1.0f, entityID);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
@@ -333,25 +333,29 @@ namespace Vinyl
 			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
-		DrawQuadInternal(transform, color, nullptr, 1.0f, glm::vec4(1.0f), entityID);
+		DrawQuadInternal(transform, color, nullptr, 1.0f, entityID);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& tintColor, float tilingFactor, int entityID)
 	{
-		DrawQuadInternal(transform, glm::vec4(1.0f), texture, tilingFactor, tintColor, entityID);
+		DrawQuadInternal(transform, tintColor, texture, tilingFactor, entityID);
 	}
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		if (src.Texture)
+		{
 			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		}
 		else
+		{
 			DrawQuad(transform, src.Color, entityID);
+		}
 	}
 
 	void Renderer2D::ResetStatistics()

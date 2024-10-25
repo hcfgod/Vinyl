@@ -1,4 +1,4 @@
-// Default shader
+// Default Shader
 
 #type vertex
 #version 450 core
