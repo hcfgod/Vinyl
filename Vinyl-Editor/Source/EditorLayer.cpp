@@ -573,6 +573,12 @@ namespace Vinyl
 
 	void EditorLayer::OnScenePlay()
 	{
+		if (!m_EditorScene)
+		{
+			VL_WARN("No scene loaded to play!");
+			return;
+		}
+
 		m_SceneState = SceneState::Play;
 		m_ActiveScene = Scene::Copy(m_EditorScene);
 
