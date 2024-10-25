@@ -167,6 +167,7 @@
     <ClInclude Include="Source\Vinyl\Core\PlatformDetection.h" />
     <ClInclude Include="Source\Vinyl\Core\TimeStep.h" />
     <ClInclude Include="Source\Vinyl\Core\Timer.h" />
+    <ClInclude Include="Source\Vinyl\Core\UUID.h" />
     <ClInclude Include="Source\Vinyl\Core\Window.h" />
     <ClInclude Include="Source\Vinyl\Events\ApplicationEvent.h" />
     <ClInclude Include="Source\Vinyl\Events\Event.h" />
@@ -633,6 +634,7 @@
     <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Layer\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Log.cpp" />
+    <ClCompile Include="Source\Vinyl\Core\UUID.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Vinyl\Math\Math.cpp" />

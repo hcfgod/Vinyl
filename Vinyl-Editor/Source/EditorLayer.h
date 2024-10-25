@@ -29,11 +29,15 @@ namespace Vinyl
 		void NewScene();
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
-		void SaveSceneAs();
 		void SaveScene();
+		void SaveSceneAs();
+
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
 
 		void OnScenePlay();
 		void OnSceneStop();
+
+		void OnDuplicateEntity();
 
 		// Dockspace
 		void StartDockspace();
@@ -57,7 +61,8 @@ namespace Vinyl
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
 		Ref<Scene> m_ActiveScene;
-		std::filesystem::path m_CurrentScenePath;
+		Ref<Scene> m_EditorScene;
+		std::filesystem::path m_EditorScenePath;
 
 		Entity m_HoveredEntity;
 

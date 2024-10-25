@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Vinyl/Core/Timestep.h"
+#include "Vinyl/Core/UUID.h"
 #include "Vinyl/Rendering/Camera/EditorCamera.h"
+
 #include <entt.hpp>
 
 class b2World;
@@ -15,7 +17,11 @@ namespace Vinyl
 	public:
 		Scene();
 		~Scene();
+
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();
@@ -24,6 +30,8 @@ namespace Vinyl
 		void OnRuntimeUpdate(TimeStep timestep);
 		void OnEditorUpdate(TimeStep timestep, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void DuplicateEntity(Entity entity);
 
 		Entity GetMainCameraEntity();
 	private:

@@ -6,12 +6,21 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include<glm/gtx/quaternion.hpp>
 
+#include "Vinyl/Core/UUID.h"
+
 #include "Vinyl/Scene/SceneCamera.h"
-#include "Vinyl/Scene/ScriptableEntity.h"
 #include "Vinyl/Rendering/Texture.h"
 
 namespace Vinyl 
 {
+	struct IDComponent
+	{
+		UUID ID;
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+		IDComponent(const UUID& uuid) : ID(uuid) {}
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;
@@ -19,6 +28,9 @@ namespace Vinyl
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag) : Tag(tag) {}
 	};
+
+	// Forward Declaration
+	class ScriptableEntity;
 
 	struct TransformComponent
 	{

@@ -116,6 +116,7 @@ namespace Vinyl
 		VL_CORE_ASSERT(false, "Unknown body type");
 		return {};
 	}
+
 	static Rigidbody2DComponent::BodyType RigidBody2DBodyTypeFromString(const std::string& bodyTypeString)
 	{
 		if (bodyTypeString == "Static")    return Rigidbody2DComponent::BodyType::Static;
@@ -126,18 +127,26 @@ namespace Vinyl
 		return Rigidbody2DComponent::BodyType::Static;
 	}
 
-	SceneSerializer::SceneSerializer(const Ref<Scene>& scene) : m_Scene(scene) {}
+	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
+		: m_Scene(scene)
+	{
+	}
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		VL_CORE_ASSERT(entity.HasComponent<IDComponent>(), "");
+
 		out << YAML::BeginMap; // Entity
-		out << YAML::Key << "Entity" << YAML::Value << "12837192831273"; // TODO: Entity ID goes here
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
+
 		if (entity.HasComponent<TagComponent>())
 		{
 			out << YAML::Key << "TagComponent";
 			out << YAML::BeginMap; // TagComponent
+
 			auto& tag = entity.GetComponent<TagComponent>().Tag;
 			out << YAML::Key << "Tag" << YAML::Value << tag;
+
 			out << YAML::EndMap; // TagComponent
 		}
 
@@ -145,10 +154,12 @@ namespace Vinyl
 		{
 			out << YAML::Key << "TransformComponent";
 			out << YAML::BeginMap; // TransformComponent
+
 			auto& tc = entity.GetComponent<TransformComponent>();
 			out << YAML::Key << "Translation" << YAML::Value << tc.Translation;
 			out << YAML::Key << "Rotation" << YAML::Value << tc.Rotation;
 			out << YAML::Key << "Scale" << YAML::Value << tc.Scale;
+
 			out << YAML::EndMap; // TransformComponent
 		}
 
@@ -156,8 +167,10 @@ namespace Vinyl
 		{
 			out << YAML::Key << "CameraComponent";
 			out << YAML::BeginMap; // CameraComponent
+
 			auto& cameraComponent = entity.GetComponent<CameraComponent>();
 			auto& camera = cameraComponent.Camera;
+
 			out << YAML::Key << "Camera" << YAML::Value;
 			out << YAML::BeginMap; // Camera
 			out << YAML::Key << "ProjectionType" << YAML::Value << (int)camera.GetProjectionType();
@@ -168,8 +181,10 @@ namespace Vinyl
 			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthographicNearClip();
 			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
 			out << YAML::EndMap; // Camera
+
 			out << YAML::Key << "MainCamera" << YAML::Value << cameraComponent.MainCamera;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
+
 			out << YAML::EndMap; // CameraComponent
 		}
 
@@ -177,8 +192,10 @@ namespace Vinyl
 		{
 			out << YAML::Key << "SpriteRendererComponent";
 			out << YAML::BeginMap; // SpriteRendererComponent
+
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
+
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
 
@@ -186,15 +203,19 @@ namespace Vinyl
 		{
 			out << YAML::Key << "Rigidbody2DComponent";
 			out << YAML::BeginMap; // Rigidbody2DComponent
+
 			auto& rb2dComponent = entity.GetComponent<Rigidbody2DComponent>();
 			out << YAML::Key << "BodyType" << YAML::Value << RigidBody2DBodyTypeToString(rb2dComponent.Type);
 			out << YAML::Key << "FixedRotation" << YAML::Value << rb2dComponent.FixedRotation;
+
 			out << YAML::EndMap; // Rigidbody2DComponent
 		}
+
 		if (entity.HasComponent<BoxCollider2DComponent>())
 		{
 			out << YAML::Key << "BoxCollider2DComponent";
 			out << YAML::BeginMap; // BoxCollider2DComponent
+
 			auto& bc2dComponent = entity.GetComponent<BoxCollider2DComponent>();
 			out << YAML::Key << "Offset" << YAML::Value << bc2dComponent.Offset;
 			out << YAML::Key << "Size" << YAML::Value << bc2dComponent.Size;
@@ -202,6 +223,7 @@ namespace Vinyl
 			out << YAML::Key << "Friction" << YAML::Value << bc2dComponent.Friction;
 			out << YAML::Key << "Restitution" << YAML::Value << bc2dComponent.Restitution;
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << bc2dComponent.RestitutionThreshold;
+
 			out << YAML::EndMap; // BoxCollider2DComponent
 		}
 
@@ -220,6 +242,7 @@ namespace Vinyl
 		view.each([&](auto entityID)
 		{
 			Entity entity = { entityID, m_Scene.get() };
+
 			if (!entity)
 			{
 				return;
@@ -229,8 +252,8 @@ namespace Vinyl
 		});
 
 		out << YAML::EndSeq;
-
 		out << YAML::EndMap;
+
 		std::ofstream fout(filepath);
 		fout << out.c_str();
 	}
@@ -238,13 +261,12 @@ namespace Vinyl
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
 		// Not implemented
-		VL_CORE_ASSERT(false, "Not implemented");
+		VL_CORE_ASSERT(false, "");
 	}
 
 	bool SceneSerializer::Deserialize(const std::string& filepath)
 	{
 		YAML::Node data;
-
 		try
 		{
 			data = YAML::LoadFile(filepath);
@@ -255,18 +277,18 @@ namespace Vinyl
 		}
 
 		if (!data["Scene"])
-		{
 			return false;
-		}
 
 		std::string sceneName = data["Scene"].as<std::string>();
 		VL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+
 		auto entities = data["Entities"];
 		if (entities)
 		{
 			for (auto entity : entities)
 			{
-				uint64_t uuid = entity["Entity"].as<uint64_t>(); // TODO
+				uint64_t uuid = entity["Entity"].as<uint64_t>();
+
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
 				if (tagComponent)
@@ -275,7 +297,9 @@ namespace Vinyl
 				}
 
 				VL_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
+
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
 				{
@@ -290,17 +314,22 @@ namespace Vinyl
 				if (cameraComponent)
 				{
 					auto& cc = deserializedEntity.AddComponent<CameraComponent>();
+
 					auto cameraProps = cameraComponent["Camera"];
 					cc.Camera.SetProjectionType((SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
+
 					cc.Camera.SetPerspectiveVerticalFOV(cameraProps["PerspectiveFOV"].as<float>());
 					cc.Camera.SetPerspectiveNearClip(cameraProps["PerspectiveNear"].as<float>());
 					cc.Camera.SetPerspectiveFarClip(cameraProps["PerspectiveFar"].as<float>());
+
 					cc.Camera.SetOrthographicSize(cameraProps["OrthographicSize"].as<float>());
 					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
+
 					cc.MainCamera = cameraComponent["MainCamera"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
+
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
 				if (spriteRendererComponent)
 				{
@@ -336,7 +365,7 @@ namespace Vinyl
 	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
 	{
 		// Not implemented
-		VL_CORE_ASSERT(false, "Not implemented");
+		VL_CORE_ASSERT(false, "");
 		return false;
 	}
 }
