@@ -5,6 +5,9 @@
 #include "Vinyl/Scene/Components.h"
 #include "Vinyl/Scene/Entity.h"
 #include "Vinyl/Rendering/Renderer/Renderer2D.h"
+#include "Vinyl/Scene/ScriptableEntity.h"
+#include "Vinyl/Scripting/ScriptEngine.h"
+
 #include "ScriptableEntity.h"
 
 #include <glm/glm.hpp>
@@ -88,11 +91,45 @@ namespace Vinyl
 	void Scene::OnRuntimeStart()
 	{
 		OnPhysics2DStart();
+
+		// Instantiate Scripts
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			// C# Scripting OnCreateEntity
+			{
+				auto view = m_Registry.view<ScriptComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+					ScriptEngine::OnCreateEntity(entity);
+				}
+			}
+
+			// Native scripting OnCreate
+			{
+				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
+					if (!nsc.Instance)
+					{
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+				});
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
 		OnPhysics2DStop();
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStop();
+		}
 	}
 
 	void Scene::OnSimulationStart()
@@ -199,18 +236,25 @@ namespace Vinyl
 	{
 		// Update scripts
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			// C# Scripting
+			{
+				// C# Scripting OnUpdateEntity 
+				auto view = m_Registry.view<ScriptComponent>();
+				for (auto e : view)
 				{
-					// TODO: Move to Scene::OnScenePlay
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
+					Entity entity = { e, this };
+					const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+					ScriptEngine::OnUpdateEntity(entity, timeStep);
+				}
+			}
 
+			// Native Scripting OnUpdate
+			{
+				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
 					nsc.Instance->OnUpdate(timeStep);
 				});
+			}
 		}
 
 		// Physics
@@ -345,12 +389,16 @@ namespace Vinyl
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		m_EntityMap[uuid] = entity;
+
 		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
+		m_EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::DuplicateEntity(Entity entity)
@@ -398,6 +446,17 @@ namespace Vinyl
 		return {};
 	}
 
+	Entity Scene::GetEntityByUUID(UUID entityID)
+	{
+		// TODO: maybe should assert
+		if (m_EntityMap.find(entityID) != m_EntityMap.end())
+		{
+			return { m_EntityMap.at(entityID), this };
+		}
+
+		return {};
+	}
+
 	template<>
 	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
 	{
@@ -416,6 +475,16 @@ namespace Vinyl
 	}
 
 	template<>
+	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+	}
+
+	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{
 	}
@@ -427,11 +496,6 @@ namespace Vinyl
 
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 	{
 	}
 

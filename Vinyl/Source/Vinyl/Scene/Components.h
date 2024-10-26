@@ -99,6 +99,14 @@ namespace Vinyl
 		}
 	};
 
+	struct ScriptComponent
+	{
+		std::string ClassName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent&) = default;
+	};
+
 	// Physics
 
 	struct Rigidbody2DComponent
@@ -154,8 +162,11 @@ namespace Vinyl
 	{
 	};
 
-	using AllComponents =
-		ComponentGroup<TransformComponent, SpriteRendererComponent,
-		CircleRendererComponent, CameraComponent, NativeScriptComponent,
-		Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent>;
+	using AllComponents = ComponentGroup 
+	<
+		CameraComponent,
+		NativeScriptComponent, ScriptComponent,
+		TransformComponent, SpriteRendererComponent, CircleRendererComponent,
+		Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent
+	>;
 }

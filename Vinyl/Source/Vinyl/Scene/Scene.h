@@ -38,6 +38,7 @@ namespace Vinyl
 		void DuplicateEntity(Entity entity);
 
 		Entity GetMainCameraEntity();
+		Entity GetEntityByUUID(UUID entityID);
 
 		template<typename... Components>
 		auto GetAllEntitiesWith()
@@ -57,6 +58,8 @@ namespace Vinyl
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 
 		b2World* m_PhysicsWorld = nullptr;
+
+		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
 		friend class Entity;
 		friend class SceneSerializer;

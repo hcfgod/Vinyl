@@ -290,7 +290,7 @@ namespace Vinyl
 
 			//TODO: make snapping configurable in the ui like unreal and unity does
 			// Snapping
-			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			bool snap = Input::IsKeyDown(Key::LeftControl);
 			float snapValue = 0.5f;			// Snap to 0.5m for translation/scale
 
 			// Snap to 45 degrees for rotation
@@ -548,8 +548,8 @@ namespace Vinyl
 			return false;
 		}
 
-		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		bool control = Input::IsKeyDown(Key::LeftControl) || Input::IsKeyDown(Key::RightControl);
+		bool shift = Input::IsKeyDown(Key::LeftShift) || Input::IsKeyDown(Key::RightShift);
 
 		switch (event.GetKeyCode())
 		{
@@ -646,7 +646,7 @@ namespace Vinyl
 	{
 		if (event.GetMouseButton() == Mouse::ButtonLeft)
 		{
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyDown(Key::LeftAlt))
 			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 			}

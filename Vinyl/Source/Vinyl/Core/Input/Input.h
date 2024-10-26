@@ -9,9 +9,10 @@ namespace Vinyl
 	class Input
 	{
 	public:
-		static bool IsKeyPressed(KeyCode key);
+		static bool IsKeyDown(KeyCode keycode);
 
-		static bool IsMouseButtonPressed(MouseCode button);
+		static bool IsMouseDown(MouseCode mousecode);
+
 		static glm::vec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();

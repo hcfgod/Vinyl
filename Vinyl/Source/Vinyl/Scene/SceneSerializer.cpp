@@ -108,9 +108,9 @@ namespace Vinyl
 	{
 		switch (bodyType)
 		{
-		case Rigidbody2DComponent::BodyType::Static:    return "Static";
-		case Rigidbody2DComponent::BodyType::Dynamic:   return "Dynamic";
-		case Rigidbody2DComponent::BodyType::Kinematic: return "Kinematic";
+			case Rigidbody2DComponent::BodyType::Static:    return "Static";
+			case Rigidbody2DComponent::BodyType::Dynamic:   return "Dynamic";
+			case Rigidbody2DComponent::BodyType::Kinematic: return "Kinematic";
 		}
 
 		VL_CORE_ASSERT(false, "Unknown body type");
@@ -127,10 +127,7 @@ namespace Vinyl
 		return Rigidbody2DComponent::BodyType::Static;
 	}
 
-	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
-		: m_Scene(scene)
-	{
-	}
+	SceneSerializer::SceneSerializer(const Ref<Scene>& scene) : m_Scene(scene) { }
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
@@ -256,6 +253,17 @@ namespace Vinyl
 			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
 			out << YAML::EndMap; // CircleCollider2DComponent
+		}
+
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap; // ScriptComponent
+
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+
+			out << YAML::EndMap; // ScriptComponent
 		}
 
 		out << YAML::EndMap; // Entity
@@ -417,6 +425,13 @@ namespace Vinyl
 					cc2d.Friction = circleCollider2DComponent["Friction"].as<float>();
 					cc2d.Restitution = circleCollider2DComponent["Restitution"].as<float>();
 					cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
 				}
 			}
 		}

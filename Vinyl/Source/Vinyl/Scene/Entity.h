@@ -15,6 +15,12 @@ namespace Vinyl
 		Entity(entt::entity handle, Scene* scene);
 		Entity(const Entity& other) = default;
 
+		// Getter for TransformComponent
+		TransformComponent& Transform()
+		{
+			return GetComponent<TransformComponent>();
+		}
+
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

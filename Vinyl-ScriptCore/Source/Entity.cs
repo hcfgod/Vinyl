@@ -13,6 +13,25 @@ namespace Vinyl
             Z = z;
         }
 
+        public static Vector3 Zero => new Vector3(0, 0, 0);
+
+        public Vector3(float scalar)
+        {
+            X = scalar;
+            Y = scalar;
+            Z = scalar;
+        }
+
+        public static Vector3 operator +(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+
+        public static Vector3 operator*(Vector3 vector, float scalar)
+        {
+            return new Vector3(vector.X * scalar, vector.Y * scalar, vector.Z * scalar);
+        }
+
         public override string ToString()
         {
             return $"{X}, {Y}, {Z}";
@@ -21,37 +40,29 @@ namespace Vinyl
 
     public class Entity
     {
-        public float FloatVar { get; set; }
-
-        public Entity()
+        internal protected Entity()
         {
-            Console.WriteLine("Main Constructor");
-            Log("Keith", 8058);
-
-            Vector3 pos = new Vector3(5.0f, 2.0f, 1.0f);
-            Vector3 result = Log(pos);
-            Console.WriteLine(result.ToString());
+            EntityID = 0;
         }
 
-        public void PrintMessage()
+        internal Entity(ulong entityID)
         {
-            Console.WriteLine("Hello from c#");
+            EntityID = entityID;
         }
 
-        public void PrintCustomMessage(string message)
-        {
-            Console.Write($"C# Says: {message}");
-        }
+        public readonly ulong EntityID;
 
-        private void Log(string text, int paramater)
+        public Vector3 Translation
         {
-            InternalCalls.NativeLog(text, paramater);
-        }
-
-        private Vector3 Log(Vector3 paramater)
-        {
-            InternalCalls.NativeLog_Vector(ref paramater, out Vector3 result);
-            return result;
+            get
+            {
+                InternalCalls.Entity_GetTranslation(EntityID, out Vector3 translation);
+                return translation;
+            }
+            set
+            {
+                InternalCalls.Entity_SetTranslation(EntityID, ref value);
+            }
         }
     }
 }
