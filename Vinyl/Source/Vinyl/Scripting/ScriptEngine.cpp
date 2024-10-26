@@ -100,50 +100,33 @@ namespace Vinyl
 
 	void CallPrintMessage(MonoObject* objectInstance)
 	{
-		// Get the MonoClass pointer from the instance
-		MonoClass* instanceClass = mono_object_get_class(objectInstance);
-
-		// Get a reference to the method in the class
-		MonoMethod* method = mono_class_get_method_from_name(instanceClass, "PrintMessage", 0);
-
-		if (method == nullptr)
+		MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod("PrintMessage", 0);
+		if (printMessageFunc == nullptr)
 		{
 			// No method called "PrintFloatVar" with 0 parameters in the class, log error or something
 			VL_CORE_ERROR("No method called 'PrintMessage' with 0 parameters in the class");
 			return;
 		}
 
-		// Call the C# method on the objectInstance instance, and get any potential exceptions
-		MonoObject* exception = nullptr;
-		mono_runtime_invoke(method, objectInstance, nullptr, &exception);
+		s_Data->EntityClass.InvokeMethod(objectInstance, printMessageFunc);
 	}
 
 	void CallPrintCustomMessage(MonoObject* objectInstance, const char* message)
 	{
-		// Get the MonoClass pointer from the instance
-		MonoClass* instanceClass = mono_object_get_class(objectInstance);
-
 		// Get a reference to the method in the class
-		MonoMethod* method = mono_class_get_method_from_name(instanceClass, "PrintCustomMessage", 1);
+		MonoMethod* PrintCustomMessageFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
 
-		if (method == nullptr)
+		if (PrintCustomMessageFunc == nullptr)
 		{
 			// No method called "PrintFloatVar" with 0 parameters in the class, log error or something
 			VL_CORE_ERROR("No method called 'PrintCustomMessage' with 1 parameter in the class");
 			return;
 		}
 
-		// Call the C# method on the objectInstance instance, and get any potential exceptions
-		MonoObject* exception = nullptr;
-
-		MonoString* monoString = mono_string_new(s_Data->AppDomain, message);
-
-		void* params[1] =
-		{
-			monoString
-		};
-
-		mono_runtime_invoke(method, objectInstance, params, &exception);
+		MonoString* monoString = mono_string_new(s_Data->AppDomain, "Hello World from C++!");
+		MonoMethod* printCustomMessageFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
+		void* stringParam = monoString;
+		s_Data->EntityClass.InvokeMethod(objectInstance, printCustomMessageFunc, &stringParam);
 	}
 
 	void ScriptEngine::Init()
