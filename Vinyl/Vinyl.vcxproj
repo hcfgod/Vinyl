@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;Vendor\mono\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;Vendor\mono\lib\Debug\libmono-static-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,8 +97,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;Vendor\mono\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;Vendor\mono\lib\Release\libmono-static-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -122,8 +122,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;VL_BUILD_DLL;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\VulkanSDK\Include;Vendor\mono\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Vendor\VulkanSDK\Lib\vulkan-1.lib;opengl32.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;Vendor\VulkanSDK\Lib\shaderc_shared.lib;Vendor\VulkanSDK\Lib\spirv-cross-core.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;Vendor\mono\lib\Release\libmono-static-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -197,6 +197,7 @@
     <ClInclude Include="Source\Vinyl\Scene\SceneCamera.h" />
     <ClInclude Include="Source\Vinyl\Scene\SceneSerializer.h" />
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h" />
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\ImGuizmo\ImGuizmo.h" />
@@ -657,6 +658,7 @@
     <ClCompile Include="Source\Vinyl\Scene\Scene.cpp" />
     <ClCompile Include="Source\Vinyl\Scene\SceneCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Scene\SceneSerializer.cpp" />
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

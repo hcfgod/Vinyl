@@ -52,6 +52,9 @@
     <Filter Include="Source\Vinyl\Scene">
       <UniqueIdentifier>{D466C4D8-C04A-852E-29AB-7F8115AE6FB0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Scripting">
+      <UniqueIdentifier>{397297BD-256C-C00F-0ED9-5620FA71267C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Utils">
       <UniqueIdentifier>{17FBF1D8-03DF-B22E-6C3F-AD8158429DB0}</UniqueIdentifier>
     </Filter>
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h">
       <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h">
+      <Filter>Source\Vinyl\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h">
       <Filter>Source\Vinyl\Utils</Filter>
@@ -1621,6 +1627,9 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Scene\SceneSerializer.cpp">
       <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptEngine.cpp">
+      <Filter>Source\Vinyl\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Source\vlpch.cpp">
       <Filter>Source</Filter>

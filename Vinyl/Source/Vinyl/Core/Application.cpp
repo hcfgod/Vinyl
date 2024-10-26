@@ -6,6 +6,8 @@
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 #include "Vinyl/Utils/PlatformUtils.h"
 
+#include "Vinyl/Scripting/ScriptEngine.h"
+
 #include <filesystem>
 #include <GLFW/glfw3.h>
 
@@ -30,6 +32,7 @@ namespace Vinyl
 		m_Window->SetEventCallback(VL_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -39,6 +42,7 @@ namespace Vinyl
 	{
 		VL_PROFILE_FUNCTION();
 
+		ScriptEngine::Shutdown();
 		Renderer::Shutdown();
 	}
 

@@ -25,6 +25,7 @@ IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
 IncludeDir["Box2D"] = "Vinyl/Vendor/Box2D/include"
+IncludeDir["mono"] = "Vinyl/Vendor/mono/include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -33,6 +34,8 @@ group "Dependencies"
 	include "Vinyl/Vendor/yaml-cpp"
 	include "Vinyl/Vendor/Box2D"
 group ""
+
+group "Core"
 
 project "Vinyl"
 	location "Vinyl"
@@ -86,6 +89,7 @@ project "Vinyl"
 		"%{IncludeDir.shaderc}",
 		"%{IncludeDir.SPIRV_Cross}",
 		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.mono}"
 	}
 
 	links
@@ -108,8 +112,15 @@ project "Vinyl"
 		defines
 		{
 			"VL_PLATFORM_WINDOWS",
-			"VL_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
+		}
+
+		links
+		{
+			"Ws2_32.lib",
+			"Winmm.lib",
+			"Version.lib",
+			"Bcrypt.lib"
 		}
 
 	filter "configurations:Debug"
@@ -120,7 +131,8 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib",
+			"Vinyl/Vendor/mono/lib/Debug/libmono-static-sgen.lib"
 		}
 
 	filter "configurations:Release"
@@ -131,7 +143,8 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
+			"Vinyl/Vendor/mono/lib/Release/libmono-static-sgen.lib"
 		}
 
 	filter "configurations:Dist"
@@ -142,8 +155,13 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
+			"Vinyl/Vendor/mono/lib/Release/libmono-static-sgen.lib"
 		}
+
+include "Vinyl-ScriptCore"
+
+group ""
 
 project "Sandbox"
 	location "Sandbox"
