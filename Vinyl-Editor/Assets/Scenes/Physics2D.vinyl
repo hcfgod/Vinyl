@@ -108,12 +108,13 @@ Entities:
       Scale: [2.34294105, 1.37009788, 1]
     SpriteRendererComponent:
       Color: [0.625482619, 0.565863132, 0.514393032, 1]
+      TexturePath: Assets\Textures\baby.jpg
       TilingFactor: 1
   - Entity: 8957957362783005685
     TagComponent:
       Tag: Player
     TransformComponent:
-      Translation: [4.81200409, 10.2309103, 0]
+      Translation: [4.44535017, 5.3870945, 0]
       Rotation: [0, 0, 0.0508836843]
       Scale: [0.224112332, 0.224112332, 0.224112004]
     SpriteRendererComponent:

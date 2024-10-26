@@ -138,6 +138,65 @@ namespace Vinyl
 		EndDockspace();
 	}
 
+	void EditorLayer::OnOverlayRender()
+	{
+		if (m_SceneState == SceneState::Play)
+		{
+			Entity camera = m_ActiveScene->GetMainCameraEntity();
+			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera, camera.GetComponent<TransformComponent>().GetTransform());
+		}
+		else
+		{
+			Renderer2D::BeginScene(m_EditorCamera);
+		}
+		if (m_ShowPhysicsColliders)
+		{
+			// Box Colliders
+			{
+				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+				for (auto entity : view)
+				{
+					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.001f);
+					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), tc.Translation)
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::translate(glm::mat4(1.0f), glm::vec3(bc2d.Offset, 0.001f))
+						* glm::scale(glm::mat4(1.0f), scale);
+
+					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+				}
+			}
+			// Circle Colliders
+			{
+				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
+				for (auto entity : view)
+				{
+					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.001f);
+					glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), tc.Translation)
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::translate(glm::mat4(1.0f), glm::vec3(cc2d.Offset, 0.001f))
+						* glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.x, scale.z));
+
+					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.01f);
+				}
+			}
+		}
+
+		// Draw selected entity outline 
+		if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity())
+		{
+			const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
+			Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+		}
+
+		Renderer2D::EndScene();
+	}
+
 	// Dockspace
 	void EditorLayer::StartDockspace()
 	{
@@ -289,45 +348,6 @@ namespace Vinyl
 		}
 	}
 
-	void EditorLayer::Viewport()
-	{
-		//Viewport
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport");
-
-		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-		auto viewportOffset = ImGui::GetWindowPos();
-		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-
-		m_ViewportFocused = ImGui::IsWindowFocused();
-		m_ViewportHovered = ImGui::IsWindowHovered();
-
-		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportFocused && !m_ViewportHovered);
-
-		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
-		uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-		ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-			{
-				const wchar_t* path = (const wchar_t*)payload->Data;
-				OpenScene(std::filesystem::path(g_AssetPath) / path);
-			}
-			ImGui::EndDragDropTarget();
-		}
-
-		RenderGizmos();
-
-		ImGui::End();
-		ImGui::PopStyleVar();
-	}
-
 	void EditorLayer::UI_Toolbar()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
@@ -431,56 +451,77 @@ namespace Vinyl
 		ImGui::End();
 	}
 
-	void EditorLayer::OnOverlayRender()
+	void EditorLayer::Viewport()
 	{
-		if (m_SceneState == SceneState::Play)
+		//Viewport
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+		ImGui::Begin("Viewport");
+
+		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffset = ImGui::GetWindowPos();
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+
+		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+		uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		HandleViewportDragAndDrop();
+
+		RenderGizmos();
+
+		ImGui::End();
+		ImGui::PopStyleVar();
+	}
+
+	void EditorLayer::HandleViewportDragAndDrop()
+	{
+		if (ImGui::BeginDragDropTarget())
 		{
-			Entity camera = m_ActiveScene->GetMainCameraEntity();
-			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera, camera.GetComponent<TransformComponent>().GetTransform());
-		}
-		else
-		{
-			Renderer2D::BeginScene(m_EditorCamera);
-		}
-		if (m_ShowPhysicsColliders)
-		{
-			// Box Colliders
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 			{
-				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
-				for (auto entity : view)
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path filePath = std::filesystem::path(path);
+				std::string extension = filePath.extension().string();
+
+				// Handle .vinyl scene files
+				if (extension == ".vinyl")
 				{
-					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
-					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.001f);
-					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
-					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
-						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
-						* glm::scale(glm::mat4(1.0f), scale);
-					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+					OpenScene(std::filesystem::path(g_AssetPath) / path);
+				}
+				// Handle image files (you can add more extensions if needed)
+				else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || extension == ".bmp" || extension == ".tga" || extension == ".gif")
+				{
+					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+					Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+
+					if (texture->IsLoaded())
+					{
+						if (m_HoveredEntity && m_HoveredEntity.HasComponent<SpriteRendererComponent>())
+						{
+							m_HoveredEntity.GetComponent<SpriteRendererComponent>().Texture = texture;
+						}
+					}
+					else
+					{
+						VL_WARN("Could not load texture {0}", texturePath.filename().string());
+					}
+				}
+				else
+				{
+					VL_WARN("Unsupported file type: {0}", filePath.filename().string());
 				}
 			}
-			// Circle Colliders
-			{
-				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
-				for (auto entity : view)
-				{
-					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
-					glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.001f);
-					glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
-					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
-						* glm::scale(glm::mat4(1.0f), scale);
-					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.01f);
-				}
-			}
+			ImGui::EndDragDropTarget();
 		}
-
-		// Draw selected entity outline 
-		if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity())
-		{
-			const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
-			Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
-		}
-
-		Renderer2D::EndScene();
 	}
 
 	// Events

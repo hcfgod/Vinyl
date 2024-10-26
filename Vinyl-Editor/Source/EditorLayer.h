@@ -25,8 +25,6 @@ namespace Vinyl
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
-		void OnOverlayRender();
-
 		// Scene methods
 		void NewScene();
 		void OpenScene();
@@ -42,6 +40,8 @@ namespace Vinyl
 
 		void OnDuplicateEntity();
 
+		void OnOverlayRender();
+
 		// Dockspace
 		void StartDockspace();
 		void RenderInDockspace();
@@ -52,9 +52,12 @@ namespace Vinyl
 
 		// UI Panels
 		void MenuBar();
-		void Viewport();
 		void UI_Toolbar();
 		void Renderer2DStats();
+
+		// Viewport
+		void Viewport();
+		void HandleViewportDragAndDrop();
 
 	private:
 		EditorCamera m_EditorCamera;
