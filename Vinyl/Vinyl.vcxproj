@@ -198,6 +198,7 @@
     <ClInclude Include="Source\Vinyl\Scene\SceneSerializer.h" />
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h" />
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\ImGuizmo\ImGuizmo.h" />
@@ -659,6 +660,7 @@
     <ClCompile Include="Source\Vinyl\Scene\SceneCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Source\Vinyl\Scripting\ScriptEngine.cpp" />
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\vlpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
