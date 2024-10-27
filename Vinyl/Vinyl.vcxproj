@@ -160,7 +160,7 @@
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h" />
-    <ClInclude Include="Source\Vinyl\Core\Input\MouseCodes.h" />
+    <ClInclude Include="Source\Vinyl\Core\Input\MouseButtons.h" />
     <ClInclude Include="Source\Vinyl\Core\Layer\Layer.h" />
     <ClInclude Include="Source\Vinyl\Core\Layer\LayerStack.h" />
     <ClInclude Include="Source\Vinyl\Core\Log.h" />

@@ -2,16 +2,16 @@
 
 #include <glm/glm.hpp>
 #include "Vinyl/Core/Input/KeyCodes.h"
-#include "Vinyl/Core/Input/MouseCodes.h"
+#include "Vinyl/Core/Input/MouseButtons.h"
 
 namespace Vinyl
 {
 	class Input
 	{
 	public:
-		static bool IsKeyDown(KeyCode keycode);
+		static bool IsKeyHeld(KeyCode keycode);
 
-		static bool IsMouseDown(MouseCode mousecode);
+		static bool IsMouseButtonHeld(MouseButton mousebutton);
 
 		static glm::vec2 GetMousePosition();
 		static float GetMouseX();

@@ -272,7 +272,6 @@ namespace Vinyl
 	// Gizmos
 	void EditorLayer::RenderGizmos()
 	{
-		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (selectedEntity && m_GizmoType != -1)
 		{
@@ -281,16 +280,30 @@ namespace Vinyl
 
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
-			// Editor Camera
-			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
-			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+			glm::mat4 cameraView;
+			glm::mat4 cameraProjection;
+
+			if (m_SceneState == SceneState::Play) 
+			{
+				// Use the runtime camera
+				Entity cameraEntity = m_ActiveScene->GetMainCameraEntity();
+				const auto& cameraComponent = cameraEntity.GetComponent<CameraComponent>();
+				cameraProjection = cameraComponent.Camera.GetProjection();
+				cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			}
+			else 
+			{
+				// Use the editor camera
+				cameraProjection = m_EditorCamera.GetProjection();
+				cameraView = m_EditorCamera.GetViewMatrix();
+			}
 
 			auto& entityTransformComponent = selectedEntity.GetComponent<TransformComponent>();
 			glm::mat4 transform = entityTransformComponent.GetTransform();
 
-			//TODO: make snapping configurable in the ui like unreal and unity does
+			//TODO: make snap values for (transform, rotation and scale) separately configurable in the ui like unreal does
 			// Snapping
-			bool snap = Input::IsKeyDown(Key::LeftControl);
+			bool snap = Input::IsKeyHeld(Key::LeftControl);
 			float snapValue = 0.5f;			// Snap to 0.5m for translation/scale
 
 			// Snap to 45 degrees for rotation
@@ -341,6 +354,16 @@ namespace Vinyl
 					SaveSceneAs();
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Camera"))
+			{
+				if (ImGui::MenuItem("Reset Editor Camera"))
+				{
+					m_EditorCamera.Reset();
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -548,8 +571,8 @@ namespace Vinyl
 			return false;
 		}
 
-		bool control = Input::IsKeyDown(Key::LeftControl) || Input::IsKeyDown(Key::RightControl);
-		bool shift = Input::IsKeyDown(Key::LeftShift) || Input::IsKeyDown(Key::RightShift);
+		bool control = Input::IsKeyHeld(Key::LeftControl) || Input::IsKeyHeld(Key::RightControl);
+		bool shift = Input::IsKeyHeld(Key::LeftShift) || Input::IsKeyHeld(Key::RightShift);
 
 		switch (event.GetKeyCode())
 		{
@@ -646,7 +669,7 @@ namespace Vinyl
 	{
 		if (event.GetMouseButton() == Mouse::ButtonLeft)
 		{
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyDown(Key::LeftAlt))
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyHeld(Key::LeftAlt))
 			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 			}

@@ -17,7 +17,7 @@
 
 #include "Vinyl/Core/Input/Input.h"
 #include "Vinyl/Core/Input/KeyCodes.h"
-#include "Vinyl/Core/Input/MouseCodes.h"
+#include "Vinyl/Core/Input/MouseButtons.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 #include "Vinyl/Rendering/Renderer/Renderer2D.h"

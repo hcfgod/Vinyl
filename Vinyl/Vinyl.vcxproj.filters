@@ -138,7 +138,7 @@
     <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h">
       <Filter>Source\Vinyl\Core\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\Input\MouseCodes.h">
+    <ClInclude Include="Source\Vinyl\Core\Input\MouseButtons.h">
       <Filter>Source\Vinyl\Core\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Layer\Layer.h">

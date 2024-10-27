@@ -106,39 +106,6 @@ namespace Vinyl
 
 	static ScriptEngineData* s_Data = nullptr;
 
-#if 0 example/testing
-	void CallPrintMessage(MonoObject* objectInstance)
-	{
-		MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod("PrintMessage", 0);
-		if (printMessageFunc == nullptr)
-		{
-			// No method called "PrintFloatVar" with 0 parameters in the class, log error or something
-			VL_CORE_ERROR("No method called 'PrintMessage' with 0 parameters in the class");
-			return;
-		}
-
-		s_Data->EntityClass.InvokeMethod(objectInstance, printMessageFunc);
-	}
-
-	void CallPrintCustomMessage(MonoObject* objectInstance, const char* message)
-	{
-		// Get a reference to the method in the class
-		MonoMethod* PrintCustomMessageFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
-
-		if (PrintCustomMessageFunc == nullptr)
-		{
-			// No method called "PrintFloatVar" with 0 parameters in the class, log error or something
-			VL_CORE_ERROR("No method called 'PrintCustomMessage' with 1 parameter in the class");
-			return;
-		}
-
-		MonoString* monoString = mono_string_new(s_Data->AppDomain, "Hello World from C++!");
-		MonoMethod* printCustomMessageFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
-		void* stringParam = monoString;
-		s_Data->EntityClass.InvokeMethod(objectInstance, printCustomMessageFunc, &stringParam);
-	}
-#endif
-
 	void ScriptEngine::Init()
 	{
 		s_Data = new ScriptEngineData();
@@ -146,15 +113,11 @@ namespace Vinyl
 		LoadAssembly("Resources/Scripts/Vinyl-ScriptCore.dll");
 		LoadAssemblyClasses(s_Data->CoreAssembly);
 
+		ScriptGlue::RegisterComponents();
 		ScriptGlue::RegisterFunctions();
 
 		// Retrieve and instantiate class (with constructor)
 		s_Data->EntityClass = ScriptClass("Vinyl", "Entity");
-
-#if 0 example/testing
-		//CallPrintMessage(instance);
-		//CallPrintCustomMessage(instance, "Hello From Keith!");
-#endif
 	}
 
 	void ScriptEngine::Shutdown()
@@ -197,7 +160,8 @@ namespace Vinyl
 	void ScriptEngine::LoadAssembly(const std::filesystem::path& filePath)
 	{
 		// Create an App Domain
-		s_Data->AppDomain = mono_domain_create_appdomain((char*)"VinylScriptRuntime", nullptr);
+		std::string runtimeName = "VinylScriptRuntime";
+		s_Data->AppDomain = mono_domain_create_appdomain(runtimeName.data(), nullptr);
 		mono_domain_set(s_Data->AppDomain, true);
 
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filePath);
@@ -293,6 +257,11 @@ namespace Vinyl
 		}
 	}
 
+	MonoImage* ScriptEngine::GetCoreAssemblyImage()
+	{
+		return s_Data->CoreAssemblyImage;
+	}
+
 	static MonoClass* GetClassInAssembly(MonoAssembly* assembly, const char* namespaceName, const char* className)
 	{
 		MonoImage* image = mono_assembly_get_image(assembly);
@@ -353,11 +322,15 @@ namespace Vinyl
 
 	void ScriptInstance::InvokeOnCreate()
 	{
+		if (!m_OnCreateMethod) return;
+
 		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float timestep)
 	{
+		if (!m_OnUpdateMethod) return;
+
 		void* param = &timestep;
 		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 	}

@@ -10,43 +10,45 @@
 
 #include "Vinyl/Core/Input/Input.h"
 #include "Vinyl/Core/Input/KeyCodes.h"
-#include "Vinyl/Core/Input/MouseCodes.h"
+#include "Vinyl/Core/Input/MouseButtons.h"
 
 #include <mono/metadata/object.h>
+#include <mono/metadata/reflection.h>
+
+#include <box2d/b2_body.h>
 
 #define VL_ADD_INTERNAL_CALL(Name) mono_add_internal_call("Vinyl.InternalCalls::"#Name, Name)
 
 namespace Vinyl
 {
-	static void NativeLog(MonoString* monoString, int paramater)
-	{
-		char* cString = mono_string_to_utf8(monoString);
-		std::string string(cString);
+	static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_EntityHasComponentFuncs;
 
-		mono_free(cString);
-
-		std::cout << string << ":" << paramater << std::endl;
-	}
-
-	static void NativeLog_Vector(glm::vec3* paramater, glm::vec3* outResult)
-	{
-		VL_CORE_WARN("Value: {0}", *paramater);
-
-		auto testVec = glm::vec3(1.0f, 0.5f, 2.5f);
-		auto cross = glm::cross(*paramater, testVec);
-
-		*outResult = cross;
-	}
-
-	static void Entity_GetTranslation(UUID entityID, glm::vec3* outTranslation)
+	static bool Entity_HasComponent(UUID entityID, MonoReflectionType* componentType)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
 		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		MonoType* managedType = mono_reflection_type_get_type(componentType);
+		VL_CORE_ASSERT(s_EntityHasComponentFuncs.find(managedType) != s_EntityHasComponentFuncs.end(), "managedType does not exist.");
+
+		return s_EntityHasComponentFuncs.at(managedType)(entity);
+	}
+
+	static void TransformComponent_GetTranslation(UUID entityID, glm::vec3* outTranslation)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
 
 		*outTranslation = entity.Transform().Translation;
 	}
 
-	static void Entity_SetTranslation(UUID entityID, glm::vec3* translation)
+	static void TransformComponent_SetTranslation(UUID entityID, glm::vec3* translation)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
 		Entity entity = scene->GetEntityByUUID(entityID);
@@ -54,25 +56,83 @@ namespace Vinyl
 		entity.Transform().Translation = *translation;
 	}
 
-	static bool Input_IsKeyDown(KeyCode keycode)
+	static void Rigidbody2DComponent_ApplyLinearImpulse(UUID entityID, glm::vec2* impulse, glm::vec2* point, bool wake)
 	{
-		return Input::IsKeyDown(keycode);
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		body->ApplyLinearImpulse(b2Vec2(impulse->x, impulse->y), b2Vec2(point->x, point->y), wake);
 	}
 
-	static bool Input_IsMouseDown(MouseCode mousecode)
+	static void Rigidbody2DComponent_ApplyLinearImpulseToCenter(UUID entityID, glm::vec2* impulse, bool wake)
 	{
-		return Input::IsMouseDown(mousecode);
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
+	}
+
+	static bool Input_IsKeyHeld(KeyCode keycode)
+	{
+		return Input::IsKeyHeld(keycode);
+	}
+
+	static bool Input_IsMouseButtonDown(MouseButton mousebutton)
+	{
+		return Input::IsMouseButtonHeld(mousebutton);
+	}
+
+	template<typename... Component>
+	static void RegisterComponent()
+	{
+		([]()
+			{
+				std::string_view typeName = typeid(Component).name();
+				size_t pos = typeName.find_last_of(':');
+				std::string_view structName = typeName.substr(pos + 1);
+				std::string managedTypename = fmt::format("Vinyl.{}", structName);
+				MonoType* managedType = mono_reflection_type_from_name(managedTypename.data(), ScriptEngine::GetCoreAssemblyImage());
+				if (!managedType)
+				{
+					VL_CORE_ERROR("Could not find component type {}", managedTypename);
+					return;
+				}
+				s_EntityHasComponentFuncs[managedType] = [](Entity entity) { return entity.HasComponent<Component>(); };
+			}(), ...);
+	}
+
+	template<typename... Component>
+	static void RegisterComponent(ComponentGroup<Component...>)
+	{
+		RegisterComponent<Component...>();
+	}
+
+	void ScriptGlue::RegisterComponents()
+	{
+		RegisterComponent(AllComponents{});
 	}
 
 	void ScriptGlue::RegisterFunctions()
 	{
-		VL_ADD_INTERNAL_CALL(NativeLog);
-		VL_ADD_INTERNAL_CALL(NativeLog_Vector);
+		VL_ADD_INTERNAL_CALL(Entity_HasComponent);
 
-		VL_ADD_INTERNAL_CALL(Entity_GetTranslation);
-		VL_ADD_INTERNAL_CALL(Entity_SetTranslation);
+		VL_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
+		VL_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 
-		VL_ADD_INTERNAL_CALL(Input_IsKeyDown);
-		VL_ADD_INTERNAL_CALL(Input_IsMouseDown);
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
+
+		VL_ADD_INTERNAL_CALL(Input_IsKeyHeld);
+		VL_ADD_INTERNAL_CALL(Input_IsMouseButtonDown);
 	}
 }

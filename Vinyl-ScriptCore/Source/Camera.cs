@@ -1,26 +1,19 @@
-﻿using System;
-using Vinyl;
+﻿using Vinyl;
 
 namespace Sandbox
 {
-    public class Player : Entity
+    public class Camera : Entity
     {
-        private TransformComponent m_Transform;
-        private Rigidbody2DComponent m_Rigidbody;
+        private TransformComponent transform;
 
         void OnCreate()
         {
-            Console.WriteLine($"Player.OnCreate - {EntityID}");
-
-            m_Transform = GetComponent<TransformComponent>();
-            m_Rigidbody = GetComponent<Rigidbody2DComponent>();
+            transform = Transform;
         }
 
         void OnUpdate(float timestep)
         {
-            if(m_Rigidbody == null) return;
-
-            float speed = 0.01f;
+            float speed = 1.0f;
             Vector3 velocity = Vector3.Zero;
 
             if (Input.IsKeyHeld(KeyCode.W))
@@ -42,7 +35,11 @@ namespace Sandbox
             }
 
             velocity *= speed;
-            m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
+
+            Vector3 translation = transform.Translation;
+            translation += velocity * timestep;
+
+            transform.Translation = translation;
         }
     }
 }

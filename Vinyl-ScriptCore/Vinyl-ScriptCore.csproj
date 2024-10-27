@@ -7,7 +7,7 @@
     <ProjectGuid>{42BD8912-2EB6-A864-57E8-8DE943408870}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vinyl-ScriptCore</RootNamespace>
+    <RootNamespace>Vinyl</RootNamespace>
     <AssemblyName>Vinyl-ScriptCore</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,12 +59,16 @@
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Dist|x64' ">
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Input.cs" />
-    <Compile Include="Source\InternalCalls.cs" />
-    <Compile Include="Source\Entity.cs" />
-    <Compile Include="Source\KeyCode.cs" />
-    <Compile Include="Source\MouseCode.cs" />
+    <Compile Include="Source\Camera.cs" />
+    <Compile Include="Source\Vinyl\Input.cs" />
+    <Compile Include="Source\Vinyl\InternalCalls.cs" />
+    <Compile Include="Source\Vinyl\Scene\Components.cs" />
+    <Compile Include="Source\Vinyl\Scene\Entity.cs" />
+    <Compile Include="Source\Vinyl\KeyCode.cs" />
+    <Compile Include="Source\Vinyl\MouseButton.cs" />
     <Compile Include="Source\Player.cs" />
+    <Compile Include="Source\Vinyl\Vector2.cs" />
+    <Compile Include="Source\Vinyl\Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

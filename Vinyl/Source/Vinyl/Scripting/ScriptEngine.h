@@ -67,8 +67,9 @@ namespace Vinyl
 		static void OnUpdateEntity(Entity entity, TimeStep timestep);
 
 		static Scene* GetSceneContext();
-
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
+
+		static MonoImage* GetCoreAssemblyImage();
 	private:
 		static void InitMono();
 		static void ShutdownMono();
@@ -77,5 +78,6 @@ namespace Vinyl
 		static void LoadAssemblyClasses(MonoAssembly* monoAssembly);
 
 		friend class ScriptClass;
+		friend class ScriptGlue;
 	};
 }

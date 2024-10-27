@@ -7,7 +7,7 @@
 
 namespace Vinyl
 {
-	bool Input::IsKeyDown(const KeyCode keycode)
+	bool Input::IsKeyHeld(const KeyCode keycode)
 	{
 		auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetKey(window, keycode);
@@ -15,10 +15,10 @@ namespace Vinyl
 		return state == GLFW_PRESS;
 	}
 
-	bool Input::IsMouseDown(const MouseCode mousecode)
+	bool Input::IsMouseButtonHeld(const MouseButton mousebutton)
 	{
 		auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetMouseButton(window, mousecode);
+		auto state = glfwGetMouseButton(window, mousebutton);
 
 		return state == GLFW_PRESS;
 	}

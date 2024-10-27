@@ -1,6 +1,6 @@
 ﻿namespace Vinyl
 {
-    public enum MouseCode
+    public enum MouseButton
     {
         Button0 = 0,
         Button1 = 1,
