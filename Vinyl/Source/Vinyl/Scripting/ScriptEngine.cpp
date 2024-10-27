@@ -163,8 +163,22 @@ namespace Vinyl
 		InitMono();
 		ScriptGlue::RegisterFunctions();
 
-		LoadAssembly("Resources/Scripts/Vinyl-ScriptCore.dll");
-		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+		bool status = LoadAssembly("Resources/Scripts/Vinyl-ScriptCore.dll");
+
+		if (!status)
+		{
+			VL_CORE_ERROR("[ScriptEngine] Could not load Vinyl-ScriptCore Assembly.");
+			return;
+		}
+
+		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+
+		if (!status)
+		{
+			VL_CORE_ERROR("[ScriptEngine] Could not load App Assembly.");
+			return;
+		}
+
 		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
@@ -228,7 +242,7 @@ namespace Vinyl
 		}
 	}
 
-	void ScriptEngine::LoadAssembly(const std::filesystem::path& filePath)
+	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filePath)
 	{
 		// Create an App Domain
 		std::string runtimeName = "VinylScriptRuntime";
@@ -237,15 +251,23 @@ namespace Vinyl
 
 		s_Data->CoreAssemblyFilepath = filePath;
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filePath, s_Data->EnableDebugging);
+
+		if (s_Data->CoreAssembly == nullptr) return false;
+
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
 
 		//Utils::PrintAssemblyTypes(s_Data->CoreAssembly);
+
+		return true;
 	}
 
-	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filePath)
+	bool ScriptEngine::LoadAppAssembly(const std::filesystem::path& filePath)
 	{
 		s_Data->AppAssemblyFilepath = filePath;
 		s_Data->AppAssembly = Utils::LoadMonoAssembly(filePath, s_Data->EnableDebugging);
+
+		if (s_Data->AppAssembly == nullptr) return false;
+
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 
 		//Utils::PrintAssemblyTypes(s_Data->AppAssembly);
@@ -253,6 +275,8 @@ namespace Vinyl
 		// TODO: Only create filewatcher if needs to be created, Reason ReloadAssembly calls this LoadAppAssembly witch creates a new scope for s_Data->AppAssemblyFileWatcher
 		s_Data->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filePath.string(), OnAppAssemblyFileSystemEvent);
 		s_Data->AssemblyReloadPending = false;
+
+		return true;
 	}
 
 	void ScriptEngine::ReloadAssembly()
@@ -313,10 +337,16 @@ namespace Vinyl
 	void ScriptEngine::OnUpdateEntity(Entity entity, TimeStep timestep)
 	{
 		UUID entityUUID = entity.GetUUID();
-		VL_CORE_ASSERT(s_Data->EntityInstances.find(entity.GetUUID()) != s_Data->EntityInstances.end(), "");
 
-		Ref<ScriptInstance> scriptInstance =  s_Data->EntityInstances[entityUUID];
-		scriptInstance->InvokeOnUpdate((float)timestep);
+		if (s_Data->EntityInstances.find(entity.GetUUID()) != s_Data->EntityInstances.end())
+		{
+			Ref<ScriptInstance> scriptInstance = s_Data->EntityInstances[entityUUID];
+			scriptInstance->InvokeOnUpdate((float)timestep);
+		}
+		else
+		{
+			VL_CORE_ERROR("Could not find ScriptInstance for entity: {}", entityUUID);
+		}
 	}
 
 	Scene* ScriptEngine::GetSceneContext()

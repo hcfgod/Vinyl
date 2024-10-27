@@ -126,10 +126,16 @@
     <ClInclude Include="Source\Vinyl\Core\Base.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Buffer.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h">
       <Filter>Source\Vinyl\Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\FileSystem.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h">
@@ -1515,8 +1521,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\FileSystem.h" />
-    <ClInclude Include="Source\Vinyl\Core\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1553,6 +1557,9 @@
       <Filter>Source\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Core\Application.cpp">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Core\FileSystem.cpp">
       <Filter>Source\Vinyl\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp">
@@ -1648,6 +1655,5 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Core\FileSystem.cpp" />
   </ItemGroup>
 </Project>
