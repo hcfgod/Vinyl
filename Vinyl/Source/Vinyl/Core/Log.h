@@ -10,6 +10,8 @@
 #include <spdlog/fmt/ostr.h>
 #pragma warning(pop)
 
+#include <filesystem>
+
 namespace Vinyl
 {
 	class VINYL_API Log
@@ -79,6 +81,24 @@ struct fmt::formatter<glm::qua<T, Q>>
 	{
 		// Use fmt::format_to to format the quaternion
 		return fmt::format_to(ctx.out(), "{}", glm::to_string(quaternion));
+	}
+};
+
+template <>
+struct fmt::formatter<std::filesystem::path> : fmt::formatter<std::string>
+{
+	// Parses the format specifier (if any)
+	template <typename ParseContext>
+	constexpr auto parse(ParseContext& ctx) -> decltype(ctx.begin())
+	{
+		return fmt::formatter<std::string>::parse(ctx);
+	}
+
+	// Formats the std::filesystem::path object using fmt::format
+	template <typename FormatContext>
+	auto format(const std::filesystem::path& path, FormatContext& ctx) const -> decltype(ctx.out())
+	{
+		return fmt::formatter<std::string>::format(path.string(), ctx);
 	}
 };
 
