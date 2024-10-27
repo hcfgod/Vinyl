@@ -130,9 +130,11 @@ namespace Vinyl
 
 		MonoAssembly* CoreAssembly = nullptr;
 		MonoImage* CoreAssemblyImage = nullptr;
+		std::filesystem::path CoreAssemblyFilepath;
 
 		MonoAssembly* AppAssembly = nullptr;
 		MonoImage* AppAssemblyImage = nullptr;
+		std::filesystem::path AppAssemblyFilepath;
 
 		ScriptClass EntityClass;
 
@@ -151,12 +153,13 @@ namespace Vinyl
 		s_Data = new ScriptEngineData();
 
 		InitMono();
+		ScriptGlue::RegisterFunctions();
+
 		LoadAssembly("Resources/Scripts/Vinyl-ScriptCore.dll");
 		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
 		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
-		ScriptGlue::RegisterFunctions();
 
 		// Retrieve and instantiate class (with constructor)
 		s_Data->EntityClass = ScriptClass("Vinyl", "Entity", true);
@@ -206,6 +209,7 @@ namespace Vinyl
 		s_Data->AppDomain = mono_domain_create_appdomain(runtimeName.data(), nullptr);
 		mono_domain_set(s_Data->AppDomain, true);
 
+		s_Data->CoreAssemblyFilepath = filePath;
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filePath);
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
 
@@ -214,10 +218,23 @@ namespace Vinyl
 
 	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filePath)
 	{
+		s_Data->AppAssemblyFilepath = filePath;
 		s_Data->AppAssembly = Utils::LoadMonoAssembly(filePath);
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 
 		//Utils::PrintAssemblyTypes(s_Data->AppAssembly);
+	}
+
+	void ScriptEngine::ReloadAssembly()
+	{
+		mono_domain_set(mono_get_root_domain(), false);
+		mono_domain_unload(s_Data->AppDomain);
+		LoadAssembly(s_Data->CoreAssemblyFilepath);
+		LoadAppAssembly(s_Data->AppAssemblyFilepath);
+		LoadAssemblyClasses();
+		ScriptGlue::RegisterComponents();
+		// Retrieve and instantiate class
+		s_Data->EntityClass = ScriptClass("Vinyl", "Entity", true);
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)

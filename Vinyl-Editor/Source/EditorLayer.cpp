@@ -3,6 +3,7 @@
 #include "Vinyl/Scene/SceneSerializer.h"
 #include "Vinyl/Utils/PlatformUtils.h"
 #include "Vinyl/Math/Math.h"
+#include "Vinyl/Scripting/ScriptEngine.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGuizmo/ImGuizmo.h>
@@ -340,28 +341,30 @@ namespace Vinyl
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("New", "Ctrl+N"))
-					NewScene();
+				if (ImGui::MenuItem("New", "Ctrl+N")) NewScene();
 
-				if (ImGui::MenuItem("Open...", "Ctrl+O"))
-					OpenScene();
+				if (ImGui::MenuItem("Open...", "Ctrl+O")) OpenScene();
 
-				if (ImGui::MenuItem("Save", "Ctrl+S"))
-					SaveScene();
+				if (ImGui::MenuItem("Save", "Ctrl+S")) SaveScene();
 
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
-					SaveSceneAs();
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) SaveSceneAs();
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
+
 				ImGui::EndMenu();
 			}
 
 			if (ImGui::BeginMenu("Camera"))
 			{
-				if (ImGui::MenuItem("Reset Editor Camera"))
-				{
-					m_EditorCamera.Reset();
-				}
+				if (ImGui::MenuItem("Reset Editor Camera")) m_EditorCamera.Reset();
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Script"))
+			{
+				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
+					ScriptEngine::ReloadAssembly();
 
 				ImGui::EndMenu();
 			}
@@ -650,6 +653,10 @@ namespace Vinyl
 
 			case Key::R:
 			{
+				if (control)
+				{
+					ScriptEngine::ReloadAssembly();
+				}
 				if (!ImGuizmo::IsUsing())
 				{
 					m_GizmoType = ImGuizmo::OPERATION::SCALE;
