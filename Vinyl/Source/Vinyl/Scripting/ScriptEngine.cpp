@@ -4,12 +4,15 @@
 #include "Vinyl/Scripting/ScriptGlue.h"
 #include "Vinyl/Scene/Scene.h"
 #include "Vinyl/Scene/Entity.h"
+#include "Vinyl/Core/Application.h"
+#include "Vinyl/Core/Timer.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/tabledefs.h>
 
 #include <glm/vec3.hpp>
+#include <FileWatch.h>
 
 namespace Vinyl
 {
@@ -142,11 +145,28 @@ namespace Vinyl
 		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
 		std::unordered_map<UUID, ScriptFieldMap> EntityScriptFields;
 
+		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
+		bool AssemblyReloadPending = false;
+
 		// Runtime
 		Scene* SceneContext = nullptr;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
+
+	static void OnAppAssemblyFileSystemEvent(const std::string& path, const filewatch::Event change_type)
+	{
+		if (!s_Data->AssemblyReloadPending && change_type == filewatch::Event::modified)
+		{
+			s_Data->AssemblyReloadPending = true;
+
+			Application::Get().SubmitToMainThread([]()
+			{
+				s_Data->AppAssemblyFileWatcher.reset();
+				ScriptEngine::ReloadAssembly();
+			});
+		}
+	}
 
 	void ScriptEngine::Init()
 	{
@@ -223,6 +243,9 @@ namespace Vinyl
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 
 		//Utils::PrintAssemblyTypes(s_Data->AppAssembly);
+
+		s_Data->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filePath.string(), OnAppAssemblyFileSystemEvent);
+		s_Data->AssemblyReloadPending = false;
 	}
 
 	void ScriptEngine::ReloadAssembly()

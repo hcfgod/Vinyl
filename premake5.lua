@@ -18,14 +18,15 @@ IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
+IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
-IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
-IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
-IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
-IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
 IncludeDir["Box2D"] = "Vinyl/Vendor/Box2D/include"
 IncludeDir["mono"] = "Vinyl/Vendor/mono/include"
+IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
+IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
+IncludeDir["filewatch"] = "Vinyl/Vendor/filewatch"
+IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -81,15 +82,16 @@ project "Vinyl"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
+		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.shaderc}",
 		"%{IncludeDir.SPIRV_Cross}",
-		"%{IncludeDir.VulkanSDK}",
-		"%{IncludeDir.mono}"
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.VulkanSDK}"
 	}
 
 	links
@@ -237,10 +239,12 @@ project "Vinyl-Editor"
 		"Vinyl/Vendor/SpdLog/include",
 		"Vinyl/Source",
 		"Vinyl/Vendor/",
+
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.filewatch}"
 	}
 
 	links

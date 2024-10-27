@@ -16,14 +16,4 @@ public:
 
 	void OnEvent(Vinyl::Event& event) override;
 private:
-	Vinyl::OrthographicCameraController m_OrthographicCameraController;
-	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
-	Vinyl::Ref<Vinyl::Texture2D> m_BabyTexture;
-	Vinyl::Ref<Vinyl::Texture2D> m_SpriteSheet;
-	Vinyl::Ref<Vinyl::SubTexture2D> m_TreeTexture;
-
-	// Grid customization parameters
-	int m_GridSize = 5;             // Grid dimension, i.e., number of quads per row/column
-	float m_RotationSpeed = 50.0f;  // Speed of rotation
-	bool m_UseTexture = true;
 };
