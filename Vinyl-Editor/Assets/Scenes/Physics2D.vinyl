@@ -1,17 +1,18 @@
 Scene: Untitled
 Entities:
-  - Entity: 14608667747463156542
+  - Entity: 8957957362783005685
     TagComponent:
-      Tag: Floor
+      Tag: Player
     TransformComponent:
-      Translation: [3.03752065, 3.49431109, 0]
-      Rotation: [0, 0, -0.733501792]
-      Scale: [2.34294105, 0.160149395, 1]
+      Translation: [4.05809689, 6.96953869, -9.31322575e-10]
+      Rotation: [0, 0, 0.0508836843]
+      Scale: [0.35633859, 0.35633859, 0.356338054]
     SpriteRendererComponent:
-      Color: [0.749034762, 0.347043097, 0, 1]
+      Color: [1, 1, 1, 1]
+      TexturePath: Assets\Textures\baby.jpg
       TilingFactor: 1
     Rigidbody2DComponent:
-      BodyType: Static
+      BodyType: Dynamic
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -20,33 +21,26 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 17780690150252204477
-    TagComponent:
-      Tag: Camera
-    TransformComponent:
-      Translation: [0, 0, 26.2000008]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 0
-        PerspectiveFOV: 0.785398185
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-      MainCamera: true
-      FixedAspectRatio: false
     ScriptComponent:
-      ClassName: Sandbox.Camera
-  - Entity: 13485742577350290137
+      ClassName: Sandbox.Player
+  - Entity: 8714802033621665360
+    TagComponent:
+      Tag: Wall
+    TransformComponent:
+      Translation: [3.42533016, 3.97688365, -7.55999994]
+      Rotation: [0, 0, -0.733501852]
+      Scale: [7.0437398, 4.36536264, 1]
+    SpriteRendererComponent:
+      Color: [0.625482619, 0.565863132, 0.514393032, 1]
+      TexturePath: Assets\Textures\RPGpack_sheet_2X.png
+      TilingFactor: 1
+  - Entity: 2304560257429469317
     TagComponent:
       Tag: Floor
     TransformComponent:
-      Translation: [4.60711765, 1.45167863, 0]
-      Rotation: [0, 0, 0.515797973]
-      Scale: [3.56706691, 0.273052633, 1]
+      Translation: [4.67816734, 4.84141493, -9.31322575e-10]
+      Rotation: [0, 0, 0.528660655]
+      Scale: [1.48422313, 0.185966194, 1]
     SpriteRendererComponent:
       Color: [0.749034762, 0.347043097, 0, 1]
       TilingFactor: 1
@@ -81,13 +75,13 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 2304560257429469317
+  - Entity: 13485742577350290137
     TagComponent:
       Tag: Floor
     TransformComponent:
-      Translation: [4.67816734, 4.84141493, -9.31322575e-10]
-      Rotation: [0, 0, 0.528660655]
-      Scale: [1.48422313, 0.185966194, 1]
+      Translation: [4.60711765, 1.45167863, 0]
+      Rotation: [0, 0, 0.515797973]
+      Scale: [3.56706691, 0.273052633, 1]
     SpriteRendererComponent:
       Color: [0.749034762, 0.347043097, 0, 1]
       TilingFactor: 1
@@ -101,30 +95,38 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 8714802033621665360
+  - Entity: 17780690150252204477
     TagComponent:
-      Tag: Wall
+      Tag: Camera
     TransformComponent:
-      Translation: [3.42533016, 3.97688365, -1.05999994]
-      Rotation: [0, 0, -0.733501852]
-      Scale: [2.34294105, 1.37009788, 1]
-    SpriteRendererComponent:
-      Color: [0.625482619, 0.565863132, 0.514393032, 1]
-      TexturePath: Assets\Textures\RPGpack_sheet_2X.png
-      TilingFactor: 1
-  - Entity: 8957957362783005685
+      Translation: [0, 0, 26.2000008]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      MainCamera: true
+      FixedAspectRatio: false
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+  - Entity: 14608667747463156542
     TagComponent:
-      Tag: Player
+      Tag: Floor
     TransformComponent:
-      Translation: [4.05809689, 6.96953869, -9.31322575e-10]
-      Rotation: [0, 0, 0.0508836843]
-      Scale: [0.35633859, 0.35633859, 0.356338054]
+      Translation: [3.03752065, 3.49431109, 0]
+      Rotation: [0, 0, -0.733501792]
+      Scale: [2.34294105, 0.160149395, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TexturePath: Assets\Textures\baby.jpg
+      Color: [0.749034762, 0.347043097, 0, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
-      BodyType: Dynamic
+      BodyType: Static
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -133,5 +135,3 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-    ScriptComponent:
-      ClassName: Sandbox.Player

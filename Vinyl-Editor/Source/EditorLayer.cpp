@@ -748,12 +748,6 @@ namespace Vinyl
 
 	void EditorLayer::OnScenePlay()
 	{
-		if (!m_EditorScene)
-		{
-			VL_WARN("No scene loaded to play!");
-			return;
-		}
-
 		if (m_SceneState == SceneState::Simulate)
 		{
 			OnSceneStop();

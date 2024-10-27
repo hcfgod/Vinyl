@@ -162,6 +162,7 @@ namespace Vinyl
 
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
 		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
+		std::unordered_map<UUID, ScriptFieldMap> EntityScriptFields;
 
 		// Runtime
 		Scene* SceneContext = nullptr;
@@ -265,8 +266,19 @@ namespace Vinyl
 
 		if (ScriptEngine::EntityClassExists(scriptComponent.ClassName))
 		{
+			UUID entityID = entity.GetUUID();
 			Ref<ScriptInstance> scriptInstance = CreateRef<ScriptInstance>(s_Data->EntityClasses[scriptComponent.ClassName], entity);
-			s_Data->EntityInstances[entity.GetUUID()] = scriptInstance;
+			s_Data->EntityInstances[entityID] = scriptInstance;
+
+			// Copy field values
+			if (s_Data->EntityScriptFields.find(entityID) != s_Data->EntityScriptFields.end())
+			{
+				const ScriptFieldMap& fieldMap = s_Data->EntityScriptFields.at(entityID);
+				for (const auto& [name, fieldInstance] : fieldMap)
+				{
+					scriptInstance->SetFieldValueInternal(name, fieldInstance.m_Buffer);
+				}
+			}
 
 			scriptInstance->InvokeOnCreate();
 		}
@@ -298,9 +310,23 @@ namespace Vinyl
 		return it->second;
 	}
 
+	Ref<ScriptClass> ScriptEngine::GetEntityClass(const std::string& name)
+	{
+		if (s_Data->EntityClasses.find(name) == s_Data->EntityClasses.end()) return nullptr;
+			
+		return s_Data->EntityClasses.at(name);
+	}
+
 	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
 	{
 		return s_Data->EntityClasses;
+	}
+
+	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity)
+	{
+		VL_CORE_ASSERT(entity, "");
+		UUID entityID = entity.GetUUID();
+		return s_Data->EntityScriptFields[entityID];
 	}
 
 	void ScriptEngine::LoadAssemblyClasses()

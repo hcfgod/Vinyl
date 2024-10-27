@@ -5,7 +5,7 @@ namespace Sandbox
 {
     public class Player : Entity
     {
-        public float m_Speed = 0.01f;
+        public float m_Speed = 5.00f;
 
         private TransformComponent m_Transform;
         private Rigidbody2DComponent m_Rigidbody;
@@ -41,7 +41,7 @@ namespace Sandbox
                 velocity.X = 1.0f;
             }
 
-            velocity *= m_Speed;
+            velocity *= m_Speed * timestep;
             m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
         }
     }

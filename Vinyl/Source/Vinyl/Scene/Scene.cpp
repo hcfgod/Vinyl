@@ -90,6 +90,8 @@ namespace Vinyl
 
 	void Scene::OnRuntimeStart()
 	{
+		m_IsRunning = true;
+
 		OnPhysics2DStart();
 
 		// Instantiate Scripts
@@ -124,6 +126,8 @@ namespace Vinyl
 
 	void Scene::OnRuntimeStop()
 	{
+		m_IsRunning = false;
+
 		OnPhysics2DStop();
 
 		// Scripting
