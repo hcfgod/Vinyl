@@ -5,6 +5,8 @@
         public Entity Entity { get; internal set; }
     }
 
+    public class CameraComponent : Component { }
+
     public class TransformComponent : Component
     {
         public Vector3 Translation
@@ -21,7 +23,6 @@
             }
         }
     }
-
     public class Rigidbody2DComponent : Component
     {
         public void ApplyLinearImpulse(Vector2 impulse, Vector2 worldPosition, bool wake)
@@ -34,4 +35,12 @@
             InternalCalls.Rigidbody2DComponent_ApplyLinearImpulseToCenter(Entity.EntityID, ref impulse, wake);
         }
     }
+    public class BoxCollider2DComponent : Component { }
+    public class CircleCollider2DComponent : Component { }
+
+    public class SpriteRendererComponent : Component { }
+    public class CircleRendererComponent : Component { }
+
+    public class ScriptComponent : Component { }
+    //public class NativeScriptComponent : Component { }
 }

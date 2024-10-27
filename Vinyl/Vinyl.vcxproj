@@ -156,8 +156,10 @@
     <ClInclude Include="Source\Vinyl\Core\Application.h" />
     <ClInclude Include="Source\Vinyl\Core\Assert.h" />
     <ClInclude Include="Source\Vinyl\Core\Base.h" />
+    <ClInclude Include="Source\Vinyl\Core\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h" />
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h" />
+    <ClInclude Include="Source\Vinyl\Core\FileSystem.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h" />
     <ClInclude Include="Source\Vinyl\Core\Input\MouseButtons.h" />
@@ -633,6 +635,7 @@
     <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Application.cpp" />
+    <ClCompile Include="Source\Vinyl\Core\FileSystem.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Layer\LayerStack.cpp" />
     <ClCompile Include="Source\Vinyl\Core\Log.cpp" />

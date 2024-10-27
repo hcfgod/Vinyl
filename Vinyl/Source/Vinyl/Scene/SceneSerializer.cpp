@@ -520,7 +520,7 @@ namespace Vinyl
 
 							ScriptFieldInstance& fieldInstance = entityFields[name];
 
-							if (fields.find(name) != fields.end())
+							if (fields.find(name) == fields.end())
 							{
 								VL_CORE_WARN("Could not find field with name: {}", name);
 							}

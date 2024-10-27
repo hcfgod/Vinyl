@@ -134,12 +134,16 @@ namespace Vinyl
 				std::string_view structName = typeName.substr(pos + 1);
 				std::string managedTypename = fmt::format("Vinyl.{}", structName);
 				MonoType* managedType = mono_reflection_type_from_name(managedTypename.data(), ScriptEngine::GetCoreAssemblyImage());
-				if (!managedType)
+
+				// TODO: Better way to ignore multiple different specific components types
+				if (!managedType && managedTypename != "Vinyl.NativeScriptComponent")
 				{
 					VL_CORE_ERROR("Could not find component type {}", managedTypename);
 					return;
 				}
+
 				s_EntityHasComponentFuncs[managedType] = [](Entity entity) { return entity.HasComponent<Component>(); };
+
 			}(), ...);
 	}
 
