@@ -5,8 +5,11 @@ namespace Sandbox
 {
     public class Player : Entity
     {
+        public float m_Speed = 0.01f;
+
         private TransformComponent m_Transform;
         private Rigidbody2DComponent m_Rigidbody;
+        private Vector3 velocity = Vector3.Zero;
 
         void OnCreate()
         {
@@ -18,15 +21,12 @@ namespace Sandbox
 
         void OnUpdate(float timestep)
         {
-            if(m_Rigidbody == null) return;
-
-            float speed = 0.01f;
-            Vector3 velocity = Vector3.Zero;
+            if (m_Rigidbody == null) return;
 
             if (Input.IsKeyHeld(KeyCode.W))
             {
                 velocity.Y = 1.0f;
-            }    
+            }
             else if (Input.IsKeyHeld(KeyCode.S))
             {
                 velocity.Y = -1.0f;
@@ -41,7 +41,7 @@ namespace Sandbox
                 velocity.X = 1.0f;
             }
 
-            velocity *= speed;
+            velocity *= m_Speed;
             m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
         }
     }

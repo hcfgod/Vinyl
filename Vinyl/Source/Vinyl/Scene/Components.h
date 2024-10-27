@@ -57,8 +57,7 @@ namespace Vinyl
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4& color)
-			: Color(color) {}
+		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
 	};
 
 	struct CircleRendererComponent

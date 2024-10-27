@@ -4,6 +4,8 @@ namespace Sandbox
 {
     public class Camera : Entity
     {
+        public Entity OtherEntity;
+
         private TransformComponent transform;
 
         void OnCreate()
