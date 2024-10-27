@@ -3,8 +3,8 @@ project "Vinyl-ScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/Vinyl-Editor/Resources/Scripts")
-	objdir ("%{wks.location}/Vinyl-Editor/Resources/Intermediates")
+	targetdir ("../Vinyl-Editor/Resources/Scripts")
+	objdir ("../Vinyl-Editor/Resources/Intermediates")
 
 	files
 	{

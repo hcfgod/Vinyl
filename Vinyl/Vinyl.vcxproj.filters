@@ -252,6 +252,9 @@
     <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h">
       <Filter>Source\Vinyl\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h">
+      <Filter>Source\Vinyl\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h">
       <Filter>Source\Vinyl\Utils</Filter>
     </ClInclude>
@@ -1512,7 +1515,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1632,6 +1634,9 @@
     <ClCompile Include="Source\Vinyl\Scripting\ScriptEngine.cpp">
       <Filter>Source\Vinyl\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptGlue.cpp">
+      <Filter>Source\Vinyl\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="Source\vlpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1641,6 +1646,5 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Scripting\ScriptGlue.cpp" />
   </ItemGroup>
 </Project>
