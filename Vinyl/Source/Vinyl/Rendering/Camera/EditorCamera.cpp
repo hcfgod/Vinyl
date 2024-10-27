@@ -4,7 +4,7 @@
 
 #include "Vinyl/Core/Input/Input.h"
 #include "Vinyl/Core/Input/KeyCodes.h"
-#include "Vinyl/Core/Input/MouseCodes.h"
+#include "Vinyl/Core/Input/MouseButtons.h"
 
 #include <glfw/glfw3.h>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -57,17 +57,17 @@ namespace Vinyl
 
 	void EditorCamera::OnUpdate(TimeStep timestep)
 	{
-		if (Input::IsKeyPressed(Key::LeftAlt))
+		if (Input::IsKeyHeld(Key::LeftAlt))
 		{
 			const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
 			glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
 			m_InitialMousePosition = mouse;
 
-			if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
+			if (Input::IsMouseButtonHeld(Mouse::ButtonMiddle))
 				MousePan(delta);
-			else if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
+			else if (Input::IsMouseButtonHeld(Mouse::ButtonLeft))
 				MouseRotate(delta);
-			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
+			else if (Input::IsMouseButtonHeld(Mouse::ButtonRight))
 				MouseZoom(delta.y);
 		}
 
@@ -137,4 +137,15 @@ namespace Vinyl
 		return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
 	}
 
+	void EditorCamera::Reset()
+	{
+		// Reset camera properties to their default values
+		m_Position = { 0.0f, 0.0f, 0.0f };
+		m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+		m_Distance = 10.0f; // Or any other default distance
+		m_Pitch = 0.0f;
+		m_Yaw = 0.0f;
+
+		UpdateView(); // Ensure the camera view is updated after resetting
+	}
 }

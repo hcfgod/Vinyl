@@ -1,9 +1,10 @@
 # Directories
 .vs/
 Bin/
-Bin-Intermediates/
+Intermediates/
 
 # Files
+*.log
 *.user
 
 # Binaries
@@ -20,6 +21,9 @@ Bin-Intermediates/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
-/Sandbox/VinylProfile-Startup.json
-/Sandbox/VinylProfile-Shutdown.json
-/Sandbox/VinylProfile-Runtime.json
+**.csproj
+
+Sandbox/VinylProfile-Startup.json
+Sandbox/VinylProfile-Shutdown.json
+Sandbox/VinylProfile-Runtime.json
+Vinyl-Editor/Assets/cache

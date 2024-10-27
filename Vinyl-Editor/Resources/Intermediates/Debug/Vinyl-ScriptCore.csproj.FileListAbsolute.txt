@@ -1,0 +1,6 @@
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Scripts\Vinyl-ScriptCore.dll
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Scripts\Vinyl-ScriptCore.pdb
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Intermediates\Debug\Vinyl-ScriptCore.csproj.AssemblyReference.cache
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Intermediates\Debug\Vinyl-ScriptCore.csproj.CoreCompileInputs.cache
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Intermediates\Debug\Vinyl-ScriptCore.dll
+C:\Users\Kman\Desktop\Vinyl\Vinyl-Editor\Resources\Intermediates\Debug\Vinyl-ScriptCore.pdb

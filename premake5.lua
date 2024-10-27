@@ -18,13 +18,15 @@ IncludeDir["yaml_cpp"] = "Vinyl/Vendor/yaml-cpp/include"
 IncludeDir["GLFW"] = "Vinyl/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Vinyl/Vendor/Glad/include"
 IncludeDir["imgui"] = "Vinyl/Vendor/imgui"
+IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
 IncludeDir["glm"] = "Vinyl/Vendor/glm"
 IncludeDir["entt"] = "Vinyl/Vendor/entt/include"
-IncludeDir["ImGuizmo"] = "Vinyl/Vendor/ImGuizmo"
+IncludeDir["Box2D"] = "Vinyl/Vendor/Box2D/include"
+IncludeDir["mono"] = "Vinyl/Vendor/mono/include"
 IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
+IncludeDir["filewatch"] = "Vinyl/Vendor/filewatch"
 IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
-IncludeDir["Box2D"] = "Vinyl/Vendor/Box2D/include"
 
 group "Dependencies"
 	include "Vinyl/Vendor/GLFW"
@@ -33,6 +35,8 @@ group "Dependencies"
 	include "Vinyl/Vendor/yaml-cpp"
 	include "Vinyl/Vendor/Box2D"
 group ""
+
+group "Core"
 
 project "Vinyl"
 	location "Vinyl"
@@ -78,14 +82,16 @@ project "Vinyl"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
+		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.shaderc}",
 		"%{IncludeDir.SPIRV_Cross}",
-		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.VulkanSDK}"
 	}
 
 	links
@@ -108,8 +114,15 @@ project "Vinyl"
 		defines
 		{
 			"VL_PLATFORM_WINDOWS",
-			"VL_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
+		}
+
+		links
+		{
+			"Ws2_32.lib",
+			"Winmm.lib",
+			"Version.lib",
+			"Bcrypt.lib"
 		}
 
 	filter "configurations:Debug"
@@ -120,7 +133,8 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_sharedd.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-cored.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsld.lib",
+			"Vinyl/Vendor/mono/lib/Debug/libmono-static-sgen.lib"
 		}
 
 	filter "configurations:Release"
@@ -131,7 +145,8 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
+			"Vinyl/Vendor/mono/lib/Release/libmono-static-sgen.lib"
 		}
 
 	filter "configurations:Dist"
@@ -142,8 +157,13 @@ project "Vinyl"
 		{
 			"Vinyl/Vendor/VulkanSDK/Lib/shaderc_shared.lib",
 			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-core.lib",
-			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib"
+			"Vinyl/Vendor/VulkanSDK/Lib/spirv-cross-glsl.lib",
+			"Vinyl/Vendor/mono/lib/Release/libmono-static-sgen.lib"
 		}
+
+include "Vinyl-ScriptCore"
+
+group ""
 
 project "Sandbox"
 	location "Sandbox"
@@ -219,10 +239,12 @@ project "Vinyl-Editor"
 		"Vinyl/Vendor/SpdLog/include",
 		"Vinyl/Source",
 		"Vinyl/Vendor/",
+
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.filewatch}"
 	}
 
 	links

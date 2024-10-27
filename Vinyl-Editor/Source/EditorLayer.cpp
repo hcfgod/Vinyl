@@ -3,6 +3,7 @@
 #include "Vinyl/Scene/SceneSerializer.h"
 #include "Vinyl/Utils/PlatformUtils.h"
 #include "Vinyl/Math/Math.h"
+#include "Vinyl/Scripting/ScriptEngine.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGuizmo/ImGuizmo.h>
@@ -18,7 +19,9 @@ namespace Vinyl
 		VL_PROFILE_FUNCTION();
 
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
+		m_IconPause = Texture2D::Create("Resources/Icons/PauseButton.png");
 		m_IconSimulate = Texture2D::Create("Resources/Icons/SimulateButton.png");
+		m_IconStep = Texture2D::Create("Resources/Icons/StepButton.png");
 		m_IconStop = Texture2D::Create("Resources/Icons/StopButton.png");
 
 		FramebufferSpecification fbSpec;
@@ -34,8 +37,7 @@ namespace Vinyl
 		if (commandLineArgs.Count > 1)
 		{
 			auto sceneFilePath = commandLineArgs[1];
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(sceneFilePath);
+			OpenScene(sceneFilePath);
 		}
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
@@ -54,13 +56,13 @@ namespace Vinyl
 
 		// Update
 
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
 		FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
 		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)) // zero sized framebuffer is invalid
 		{
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-
 			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		// Render
@@ -272,7 +274,6 @@ namespace Vinyl
 	// Gizmos
 	void EditorLayer::RenderGizmos()
 	{
-		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (selectedEntity && m_GizmoType != -1)
 		{
@@ -281,16 +282,30 @@ namespace Vinyl
 
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
-			// Editor Camera
-			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
-			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+			glm::mat4 cameraView;
+			glm::mat4 cameraProjection;
+
+			if (m_SceneState == SceneState::Play) 
+			{
+				// Use the runtime camera
+				Entity cameraEntity = m_ActiveScene->GetMainCameraEntity();
+				const auto& cameraComponent = cameraEntity.GetComponent<CameraComponent>();
+				cameraProjection = cameraComponent.Camera.GetProjection();
+				cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			}
+			else 
+			{
+				// Use the editor camera
+				cameraProjection = m_EditorCamera.GetProjection();
+				cameraView = m_EditorCamera.GetViewMatrix();
+			}
 
 			auto& entityTransformComponent = selectedEntity.GetComponent<TransformComponent>();
 			glm::mat4 transform = entityTransformComponent.GetTransform();
 
-			//TODO: make snapping configurable in the ui like unreal and unity does
+			//TODO: make snap values for (transform, rotation and scale) separately configurable in the ui like unreal does
 			// Snapping
-			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			bool snap = Input::IsKeyHeld(Key::LeftControl);
 			float snapValue = 0.5f;			// Snap to 0.5m for translation/scale
 
 			// Snap to 45 degrees for rotation
@@ -328,19 +343,31 @@ namespace Vinyl
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("New", "Ctrl+N"))
-					NewScene();
+				if (ImGui::MenuItem("New", "Ctrl+N")) NewScene();
 
-				if (ImGui::MenuItem("Open...", "Ctrl+O"))
-					OpenScene();
+				if (ImGui::MenuItem("Open...", "Ctrl+O")) OpenScene();
 
-				if (ImGui::MenuItem("Save", "Ctrl+S"))
-					SaveScene();
+				if (ImGui::MenuItem("Save", "Ctrl+S")) SaveScene();
 
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
-					SaveSceneAs();
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) SaveSceneAs();
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Camera"))
+			{
+				if (ImGui::MenuItem("Reset Editor Camera")) m_EditorCamera.Reset();
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Script"))
+			{
+				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
+					ScriptEngine::ReloadAssembly();
+
 				ImGui::EndMenu();
 			}
 
@@ -374,29 +401,21 @@ namespace Vinyl
 		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
 		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
+		bool hasPlayButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
+		bool hasSimulateButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
+		bool hasPauseButton = m_SceneState != SceneState::Edit;
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+
+		if (hasPlayButton)
 		{
-			Ref<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
+			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop;
 
-			if (m_SceneState == SceneState::Simulate)
+			if (ImGui::ImageButton("##play", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 			{
-				icon = m_IconPlay;
-			}
-
-			ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
-
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-
-			if (ImGui::ImageButton("##play", (ImTextureID)icon->GetRendererID(), ImVec2(size, size)))
-			{
-				if (m_SceneState == SceneState::Simulate)
-				{
-					OnSceneStop();
-					m_SceneState = SceneState::Edit;
-
-					OnScenePlay();
-				}
-				else if (m_SceneState == SceneState::Edit)
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
 				{
 					OnScenePlay();
 				}
@@ -405,18 +424,18 @@ namespace Vinyl
 					OnSceneStop();
 				}
 			}
-
-			ImGui::PopStyleVar();
 		}
 
-		ImGui::SameLine();
-
+		if (hasSimulateButton)
 		{
+			if (hasPlayButton)
+			{
+				ImGui::SameLine();
+			}
+
 			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
 
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-
-			if (ImGui::ImageButton("##simulate", (ImTextureID)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+			if (ImGui::ImageButton("##simualte", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 			{
 				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
 				{
@@ -427,9 +446,38 @@ namespace Vinyl
 					OnSceneStop();
 				}
 			}
-
-			ImGui::PopStyleVar();
 		}
+
+		if (hasPauseButton)
+		{
+			bool isPaused = m_ActiveScene->IsPaused();
+
+			ImGui::SameLine();
+			{
+				Ref<Texture2D> icon = m_IconPause;
+
+				if (ImGui::ImageButton("##pause", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+				{
+					m_ActiveScene->SetPaused(!isPaused);
+				}
+			}
+
+			// Step button
+			if (isPaused)
+			{
+				ImGui::SameLine();
+				{
+					Ref<Texture2D> icon = m_IconStep;
+					bool isPaused = m_ActiveScene->IsPaused();
+					if (ImGui::ImageButton("##Step", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+					{
+						m_ActiveScene->Step();
+					}
+				}
+			}
+		}
+
+		ImGui::PopStyleVar();
 
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);
@@ -466,7 +514,7 @@ namespace Vinyl
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 
-		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -548,8 +596,8 @@ namespace Vinyl
 			return false;
 		}
 
-		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		bool control = Input::IsKeyHeld(Key::LeftControl) || Input::IsKeyHeld(Key::RightControl);
+		bool shift = Input::IsKeyHeld(Key::LeftShift) || Input::IsKeyHeld(Key::RightShift);
 
 		switch (event.GetKeyCode())
 		{
@@ -628,6 +676,10 @@ namespace Vinyl
 
 			case Key::R:
 			{
+				if (control)
+				{
+					ScriptEngine::ReloadAssembly();
+				}
 				if (!ImGuizmo::IsUsing())
 				{
 					m_GizmoType = ImGuizmo::OPERATION::SCALE;
@@ -646,7 +698,7 @@ namespace Vinyl
 	{
 		if (event.GetMouseButton() == Mouse::ButtonLeft)
 		{
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyHeld(Key::LeftAlt))
 			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 			}
@@ -658,7 +710,6 @@ namespace Vinyl
 	void EditorLayer::NewScene()
 	{
 		m_ActiveScene = CreateRef<Scene>();
-		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 		m_EditorScenePath = std::filesystem::path();
@@ -689,12 +740,13 @@ namespace Vinyl
 
 		Ref<Scene> newScene = CreateRef<Scene>();
 		SceneSerializer serializer(newScene);
+
 		if (serializer.Deserialize(path.string()))
 		{
-			m_EditorScene = newScene;
-			m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_EditorScene = newScene;		
 			m_SceneHierarchyPanel.SetContext(m_EditorScene);
 			m_ActiveScene = m_EditorScene;
+
 			m_EditorScenePath = path;
 		}
 	}
@@ -725,12 +777,6 @@ namespace Vinyl
 
 	void EditorLayer::OnScenePlay()
 	{
-		if (!m_EditorScene)
-		{
-			VL_WARN("No scene loaded to play!");
-			return;
-		}
-
 		if (m_SceneState == SceneState::Simulate)
 		{
 			OnSceneStop();

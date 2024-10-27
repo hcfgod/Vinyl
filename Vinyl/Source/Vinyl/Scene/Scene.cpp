@@ -5,6 +5,9 @@
 #include "Vinyl/Scene/Components.h"
 #include "Vinyl/Scene/Entity.h"
 #include "Vinyl/Rendering/Renderer/Renderer2D.h"
+#include "Vinyl/Scene/ScriptableEntity.h"
+#include "Vinyl/Scripting/ScriptEngine.h"
+
 #include "ScriptableEntity.h"
 
 #include <glm/glm.hpp>
@@ -76,9 +79,7 @@ namespace Vinyl
 		return b2_staticBody;
 	}
 
-	Scene::Scene()
-	{
-	}
+	Scene::Scene() { }
 
 	Scene::~Scene()
 	{
@@ -87,12 +88,50 @@ namespace Vinyl
 
 	void Scene::OnRuntimeStart()
 	{
+		m_IsRunning = true;
+
 		OnPhysics2DStart();
+
+		// Instantiate Scripts
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			// C# Scripting OnCreateEntity
+			{
+				auto view = m_Registry.view<ScriptComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+					ScriptEngine::OnCreateEntity(entity);
+				}
+			}
+
+			// Native scripting OnCreate
+			{
+				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
+					if (!nsc.Instance)
+					{
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+				});
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
+		m_IsRunning = false;
+
 		OnPhysics2DStop();
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStop();
+		}
 	}
 
 	void Scene::OnSimulationStart()
@@ -166,6 +205,11 @@ namespace Vinyl
 		m_PhysicsWorld = nullptr;
 	}
 
+	void Scene::Step(int frames)
+	{
+		m_StepFrames = frames;
+	}
+
 	void Scene::RenderScene(EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
@@ -197,41 +241,51 @@ namespace Vinyl
 
 	void Scene::OnUpdateRuntime(TimeStep timeStep)
 	{
-		// Update scripts
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
-				{
-					// TODO: Move to Scene::OnScenePlay
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
-
-					nsc.Instance->OnUpdate(timeStep);
-				});
-		}
-
-		// Physics
-		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(timeStep, velocityIterations, positionIterations);
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			// Update scripts
 			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				// C# Scripting
+				{
+					// C# Scripting OnUpdateEntity 
+					auto view = m_Registry.view<ScriptComponent>();
+					for (auto e : view)
+					{
+						Entity entity = { e, this };
+						const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+						ScriptEngine::OnUpdateEntity(entity, timeStep);
+					}
+				}
 
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				// Native Scripting OnUpdate
+				{
+					m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+						{
+							nsc.Instance->OnUpdate(timeStep);
+						});
+				}
+			}
+
+			// Physics
+			{
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(timeStep, velocityIterations, positionIterations);
+
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
@@ -286,25 +340,28 @@ namespace Vinyl
 
 	void Scene::OnUpdateSimulation(TimeStep ts, EditorCamera& camera)
 	{
-		// Physics
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			// Physics
 			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
@@ -320,6 +377,8 @@ namespace Vinyl
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
+		if (m_ViewportWidth == width && m_ViewportHeight == height) return;
+
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
@@ -329,7 +388,9 @@ namespace Vinyl
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
 			if (!cameraComponent.FixedAspectRatio)
+			{
 				cameraComponent.Camera.SetViewportSize(width, height);
+			}
 		}
 	}
 
@@ -345,18 +406,39 @@ namespace Vinyl
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		m_EntityMap[uuid] = entity;
+
 		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
+		m_EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::DuplicateEntity(Entity entity)
 	{
 		Entity newEntity = CreateEntity(entity.GetName());
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+	}
+
+	Entity Scene::FindEntityByName(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+
+		for (auto entity : view)
+		{
+			const TagComponent& tc = view.get<TagComponent>(entity);
+
+			if (tc.Tag == name)
+			{
+				return Entity{ entity, this };
+			}
+		}
+
+		return {};
 	}
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
@@ -398,6 +480,17 @@ namespace Vinyl
 		return {};
 	}
 
+	Entity Scene::GetEntityByUUID(UUID entityID)
+	{
+		// TODO: maybe should assert
+		if (m_EntityMap.find(entityID) != m_EntityMap.end())
+		{
+			return { m_EntityMap.at(entityID), this };
+		}
+
+		return {};
+	}
+
 	template<>
 	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
 	{
@@ -416,6 +509,16 @@ namespace Vinyl
 	}
 
 	template<>
+	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+	}
+
+	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{
 	}
@@ -427,11 +530,6 @@ namespace Vinyl
 
 	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 	{
 	}
 

@@ -38,6 +38,10 @@ Entities:
         OrthographicFar: 1
       MainCamera: true
       FixedAspectRatio: false
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+      ScriptFields:
+        []
   - Entity: 13485742577350290137
     TagComponent:
       Tag: Floor
@@ -103,20 +107,20 @@ Entities:
     TagComponent:
       Tag: Wall
     TransformComponent:
-      Translation: [3.42533016, 3.97688365, -1.05999994]
+      Translation: [3.42533016, 3.97688365, -7.55999994]
       Rotation: [0, 0, -0.733501852]
-      Scale: [2.34294105, 1.37009788, 1]
+      Scale: [7.0437398, 4.36536264, 1]
     SpriteRendererComponent:
       Color: [0.625482619, 0.565863132, 0.514393032, 1]
-      TexturePath: Assets\Textures\baby.jpg
+      TexturePath: Assets\Textures\RPGpack_sheet_2X.png
       TilingFactor: 1
   - Entity: 8957957362783005685
     TagComponent:
       Tag: Player
     TransformComponent:
-      Translation: [4.44535017, 5.3870945, 0]
+      Translation: [4.05809689, 6.96953869, -9.31322575e-10]
       Rotation: [0, 0, 0.0508836843]
-      Scale: [0.224112332, 0.224112332, 0.224112004]
+      Scale: [0.35633859, 0.35633859, 0.356338054]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TexturePath: Assets\Textures\baby.jpg
@@ -131,3 +135,9 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
+    ScriptComponent:
+      ClassName: Sandbox.Player
+      ScriptFields:
+        - Name: Speed
+          Type: Float
+          Data: 4

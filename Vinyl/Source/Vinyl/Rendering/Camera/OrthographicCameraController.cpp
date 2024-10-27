@@ -15,32 +15,32 @@ namespace Vinyl
 	{
 		VL_PROFILE_FUNCTION();
 
-		if (Input::IsKeyPressed(Key::W))
+		if (Input::IsKeyHeld(Key::W))
 		{
 			m_CameraPosition.y += m_CameraMoveSpeed * timeStep;
 		}
-		else if (Vinyl::Input::IsKeyPressed(Key::S))
+		else if (Vinyl::Input::IsKeyHeld(Key::S))
 		{
 			m_CameraPosition.y -= m_CameraMoveSpeed * timeStep;
 		}
 
-		if (Input::IsKeyPressed(Key::A))
+		if (Input::IsKeyHeld(Key::A))
 		{
 			m_CameraPosition.x -= m_CameraMoveSpeed * timeStep;
 		}
-		else if (Input::IsKeyPressed(Key::D))
+		else if (Input::IsKeyHeld(Key::D))
 		{
 			m_CameraPosition.x += m_CameraMoveSpeed * timeStep;
 		}
 
 		if (m_UseRotation)
 		{
-			if (Input::IsKeyPressed(Key::Q))
+			if (Input::IsKeyHeld(Key::Q))
 			{
 				m_CameraRotation += m_CameraRotationSpeed * timeStep;
 			}
 
-			if (Input::IsKeyPressed(Key::E))
+			if (Input::IsKeyHeld(Key::E))
 			{
 				m_CameraRotation -= m_CameraRotationSpeed * timeStep;
 			}

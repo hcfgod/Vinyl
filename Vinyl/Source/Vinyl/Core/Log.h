@@ -10,6 +10,8 @@
 #include <spdlog/fmt/ostr.h>
 #pragma warning(pop)
 
+#include <filesystem>
+
 namespace Vinyl
 {
 	class VINYL_API Log
@@ -25,23 +27,80 @@ namespace Vinyl
 	};
 }
 
-template<typename OStream, glm::length_t L, typename T, glm::qualifier Q>
-inline OStream& operator<<(OStream& os, const glm::vec<L, T, Q>& vector)
+// Specialization for glm::vec types to work with fmt and spdlog
+template <glm::length_t L, typename T, glm::qualifier Q>
+struct fmt::formatter<glm::vec<L, T, Q>> 
 {
-	return os << glm::to_string(vector);
-}
+	// Parse format specification (can be extended)
+	constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin())
+	{
+		return ctx.begin();
+	}
 
-template<typename OStream, glm::length_t C, glm::length_t R, typename T, glm::qualifier Q>
-inline OStream& operator<<(OStream& os, const glm::mat<C, R, T, Q>& matrix)
-{
-	return os << glm::to_string(matrix);
-}
+	// Format the glm::vec object using glm::to_string
+	template <typename FormatContext>
+	auto format(const glm::vec<L, T, Q>& vec, FormatContext& ctx) const -> decltype(ctx.out()) 
+	{
+		// Use fmt::format instead of format_to for clarity
+		return fmt::format_to(ctx.out(), "{}", glm::to_string(vec));
+	}
+};
 
-template<typename OStream, typename T, glm::qualifier Q>
-inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
+// Specialization for glm::mat types to work with fmt and spdlog
+template <glm::length_t C, glm::length_t R, typename T, glm::qualifier Q>
+struct fmt::formatter<glm::mat<C, R, T, Q>>
 {
-	return os << glm::to_string(quaternion);
-}
+	// Parse format specification (can be extended)
+	constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin())
+	{
+		return ctx.begin();
+	}
+
+	// Format the glm::mat object using glm::to_string
+	template <typename FormatContext>
+	auto format(const glm::mat<C, R, T, Q>& matrix, FormatContext& ctx) const -> decltype(ctx.out())
+	{
+		// Use fmt::format_to to format the matrix
+		return fmt::format_to(ctx.out(), "{}", glm::to_string(matrix));
+	}
+};
+
+// Specialization for glm::qua (quaternion) types to work with fmt and spdlog
+template <typename T, glm::qualifier Q>
+struct fmt::formatter<glm::qua<T, Q>>
+{
+	// Parse format specification (can be extended)
+	constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin())
+	{
+		return ctx.begin();
+	}
+
+	// Format the glm::qua object using glm::to_string
+	template <typename FormatContext>
+	auto format(const glm::qua<T, Q>& quaternion, FormatContext& ctx) const -> decltype(ctx.out())
+	{
+		// Use fmt::format_to to format the quaternion
+		return fmt::format_to(ctx.out(), "{}", glm::to_string(quaternion));
+	}
+};
+
+template <>
+struct fmt::formatter<std::filesystem::path> : fmt::formatter<std::string>
+{
+	// Parses the format specifier (if any)
+	template <typename ParseContext>
+	constexpr auto parse(ParseContext& ctx) -> decltype(ctx.begin())
+	{
+		return fmt::formatter<std::string>::parse(ctx);
+	}
+
+	// Formats the std::filesystem::path object using fmt::format
+	template <typename FormatContext>
+	auto format(const std::filesystem::path& path, FormatContext& ctx) const -> decltype(ctx.out())
+	{
+		return fmt::formatter<std::string>::format(path.string(), ctx);
+	}
+};
 
 // Core log macros
 #define VL_CORE_TRACE(...)    ::Vinyl::Log::GetCoreLogger()->trace(__VA_ARGS__)

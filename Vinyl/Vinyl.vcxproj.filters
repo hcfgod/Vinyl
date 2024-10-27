@@ -52,6 +52,9 @@
     <Filter Include="Source\Vinyl\Scene">
       <UniqueIdentifier>{D466C4D8-C04A-852E-29AB-7F8115AE6FB0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Scripting">
+      <UniqueIdentifier>{397297BD-256C-C00F-0ED9-5620FA71267C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Utils">
       <UniqueIdentifier>{17FBF1D8-03DF-B22E-6C3F-AD8158429DB0}</UniqueIdentifier>
     </Filter>
@@ -123,10 +126,16 @@
     <ClInclude Include="Source\Vinyl\Core\Base.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\Buffer.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Debug\Instrumentor.h">
       <Filter>Source\Vinyl\Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\EntryPoint.h">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Core\FileSystem.h">
       <Filter>Source\Vinyl\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Input\Input.h">
@@ -135,7 +144,7 @@
     <ClInclude Include="Source\Vinyl\Core\Input\KeyCodes.h">
       <Filter>Source\Vinyl\Core\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Core\Input\MouseCodes.h">
+    <ClInclude Include="Source\Vinyl\Core\Input\MouseButtons.h">
       <Filter>Source\Vinyl\Core\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Core\Layer\Layer.h">
@@ -245,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h">
       <Filter>Source\Vinyl\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h">
+      <Filter>Source\Vinyl\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h">
+      <Filter>Source\Vinyl\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h">
       <Filter>Source\Vinyl\Utils</Filter>
@@ -1544,6 +1559,9 @@
     <ClCompile Include="Source\Vinyl\Core\Application.cpp">
       <Filter>Source\Vinyl\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Core\FileSystem.cpp">
+      <Filter>Source\Vinyl\Core</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Vinyl\Core\Layer\Layer.cpp">
       <Filter>Source\Vinyl\Core\Layer</Filter>
     </ClCompile>
@@ -1621,6 +1639,12 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Scene\SceneSerializer.cpp">
       <Filter>Source\Vinyl\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptEngine.cpp">
+      <Filter>Source\Vinyl\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Scripting\ScriptGlue.cpp">
+      <Filter>Source\Vinyl\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Source\vlpch.cpp">
       <Filter>Source</Filter>
