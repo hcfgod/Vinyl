@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vinyl/Core/Base.h"
+#include "Vinyl/Core/UUID.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
@@ -99,6 +100,22 @@ struct fmt::formatter<std::filesystem::path> : fmt::formatter<std::string>
 	auto format(const std::filesystem::path& path, FormatContext& ctx) const -> decltype(ctx.out())
 	{
 		return fmt::formatter<std::string>::format(path.string(), ctx);
+	}
+};
+
+template <>
+struct fmt::formatter<Vinyl::UUID>
+{
+	// Parse format specification (if any)
+	constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
+		return ctx.begin();
+	}
+
+	// Format the UUID object as a string
+	template <typename FormatContext>
+	auto format(const Vinyl::UUID& uuid, FormatContext& ctx) const -> decltype(ctx.out()) {
+		// Explicitly convert the UUID to a string using fmt::format to avoid ambiguity
+		return fmt::format_to(ctx.out(), "{}", static_cast<std::string>(std::to_string(static_cast<uint64_t>(uuid))));
 	}
 };
 
