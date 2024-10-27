@@ -23,6 +23,13 @@ namespace Vinyl
 {
 	static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_EntityHasComponentFuncs;
 
+	static MonoObject* GetScriptInstance(UUID entityID)
+	{
+		return ScriptEngine::GetManagedInstance(entityID);
+	}
+
+	#pragma region Entity
+
 	static bool Entity_HasComponent(UUID entityID, MonoReflectionType* componentType)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
@@ -36,6 +43,25 @@ namespace Vinyl
 
 		return s_EntityHasComponentFuncs.at(managedType)(entity);
 	}
+
+	static uint64_t Entity_FindEntityByName(MonoString* name)
+	{
+		char* nameCStr = mono_string_to_utf8(name);
+
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->FindEntityByName(nameCStr);
+
+		mono_free(nameCStr);
+		if (!entity) return 0;	
+
+		return entity.GetUUID();
+	}
+
+	#pragma endregion
+
+	#pragma region Components
 
 	static void TransformComponent_GetTranslation(UUID entityID, glm::vec3* outTranslation)
 	{
@@ -82,6 +108,10 @@ namespace Vinyl
 		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
 	}
 
+	#pragma endregion
+
+	#pragma region Input
+
 	static bool Input_IsKeyHeld(KeyCode keycode)
 	{
 		return Input::IsKeyHeld(keycode);
@@ -92,6 +122,8 @@ namespace Vinyl
 		return Input::IsMouseButtonHeld(mousebutton);
 	}
 
+	#pragma endregion
+	
 	template<typename... Component>
 	static void RegisterComponent()
 	{
@@ -124,7 +156,10 @@ namespace Vinyl
 
 	void ScriptGlue::RegisterFunctions()
 	{
+		VL_ADD_INTERNAL_CALL(GetScriptInstance);
+
 		VL_ADD_INTERNAL_CALL(Entity_HasComponent);
+		VL_ADD_INTERNAL_CALL(Entity_FindEntityByName);
 
 		VL_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		VL_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);

@@ -520,7 +520,6 @@ namespace Vinyl
 
 							ScriptFieldInstance& fieldInstance = entityFields[name];
 
-							// TODO(Yan): turn this assert into Hazelnut log warning
 							if (fields.find(name) != fields.end())
 							{
 								VL_CORE_WARN("Could not find field with name: {}", name);

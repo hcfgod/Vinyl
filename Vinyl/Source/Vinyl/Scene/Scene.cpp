@@ -368,6 +368,8 @@ namespace Vinyl
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
+		if (m_ViewportWidth == width && m_ViewportHeight == height) return;
+
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
@@ -377,7 +379,9 @@ namespace Vinyl
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
 			if (!cameraComponent.FixedAspectRatio)
+			{
 				cameraComponent.Camera.SetViewportSize(width, height);
+			}
 		}
 	}
 
@@ -409,6 +413,23 @@ namespace Vinyl
 	{
 		Entity newEntity = CreateEntity(entity.GetName());
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+	}
+
+	Entity Scene::FindEntityByName(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+
+		for (auto entity : view)
+		{
+			const TagComponent& tc = view.get<TagComponent>(entity);
+
+			if (tc.Tag == name)
+			{
+				return Entity{ entity, this };
+			}
+		}
+
+		return {};
 	}
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
