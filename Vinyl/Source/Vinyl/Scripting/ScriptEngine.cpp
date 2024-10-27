@@ -244,6 +244,7 @@ namespace Vinyl
 
 		//Utils::PrintAssemblyTypes(s_Data->AppAssembly);
 
+		// TODO: Only create filewatcher if needs to be created, Reason ReloadAssembly calls this LoadAppAssembly witch creates a new scope for s_Data->AppAssemblyFileWatcher
 		s_Data->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filePath.string(), OnAppAssemblyFileSystemEvent);
 		s_Data->AssemblyReloadPending = false;
 	}
@@ -252,10 +253,13 @@ namespace Vinyl
 	{
 		mono_domain_set(mono_get_root_domain(), false);
 		mono_domain_unload(s_Data->AppDomain);
+
 		LoadAssembly(s_Data->CoreAssemblyFilepath);
 		LoadAppAssembly(s_Data->AppAssemblyFilepath);
 		LoadAssemblyClasses();
+
 		ScriptGlue::RegisterComponents();
+
 		// Retrieve and instantiate class
 		s_Data->EntityClass = ScriptClass("Vinyl", "Entity", true);
 	}

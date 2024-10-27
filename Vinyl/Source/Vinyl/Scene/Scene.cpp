@@ -79,9 +79,7 @@ namespace Vinyl
 		return b2_staticBody;
 	}
 
-	Scene::Scene()
-	{
-	}
+	Scene::Scene() { }
 
 	Scene::~Scene()
 	{
@@ -207,6 +205,11 @@ namespace Vinyl
 		m_PhysicsWorld = nullptr;
 	}
 
+	void Scene::Step(int frames)
+	{
+		m_StepFrames = frames;
+	}
+
 	void Scene::RenderScene(EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
@@ -238,48 +241,51 @@ namespace Vinyl
 
 	void Scene::OnUpdateRuntime(TimeStep timeStep)
 	{
-		// Update scripts
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			// C# Scripting
+			// Update scripts
 			{
-				// C# Scripting OnUpdateEntity 
-				auto view = m_Registry.view<ScriptComponent>();
-				for (auto e : view)
+				// C# Scripting
 				{
-					Entity entity = { e, this };
-					const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
-					ScriptEngine::OnUpdateEntity(entity, timeStep);
+					// C# Scripting OnUpdateEntity 
+					auto view = m_Registry.view<ScriptComponent>();
+					for (auto e : view)
+					{
+						Entity entity = { e, this };
+						const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+						ScriptEngine::OnUpdateEntity(entity, timeStep);
+					}
+				}
+
+				// Native Scripting OnUpdate
+				{
+					m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+						{
+							nsc.Instance->OnUpdate(timeStep);
+						});
 				}
 			}
 
-			// Native Scripting OnUpdate
+			// Physics
 			{
-				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(timeStep, velocityIterations, positionIterations);
+
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
 				{
-					nsc.Instance->OnUpdate(timeStep);
-				});
-			}
-		}
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-		// Physics
-		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(timeStep, velocityIterations, positionIterations);
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
-			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
@@ -334,25 +340,28 @@ namespace Vinyl
 
 	void Scene::OnUpdateSimulation(TimeStep ts, EditorCamera& camera)
 	{
-		// Physics
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			// Physics
 			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
 			}
 		}
 
