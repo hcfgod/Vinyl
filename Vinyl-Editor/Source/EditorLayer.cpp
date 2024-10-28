@@ -4,18 +4,18 @@
 #include <Vinyl/Utils/PlatformUtils.h>
 #include <Vinyl/Math/Math.h>
 #include <Vinyl/Scripting/ScriptEngine.h>
-#include <Vinyl/Rendering/Renderer/Font.h>
+#include <Vinyl/Rendering/Renderer/TextRendering/Font.h>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGuizmo/ImGuizmo.h>
 
 namespace Vinyl
 {
-	static Font* s_Font;
+	static Ref<Font> s_Font;
 
 	EditorLayer::EditorLayer() : Layer("EditorLayer") 
 	{
-		s_Font = new Font("Assets/Fonts/OpenSans/OpenSans-Regular.ttf");
+		s_Font = Font::GetDefault();
 	}
 
 	void EditorLayer::OnAttach()

@@ -269,6 +269,7 @@ namespace Vinyl
 		glm::mat4 cameraTransform = camera.GetViewProjection();
 
 		RenderEntitiesPass(cameraPosition, camera, cameraTransform);
+		Renderer2D::DrawString("Vinyl", Font::GetDefault(), glm::mat4(1.0f), glm::vec4(1.0f));
 
 		Renderer2D::EndScene();
 	}
