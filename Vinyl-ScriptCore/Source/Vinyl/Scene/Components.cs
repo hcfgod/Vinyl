@@ -59,6 +59,40 @@
         }
     }
 
+    public class TextComponent : Component
+    {
+        public string Text
+        {
+            get => InternalCalls.TextComponent_GetText(Entity.EntityID);
+            set => InternalCalls.TextComponent_SetText(Entity.EntityID, value);
+        }
+
+        public Vector4 Color
+        {
+            get
+            {
+                InternalCalls.TextComponent_GetColor(Entity.EntityID, out Vector4 color);
+                return color;
+            }
+            set
+            {
+                InternalCalls.TextComponent_SetColor(Entity.EntityID, ref value);
+            }
+        }
+
+        public float Kerning
+        {
+            get => InternalCalls.TextComponent_GetKerning(Entity.EntityID);
+            set => InternalCalls.TextComponent_SetKerning(Entity.EntityID, value);
+        }
+
+        public float LineSpacing
+        {
+            get => InternalCalls.TextComponent_GetLineSpacing(Entity.EntityID);
+            set => InternalCalls.TextComponent_SetLineSpacing(Entity.EntityID, value);
+        }
+    }
+
     public class BoxCollider2DComponent : Component { }
     public class CircleCollider2DComponent : Component { }
 

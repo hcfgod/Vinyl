@@ -21,7 +21,8 @@
     <OutputPath>..\Vinyl-Editor\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Vinyl-Editor\Resources\Intermediates\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -33,7 +34,8 @@
     <OutputPath>..\Vinyl-Editor\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Vinyl-Editor\Resources\Intermediates\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -45,7 +47,8 @@
     <OutputPath>..\Vinyl-Editor\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Vinyl-Editor\Resources\Intermediates\Dist\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -64,6 +67,7 @@
     <Compile Include="Source\Vinyl\Scene\Entity.cs" />
     <Compile Include="Source\Vinyl\Vector2.cs" />
     <Compile Include="Source\Vinyl\Vector3.cs" />
+    <Compile Include="Source\Vinyl\Vector4.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
