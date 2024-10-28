@@ -177,6 +177,7 @@
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h" />
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Source\Vinyl\Math\Math.h" />
+    <ClInclude Include="Source\Vinyl\Physics\Physics2D.h" />
     <ClInclude Include="Source\Vinyl\Project\Project.h" />
     <ClInclude Include="Source\Vinyl\Project\ProjectSerializer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h" />

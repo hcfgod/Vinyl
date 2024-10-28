@@ -23,8 +23,31 @@
             }
         }
     }
+
     public class Rigidbody2DComponent : Component
     {
+        public enum BodyType { Static = 0, Dynamic, Kinematic }
+
+        public Vector2 LinearVelocity
+        {
+            get
+            {
+                InternalCalls.Rigidbody2DComponent_GetLinearVelocity(Entity.EntityID, out Vector2 linearVelocity);
+                return linearVelocity;
+            }
+
+            set
+            {
+                InternalCalls.Rigidbody2DComponent_SetLinearVelocity(Entity.EntityID, ref value);
+            }
+        }
+
+        public BodyType Type
+        {
+            get => InternalCalls.Rigidbody2DComponent_GetType(Entity.EntityID);
+            set => InternalCalls.Rigidbody2DComponent_SetType(Entity.EntityID, value);
+        }
+
         public void ApplyLinearImpulse(Vector2 impulse, Vector2 worldPosition, bool wake)
         {
             InternalCalls.Rigidbody2DComponent_ApplyLinearImpulse(Entity.EntityID, ref impulse, ref worldPosition, wake);
@@ -35,6 +58,7 @@
             InternalCalls.Rigidbody2DComponent_ApplyLinearImpulseToCenter(Entity.EntityID, ref impulse, wake);
         }
     }
+
     public class BoxCollider2DComponent : Component { }
     public class CircleCollider2DComponent : Component { }
 

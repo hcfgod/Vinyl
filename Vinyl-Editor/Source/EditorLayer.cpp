@@ -745,6 +745,8 @@ namespace Vinyl
 	{
 		if (Project::Load(path))
 		{
+			ScriptEngine::Init();
+
 			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
 
 			OpenScene(startScenePath);
@@ -891,7 +893,8 @@ namespace Vinyl
 
 		if (selectedEntity)
 		{
-			m_EditorScene->DuplicateEntity(selectedEntity);
+			Entity newEntity = m_EditorScene->DuplicateEntity(selectedEntity);
+			m_SceneHierarchyPanel.SetSelectedEntity(newEntity);
 		}
 	}
 }

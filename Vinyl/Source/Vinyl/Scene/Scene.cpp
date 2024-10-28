@@ -7,6 +7,7 @@
 #include "Vinyl/Rendering/Renderer/Renderer2D.h"
 #include "Vinyl/Scene/ScriptableEntity.h"
 #include "Vinyl/Scripting/ScriptEngine.h"
+#include "Vinyl/Physics/Physics2D.h"
 
 #include "ScriptableEntity.h"
 
@@ -64,19 +65,6 @@ namespace Vinyl
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
 		static_assert(sizeof(T) == 0);
-	}
-
-	static b2BodyType Rigidbody2DTypeToBox2DBody(Rigidbody2DComponent::BodyType bodyType)
-	{
-		switch (bodyType)
-		{
-		case Rigidbody2DComponent::BodyType::Static:    return b2_staticBody;
-		case Rigidbody2DComponent::BodyType::Dynamic:   return b2_dynamicBody;
-		case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
-		}
-
-		VL_CORE_ASSERT(false, "Unknown body type");
-		return b2_staticBody;
 	}
 
 	Scene::Scene() { }
@@ -156,7 +144,7 @@ namespace Vinyl
 			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
 			b2BodyDef bodyDef;
-			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.type = Utils::Rigidbody2DTypeToBox2DBody(rb2d.Type);
 			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
 			bodyDef.angle = transform.Rotation.z;
 
@@ -433,7 +421,9 @@ namespace Vinyl
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
+
 		auto& tag = entity.AddComponent<TagComponent>();
+
 		tag.Tag = name.empty() ? "Entity" : name;
 
 		m_EntityMap[uuid] = entity;
@@ -447,10 +437,14 @@ namespace Vinyl
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::DuplicateEntity(Entity entity)
+	Entity Scene::DuplicateEntity(Entity entity)
 	{
-		Entity newEntity = CreateEntity(entity.GetName());
+		// Copy name because we're going to modify component data structure
+		std::string name = entity.GetName();
+		Entity newEntity = CreateEntity(name);
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+
+		return newEntity;
 	}
 
 	Entity Scene::FindEntityByName(std::string_view name)

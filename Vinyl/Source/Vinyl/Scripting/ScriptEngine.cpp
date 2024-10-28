@@ -8,6 +8,7 @@
 #include "Vinyl/Core/Timer.h"
 #include "Vinyl/Core/Buffer.h"
 #include "Vinyl/Core/FileSystem.h"
+#include "Vinyl/Project/Project.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -175,7 +176,11 @@ namespace Vinyl
 			return;
 		}
 
-		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+		// Get the absolute path for the script module
+		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		VL_CORE_INFO("[ScriptEngine] Full scriptModulePath: {}", scriptModulePath);
+
+		status = LoadAppAssembly(scriptModulePath);
 
 		if (!status)
 		{

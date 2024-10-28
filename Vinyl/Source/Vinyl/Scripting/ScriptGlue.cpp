@@ -5,6 +5,7 @@
 
 #include "Vinyl/Scene/Scene.h"
 #include "Vinyl/Scene/Entity.h"
+#include "Vinyl/Physics/Physics2D.h"
 
 #include "Vinyl/Core/UUID.h"
 
@@ -108,6 +109,62 @@ namespace Vinyl
 		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
 	}
 
+	static void Rigidbody2DComponent_GetLinearVelocity(UUID entityID, glm::vec2* outLinearVelocity)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		const b2Vec2& linearVelocity = body->GetLinearVelocity();
+
+		*outLinearVelocity = glm::vec2(linearVelocity.x, linearVelocity.y);
+	}
+
+	static void Rigidbody2DComponent_SetLinearVelocity(UUID entityID, glm::vec2* linearVelocity)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+
+		// Set the linear velocity on the body
+		body->SetLinearVelocity(b2Vec2(linearVelocity->x, linearVelocity->y));
+	}
+
+	static Rigidbody2DComponent::BodyType Rigidbody2DComponent_GetType(UUID entityID)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		return Utils::Rigidbody2DTypeFromBox2DBody(body->GetType());
+	}
+
+	static void Rigidbody2DComponent_SetType(UUID entityID, Rigidbody2DComponent::BodyType bodyType)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		VL_CORE_ASSERT(scene, "ScriptEngine Scene Context is null.");
+
+		Entity entity = scene->GetEntityByUUID(entityID);
+		VL_CORE_ASSERT(entity, "Scene Entity is null.");
+
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		b2Body* body = (b2Body*)rb2d.RuntimeBody;
+		body->SetType(Utils::Rigidbody2DTypeToBox2DBody(bodyType));
+	}
+
 	#pragma endregion
 
 	#pragma region Input
@@ -171,6 +228,12 @@ namespace Vinyl
 
 		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
 		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
+
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetLinearVelocity);
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_SetLinearVelocity);
+
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetType);
+		VL_ADD_INTERNAL_CALL(Rigidbody2DComponent_SetType);
 
 		VL_ADD_INTERNAL_CALL(Input_IsKeyHeld);
 		VL_ADD_INTERNAL_CALL(Input_IsMouseButtonDown);
