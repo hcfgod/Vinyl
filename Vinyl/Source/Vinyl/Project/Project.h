@@ -35,9 +35,7 @@ namespace Vinyl
 		static std::filesystem::path GetAssetFileSystemPath(const std::filesystem::path& path)
 		{
 			VL_CORE_ASSERT(s_ActiveProject, "");
-			auto fullPath = GetAssetDirectory() / path;
-
-			return fullPath;
+			return GetAssetDirectory() / path;
 		}
 
 		static std::filesystem::path GetPathRelativeToAssetDirectory(const std::filesystem::path& path)

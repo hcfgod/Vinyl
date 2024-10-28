@@ -1,5 +1,0 @@
-Project:
-  Name: Sandbox
-  StartScene: "Scenes/Physics2D.vinyl"   # Make sure this path is valid and points to an actual file
-  AssetDirectory: "Assets"               # No trailing slash here
-  ScriptModulePath: "Scripts/Binaries/Sandbox.dll"

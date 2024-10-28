@@ -1,5 +1,6 @@
 #include "vlpch.h"
 #include "FileSystem.h"
+#include <algorithm>
 
 namespace Vinyl 
 {

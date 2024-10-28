@@ -203,6 +203,7 @@
     <ClInclude Include="Source\Vinyl\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\Vinyl\Scripting\ScriptEngine.h" />
     <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h" />
+    <ClInclude Include="Source\Vinyl\UI\UI.h" />
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h" />
     <ClInclude Include="Source\vlpch.h" />
     <ClInclude Include="Vendor\ImGuizmo\ImGuizmo.h" />

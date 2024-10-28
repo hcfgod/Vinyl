@@ -1523,6 +1523,7 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Project\Project.h" />
     <ClInclude Include="Source\Vinyl\Project\ProjectSerializer.h" />
+    <ClInclude Include="Source\Vinyl\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">

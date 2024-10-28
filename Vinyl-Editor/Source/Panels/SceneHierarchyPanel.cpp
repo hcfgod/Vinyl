@@ -2,6 +2,7 @@
 
 #include "Vinyl/Scene/Components.h"
 #include "Vinyl/Scripting/ScriptEngine.h"
+#include "Vinyl/UI/UI.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -470,14 +471,12 @@ namespace Vinyl
 				static char buffer[64];
 				strcpy_s(buffer, sizeof(buffer), component.ClassName.c_str());
 
-				if (!scriptClassExists)
-				{
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
-				}
+				UI::ScopedStyleColor textColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f), !scriptClassExists);
 
 				if (ImGui::InputText("ClassName", buffer, sizeof(buffer)))
 				{
 					component.ClassName = buffer;
+					return;
 				}
 
 				// Fields
@@ -542,11 +541,6 @@ namespace Vinyl
 							}
 						}
 					}
-				}
-
-				if (!scriptClassExists)
-				{
-					ImGui::PopStyleColor();
 				}
 		});
 	}

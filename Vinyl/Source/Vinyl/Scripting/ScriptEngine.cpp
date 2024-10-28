@@ -134,7 +134,11 @@ namespace Vinyl
 		bool AssemblyReloadPending = false;
 
 		// TODO: Move to application settings or something. Also make the setting configurable in the editor.
-		bool EnableDebugging = true;
+		#ifdef VL_DEBUG
+				bool EnableDebugging = true;
+		#else
+				bool EnableDebugging = false;
+		#endif
 
 		// Runtime
 		Scene* SceneContext = nullptr;
