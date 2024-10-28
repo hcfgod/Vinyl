@@ -4,7 +4,7 @@
 #include <Vinyl/Utils/PlatformUtils.h>
 #include <Vinyl/Math/Math.h>
 #include <Vinyl/Scripting/ScriptEngine.h>
-#include <Vinyl/Rendering/Renderer/TextRendering/Font.h>
+#include <Vinyl/Rendering/TextRendering/Font.h>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGuizmo/ImGuizmo.h>
@@ -186,6 +186,7 @@ namespace Vinyl
 					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
 				}
 			}
+
 			// Circle Colliders
 			{
 				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();

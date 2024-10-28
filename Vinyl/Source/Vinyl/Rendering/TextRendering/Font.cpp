@@ -1,7 +1,7 @@
 #include "vlpch.h"
 
-#include "Vinyl/Rendering/Renderer/TextRendering/Font.h"
-#include "Vinyl/Rendering/Renderer/TextRendering/MSDFData.h"
+#include "Vinyl/Rendering/TextRendering/Font.h"
+#include "Vinyl/Rendering/TextRendering/MSDFData.h"
 
 #undef INFINITE
 

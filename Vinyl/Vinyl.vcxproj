@@ -186,13 +186,13 @@
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h" />
-    <ClInclude Include="Source\Vinyl\Rendering\Renderer\TextRendering\Font.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\Font.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer2D.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RendererAPI.h" />
-    <ClInclude Include="Source\Vinyl\Rendering\Renderer\TextRendering\MSDFData.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\MSDFData.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Shader.h" />
     <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h" />
@@ -656,7 +656,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp" />
-    <ClCompile Include="Source\Vinyl\Rendering\Renderer\TextRendering\Font.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\TextRendering\Font.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp" />

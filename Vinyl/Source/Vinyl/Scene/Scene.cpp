@@ -269,7 +269,16 @@ namespace Vinyl
 		glm::mat4 cameraTransform = camera.GetViewProjection();
 
 		RenderEntitiesPass(cameraPosition, camera, cameraTransform);
-		Renderer2D::DrawString("Vinyl", Font::GetDefault(), glm::mat4(1.0f), glm::vec4(1.0f));
+
+		// Draw text
+		{
+			auto view = m_Registry.view<TransformComponent, TextComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
+				Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
+			}
+		}
 
 		Renderer2D::EndScene();
 	}
@@ -351,6 +360,17 @@ namespace Vinyl
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 		
 			RenderEntitiesPass(cameraPosition, *mainCamera, cameraTransform);
+
+			// Draw text
+			{
+				auto view = m_Registry.view<TransformComponent, TextComponent>();
+				for (auto entity : view)
+				{
+					auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
+
+					Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
+				}
+			}
 
 			Renderer2D::EndScene();
 		}
@@ -569,6 +589,11 @@ namespace Vinyl
 
 	template<>
 	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component)
 	{
 	}
 }

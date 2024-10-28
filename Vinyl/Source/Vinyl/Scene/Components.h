@@ -10,6 +10,7 @@
 
 #include "Vinyl/Scene/SceneCamera.h"
 #include "Vinyl/Rendering/Texture.h"
+#include "Vinyl/Rendering/TextRendering/Font.h"
 
 namespace Vinyl 
 {
@@ -78,6 +79,15 @@ namespace Vinyl
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
+	};
+
+	struct TextComponent
+	{
+		std::string TextString;
+		Ref<Font> FontAsset = Font::GetDefault();
+		glm::vec4 Color{ 1.0f };
+		float Kerning = 0.0f;
+		float LineSpacing = 0.0f;
 	};
 
 	// Forward declaration
@@ -163,7 +173,7 @@ namespace Vinyl
 
 	using AllComponents = ComponentGroup 
 	<
-		CameraComponent,
+		CameraComponent, TextComponent,
 		NativeScriptComponent, ScriptComponent,
 		TransformComponent, SpriteRendererComponent, CircleRendererComponent,
 		Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent
