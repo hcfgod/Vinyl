@@ -11,9 +11,11 @@
 
 namespace Vinyl
 {
+	static Font* s_Font;
+
 	EditorLayer::EditorLayer() : Layer("EditorLayer") 
 	{
-		Font font("Assets/Fonts/OpenSans/OpenSans-Regular.ttf");
+		s_Font = new Font("Assets/Fonts/OpenSans/OpenSans-Regular.ttf");
 	}
 
 	void EditorLayer::OnAttach()
@@ -510,6 +512,8 @@ namespace Vinyl
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+		ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
 
 		ImGui::End();
 	}

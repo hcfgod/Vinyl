@@ -7,12 +7,12 @@
 
 namespace Vinyl
 {
-	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification)
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: VL_CORE_ASSERT(false, "Currently we do not support RendererAPI::None. Please choose a different Rendering API."); return nullptr;
-			case RendererAPI::API::OpenGL: return CreateRef<OpenGLTexture2D>(width, height);
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLTexture2D>(specification);
 		}
 
 		VL_CORE_ASSERT(false, "Unknown rendererAPI!");
