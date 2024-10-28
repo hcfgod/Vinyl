@@ -421,15 +421,15 @@ namespace Vinyl
 		float size = ImGui::GetWindowHeight() - 4.0f;
 		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
-		bool hasPlayButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
-		bool hasSimulateButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
+		bool hasPlayButton = m_SceneState == SceneState::None || m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
+		bool hasSimulateButton = m_SceneState == SceneState::None || m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
 		bool hasPauseButton = m_SceneState != SceneState::Edit;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 
 		if (hasPlayButton)
 		{
-			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop;
+			Ref<Texture2D> icon = (m_SceneState == SceneState::None | m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop;
 
 			if (ImGui::ImageButton("##play", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 			{
@@ -451,7 +451,7 @@ namespace Vinyl
 				ImGui::SameLine();
 			}
 
-			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
+			Ref<Texture2D> icon = (m_SceneState == SceneState::None | m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
 
 			if (ImGui::ImageButton("##simualte", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 			{
@@ -476,7 +476,10 @@ namespace Vinyl
 
 				if (ImGui::ImageButton("##pause", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 				{
-					m_ActiveScene->SetPaused(!isPaused);
+					if (m_SceneState != SceneState::None)
+					{
+						m_ActiveScene->SetPaused(!isPaused);
+					}
 				}
 			}
 
@@ -751,17 +754,21 @@ namespace Vinyl
 	}
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)
-	{
-		if (Project::Load(path))
-		{
-			ScriptEngine::Init();
+{
+    if (Project::Load(path))
+    {
+        // Initialize the script engine when loading a project
+        ScriptEngine::Init();
 
-			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
+        // Get the path for the start scene configured in the project
+        auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
 
-			OpenScene(startScenePath);
-			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
-		}
-	}
+		OpenScene(startScenePath);
+
+        // Initialize the Content Browser Panel after loading a project
+        m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+    }
+}
 
 	bool EditorLayer::OpenProject()
 	{
@@ -821,6 +828,8 @@ namespace Vinyl
 			m_ActiveScene = m_EditorScene;
 
 			m_EditorScenePath = path;
+
+			m_SceneState = SceneState::Edit;
 		}
 	}
 
@@ -850,6 +859,12 @@ namespace Vinyl
 
 	void EditorLayer::OnScenePlay()
 	{
+		if (m_SceneState == SceneState::None)
+		{
+			VL_CORE_INFO("Can't play no scene has been loaded.");
+			return;
+		}
+
 		if (m_SceneState == SceneState::Simulate)
 		{
 			OnSceneStop();
@@ -864,6 +879,12 @@ namespace Vinyl
 
 	void EditorLayer::OnSceneSimulate()
 	{
+		if (!m_EditorScene)
+		{
+			VL_CORE_INFO("Can't play no scene has been loaded.");
+			return;
+		}
+
 		if (m_SceneState == SceneState::Play)
 		{
 			OnSceneStop();
@@ -877,6 +898,11 @@ namespace Vinyl
 
 	void EditorLayer::OnSceneStop()
 	{
+		if (m_SceneState == SceneState::None)
+		{
+			return;
+		}
+
 		VL_CORE_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate, "");
 
 		if (m_SceneState == SceneState::Play)
