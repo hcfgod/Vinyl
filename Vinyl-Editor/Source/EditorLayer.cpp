@@ -160,6 +160,7 @@ namespace Vinyl
 		{
 			Renderer2D::BeginScene(m_EditorCamera);
 		}
+
 		if (m_ShowPhysicsColliders)
 		{
 			// Box Colliders
@@ -284,6 +285,7 @@ namespace Vinyl
 	void EditorLayer::RenderGizmos()
 	{
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+
 		if (selectedEntity && m_GizmoType != -1)
 		{
 			ImGuizmo::SetOrthographic(false);
@@ -517,6 +519,7 @@ namespace Vinyl
 		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		auto viewportOffset = ImGui::GetWindowPos();
+
 		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
 		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
@@ -524,7 +527,8 @@ namespace Vinyl
 		m_ViewportHovered = ImGui::IsWindowHovered();
 
 		Application::Get().GetImGuiLayer()->SetBlockEvents(!m_ViewportHovered);
-
+		
+		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
@@ -697,6 +701,22 @@ namespace Vinyl
 				break;
 			}
 
+			case Key::Delete :
+			{
+				if (Application::Get().GetImGuiLayer()->GetActiveWidgetID() == 0)
+				{
+					Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+
+					if (selectedEntity)
+					{
+						m_SceneHierarchyPanel.SetSelectedEntity({});
+						m_ActiveScene->DestroyEntity(selectedEntity);
+					}
+				}
+
+				break;
+			}
+
 			default: break;
 		}
 
@@ -714,7 +734,6 @@ namespace Vinyl
 		}
 		return false;
 	}
-
 
 	// Project Methods
 	void EditorLayer::NewProject()

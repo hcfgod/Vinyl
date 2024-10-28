@@ -60,7 +60,12 @@ namespace Vinyl
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
 
+		float CalculateDistanceToCamera(const glm::vec3& entityPosition, const glm::vec3& cameraPosition) const;
+
+		void RenderEntitiesPass(const glm::vec3& cameraPosition, Camera& camera, const glm::mat4& cameraTransform);
+
 		void RenderScene(EditorCamera& camera);
+
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;

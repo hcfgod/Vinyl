@@ -1,7 +1,7 @@
 @echo off
 
 pushd %~dp0\..\
-call Vendor\Bin\preamake\premake5.exe vs2022
+call Vendor\Bin\premake\premake5.exe vs2022
 popd
 
 PAUSE

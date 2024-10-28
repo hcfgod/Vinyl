@@ -8,6 +8,8 @@
 #include <backends/imgui_impl_opengl3_loader.h>
 
 #include <imgui.h>
+#include <imgui_internal.h>
+
 #include <GLFW/glfw3.h>
 #include <ImGuizmo.h>
 
@@ -139,5 +141,10 @@ namespace Vinyl
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+	}
+
+	uint32_t ImGuiLayer::GetActiveWidgetID() const
+	{
+		return GImGui->ActiveId;
 	}
 }

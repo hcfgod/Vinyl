@@ -7,8 +7,8 @@ namespace Vinyl
 {
 	static const uint32_t s_MaxFramebufferSize = 8192;
 
-	namespace Utils {
-
+	namespace Utils 
+	{
 		static GLenum TextureTarget(bool multisampled)
 		{
 			return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
@@ -212,9 +212,9 @@ namespace Vinyl
 	{
 		VL_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "attachmentIndex is greater than the m_ColorAttachments Size.");
 
-		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
-
 		int pixelData;
+
+		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 
 		return pixelData;

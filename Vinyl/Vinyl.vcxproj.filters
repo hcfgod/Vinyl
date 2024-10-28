@@ -40,6 +40,9 @@
     <Filter Include="Source\Vinyl\Math">
       <UniqueIdentifier>{B08386E7-1C9A-847D-6511-109FD1665505}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Project">
+      <UniqueIdentifier>{BDE73A58-A976-C421-5295-D81C3E03D5C7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Rendering">
       <UniqueIdentifier>{84C643E1-70C0-6C33-592D-034445C6D29F}</UniqueIdentifier>
     </Filter>
@@ -54,6 +57,9 @@
     </Filter>
     <Filter Include="Source\Vinyl\Scripting">
       <UniqueIdentifier>{397297BD-256C-C00F-0ED9-5620FA71267C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Vinyl\UI">
+      <UniqueIdentifier>{4450F5D4-B0DB-6299-B9EC-E58D25F7BE99}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Vinyl\Utils">
       <UniqueIdentifier>{17FBF1D8-03DF-B22E-6C3F-AD8158429DB0}</UniqueIdentifier>
@@ -189,6 +195,12 @@
     <ClInclude Include="Source\Vinyl\Math\Math.h">
       <Filter>Source\Vinyl\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Project\Project.h">
+      <Filter>Source\Vinyl\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Project\ProjectSerializer.h">
+      <Filter>Source\Vinyl\Project</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
@@ -260,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Scripting\ScriptGlue.h">
       <Filter>Source\Vinyl\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\UI\UI.h">
+      <Filter>Source\Vinyl\UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Utils\PlatformUtils.h">
       <Filter>Source\Vinyl\Utils</Filter>
@@ -1521,9 +1536,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Project\Project.h" />
-    <ClInclude Include="Source\Vinyl\Project\ProjectSerializer.h" />
-    <ClInclude Include="Source\Vinyl\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1585,6 +1597,12 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Math\Math.cpp">
       <Filter>Source\Vinyl\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Project\Project.cpp">
+      <Filter>Source\Vinyl\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Project\ProjectSerializer.cpp">
+      <Filter>Source\Vinyl\Project</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
@@ -1658,7 +1676,5 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Project\Project.cpp" />
-    <ClCompile Include="Source\Vinyl\Project\ProjectSerializer.cpp" />
   </ItemGroup>
 </Project>

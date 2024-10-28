@@ -210,37 +210,84 @@ namespace Vinyl
 		m_StepFrames = frames;
 	}
 
+	float Scene::CalculateDistanceToCamera(const glm::vec3& entityPosition, const glm::vec3& cameraPosition) const
+	{
+		return glm::length(entityPosition - cameraPosition);
+	}
+
+	void Scene::RenderEntitiesPass(const glm::vec3& cameraPosition, Camera& camera, const glm::mat4& cameraTransform)
+	{
+		struct RenderableEntity
+		{
+			Entity entity;
+			float distanceToCamera;
+			int entityID;
+		};
+
+		// Collect all entities with their calculated distance to the camera
+		std::vector<RenderableEntity> renderableEntities;
+
+		// Collect sprite entities
+		auto spriteGroup = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : spriteGroup)
+		{
+			auto [transform, sprite] = spriteGroup.get<TransformComponent, SpriteRendererComponent>(entity);
+			float distance = CalculateDistanceToCamera(transform.Translation, cameraPosition);
+			renderableEntities.push_back({ Entity{ entity, this }, distance, (int)entity });
+		}
+
+		// Collect circle entities
+		auto circleView = m_Registry.view<TransformComponent, CircleRendererComponent>();
+		for (auto entity : circleView)
+		{
+			auto [transform, circle] = circleView.get<TransformComponent, CircleRendererComponent>(entity);
+			float distance = CalculateDistanceToCamera(transform.Translation, cameraPosition);
+			renderableEntities.push_back({ Entity{ entity, this }, distance, (int)entity });
+		}
+
+		// Sort all entities by distance from the camera (furthest first)
+		std::sort(renderableEntities.begin(), renderableEntities.end(), [](const RenderableEntity& a, const RenderableEntity& b)
+		{
+			return a.distanceToCamera > b.distanceToCamera;
+		});
+
+		// Render all sorted entities
+		for (const auto& renderableEntity : renderableEntities)
+		{
+			Entity entity = renderableEntity.entity;
+			int entityID = renderableEntity.entityID;
+
+			if (entity.HasComponent<SpriteRendererComponent>())
+			{
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& sprite = entity.GetComponent<SpriteRendererComponent>();
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, entityID);
+			}
+
+			if (entity.HasComponent<CircleRendererComponent>())
+			{
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& circle = entity.GetComponent<CircleRendererComponent>();
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, entityID);
+			}
+		}
+	}
+
 	void Scene::RenderScene(EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
 
-		// Draw sprites
-		{
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+		glm::vec3 cameraPosition = camera.GetPosition(); // Assuming your EditorCamera has a GetPosition method
+		glm::mat4 cameraTransform = camera.GetViewProjection();
 
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-			}
-		}
-
-		// Draw circles
-		{
-			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-			for (auto entity : view)
-			{
-				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-
-				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
-			}
-		}
+		RenderEntitiesPass(cameraPosition, camera, cameraTransform);
 
 		Renderer2D::EndScene();
 	}
 
 	void Scene::OnUpdateRuntime(TimeStep timeStep)
 	{
+		// Update
 		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
 			// Update scripts
@@ -292,6 +339,7 @@ namespace Vinyl
 		// Render 2D
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
+		glm::vec3 cameraPosition;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -302,6 +350,8 @@ namespace Vinyl
 				{
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
+					cameraPosition = transform.Translation;
+
 					break;
 				}
 			}
@@ -310,32 +360,11 @@ namespace Vinyl
 		if (mainCamera)
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
-
-			// Draw sprites
-			{
-				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-				for (auto entity : group)
-				{
-					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-				}
-			}
-
-			// Draw circles
-			{
-				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-				for (auto entity : view)
-				{
-					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-
-					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
-				}
-			}
+		
+			RenderEntitiesPass(cameraPosition, *mainCamera, cameraTransform);
 
 			Renderer2D::EndScene();
 		}
-
 	}
 
 	void Scene::OnUpdateSimulation(TimeStep ts, EditorCamera& camera)
@@ -414,8 +443,8 @@ namespace Vinyl
 
 	void Scene::DestroyEntity(Entity entity)
 	{
-		m_Registry.destroy(entity);
 		m_EntityMap.erase(entity.GetUUID());
+		m_Registry.destroy(entity);
 	}
 
 	void Scene::DuplicateEntity(Entity entity)

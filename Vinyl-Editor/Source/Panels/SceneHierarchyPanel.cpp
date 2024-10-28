@@ -327,6 +327,7 @@ namespace Vinyl
 
 				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 				const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.GetProjectionType()];
+
 				if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
 				{
 					for (int i = 0; i < 2; i++)
