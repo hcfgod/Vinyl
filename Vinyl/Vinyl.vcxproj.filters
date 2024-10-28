@@ -40,6 +40,9 @@
     <Filter Include="Source\Vinyl\Math">
       <UniqueIdentifier>{B08386E7-1C9A-847D-6511-109FD1665505}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Physics">
+      <UniqueIdentifier>{E946A141-D5D5-2A0B-7EF4-3E066A623BB1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Project">
       <UniqueIdentifier>{BDE73A58-A976-C421-5295-D81C3E03D5C7}</UniqueIdentifier>
     </Filter>
@@ -195,6 +198,9 @@
     <ClInclude Include="Source\Vinyl\Math\Math.h">
       <Filter>Source\Vinyl\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Vinyl\Physics\Physics2D.h">
+      <Filter>Source\Vinyl\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vinyl\Project\Project.h">
       <Filter>Source\Vinyl\Project</Filter>
     </ClInclude>
@@ -218,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\Renderer\Font.h">
+      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
@@ -1536,7 +1545,6 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Physics\Physics2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1619,6 +1627,9 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\Font.cpp">
+      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>

@@ -1,16 +1,20 @@
 #include "EditorLayer.h"
 
-#include "Vinyl/Scene/SceneSerializer.h"
-#include "Vinyl/Utils/PlatformUtils.h"
-#include "Vinyl/Math/Math.h"
-#include "Vinyl/Scripting/ScriptEngine.h"
+#include <Vinyl/Scene/SceneSerializer.h>
+#include <Vinyl/Utils/PlatformUtils.h>
+#include <Vinyl/Math/Math.h>
+#include <Vinyl/Scripting/ScriptEngine.h>
+#include <Vinyl/Rendering/Renderer/Font.h>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGuizmo/ImGuizmo.h>
 
 namespace Vinyl
 {
-	EditorLayer::EditorLayer() : Layer("EditorLayer") {}
+	EditorLayer::EditorLayer() : Layer("EditorLayer") 
+	{
+		Font font("Assets/Fonts/OpenSans/OpenSans-Regular.ttf");
+	}
 
 	void EditorLayer::OnAttach()
 	{

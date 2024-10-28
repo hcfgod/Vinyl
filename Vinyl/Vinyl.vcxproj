@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\msdf-atlas-gen\msdfgen;Vendor\msdf-atlas-gen\msdf-atlas-gen;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\msdf-atlas-gen\msdfgen;Vendor\msdf-atlas-gen\msdf-atlas-gen;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>vlpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;IMGUI_DEFINE_MATH_OPERATORS;GLM_FORCE_QUAT_DATA_WXYZ;VL_PLATFORM_WINDOWS;GLFW_INCLUDE_NONE;VL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\SpdLog\include;Vendor\Box2D\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\ImGuizmo;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\mono\include;Vendor\shaderc\include;Vendor\SPIRV-Cross;Vendor\filewatch;Vendor\msdf-atlas-gen\msdfgen;Vendor\msdf-atlas-gen\msdf-atlas-gen;Vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -186,6 +186,7 @@
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h" />
+    <ClInclude Include="Source\Vinyl\Rendering\Renderer\Font.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\Renderer.h" />
@@ -654,6 +655,7 @@
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp" />
+    <ClCompile Include="Source\Vinyl\Rendering\Renderer\Font.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\Renderer.cpp" />
@@ -693,6 +695,9 @@
     </ProjectReference>
     <ProjectReference Include="Vendor\yaml-cpp\yaml-cpp.vcxproj">
       <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Vendor\msdf-atlas-gen\msdf-atlas-gen.vcxproj">
+      <Project>{38BD587B-248B-4C81-0D1F-BDA7F98B28E6}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
