@@ -8,16 +8,18 @@
 #include "Vinyl/Core/Log.h"
 #include "Vinyl/Core/Assert.h"
 
-#include "Vinyl/Scene/Scene.h"
-#include "Vinyl/Scene/Entity.h"
-#include "Vinyl/Scene/ScriptableEntity.h"
-#include "Vinyl/Scene/Components.h"
-
 #include "Vinyl/Core/TimeStep.h"
 
 #include "Vinyl/Core/Input/Input.h"
 #include "Vinyl/Core/Input/KeyCodes.h"
 #include "Vinyl/Core/Input/MouseButtons.h"
+
+#include "Vinyl/Scene/Scene.h"
+#include "Vinyl/Scene/Entity.h"
+#include "Vinyl/Scene/ScriptableEntity.h"
+#include "Vinyl/Scene/Components.h"
+
+#include "Vinyl/Project/Project.h"
 
 #include "Vinyl/Rendering/Renderer/Renderer.h"
 #include "Vinyl/Rendering/Renderer/Renderer2D.h"

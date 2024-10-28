@@ -1,13 +1,11 @@
 #include "vlpch.h"
 #include "ContentBrowserPanel.h"
+#include "Vinyl/Project/Project.h"
 
 #include <imgui/imgui.h>
 
 namespace Vinyl 
 {
-	// Once we have projects, change this
-	extern const std::filesystem::path g_AssetPath = "Assets";
-
 	static void Spacing(int spacing)
 	{
 		for (int i = 0; i < spacing; i++)
@@ -16,8 +14,7 @@ namespace Vinyl
 		}
 	}
 
-	ContentBrowserPanel::ContentBrowserPanel()
-		: m_CurrentDirectory(g_AssetPath)
+	ContentBrowserPanel::ContentBrowserPanel() : m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
 		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
 		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
@@ -27,7 +24,7 @@ namespace Vinyl
 	{
 		ImGui::Begin("Content Browser");
 
-		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath))
+		if (m_CurrentDirectory != std::filesystem::path(m_BaseDirectory))
 		{
 			if (ImGui::Button("<-"))
 			{
@@ -60,18 +57,20 @@ namespace Vinyl
 
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, g_AssetPath);
+				std::filesystem::path relativePath(path);
 				const wchar_t* itemPath = relativePath.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::EndDragDropSource();
 			}
 
 			ImGui::PopStyleColor();
+
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (directoryEntry.is_directory())
+				{
 					m_CurrentDirectory /= path.filename();
-
+				}
 			}
 
 			ImGui::TextWrapped(filenameString.c_str());

@@ -5,6 +5,7 @@
 #include "Vinyl/Scene/Components.h"
 
 #include "Vinyl/Scripting/ScriptEngine.h"
+#include "Vinyl/Project/Project.h"
 #include "Vinyl/Core/UUID.h"
 
 #include <fstream>
@@ -218,8 +219,10 @@ namespace Vinyl
 
 			if (spriteRendererComponent.Texture)
 			{
-				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.Texture->GetPath();
+				std::filesystem::path relativePath = Project::GetPathRelativeToAssetDirectory(spriteRendererComponent.Texture->GetPath());
+				out << YAML::Key << "TexturePath" << YAML::Value << relativePath.string();
 			}
+
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
 			out << YAML::EndMap; // SpriteRendererComponent
@@ -448,8 +451,11 @@ namespace Vinyl
 
 					if (spriteRendererComponent["TexturePath"])
 					{
-						src.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
+						std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						auto path = Project::GetAssetFileSystemPath(texturePath);
+						src.Texture = Texture2D::Create(path.string());
 					}
+
 					if (spriteRendererComponent["TilingFactor"])
 					{
 						src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();

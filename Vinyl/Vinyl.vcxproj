@@ -177,6 +177,8 @@
     <ClInclude Include="Source\Vinyl\Events\MouseEvent.h" />
     <ClInclude Include="Source\Vinyl\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Source\Vinyl\Math\Math.h" />
+    <ClInclude Include="Source\Vinyl\Project\Project.h" />
+    <ClInclude Include="Source\Vinyl\Project\ProjectSerializer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Buffer.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\Camera.h" />
     <ClInclude Include="Source\Vinyl\Rendering\Camera\EditorCamera.h" />
@@ -643,6 +645,8 @@
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Vinyl\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Vinyl\Math\Math.cpp" />
+    <ClCompile Include="Source\Vinyl\Project\Project.cpp" />
+    <ClCompile Include="Source\Vinyl\Project\ProjectSerializer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Buffer.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\EditorCamera.cpp" />
     <ClCompile Include="Source\Vinyl\Rendering\Camera\OrthographicCamera.cpp" />

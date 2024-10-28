@@ -25,6 +25,10 @@ namespace Vinyl
 		bool OnKeyPressed(KeyPressedEvent& event);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
 
+		void NewProject();
+		void OpenProject(const std::filesystem::path& path);
+		void SaveProject();
+
 		// Scene methods
 		void NewScene();
 		void OpenScene();
@@ -37,7 +41,6 @@ namespace Vinyl
 		void OnScenePlay();
 		void OnSceneSimulate();
 		void OnSceneStop();
-		void OnScenePause();
 
 		void OnDuplicateEntity();
 
@@ -84,7 +87,7 @@ namespace Vinyl
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-		ContentBrowserPanel m_ContentBrowserPanel;
+		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
 
 		// Editor resources
 		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;

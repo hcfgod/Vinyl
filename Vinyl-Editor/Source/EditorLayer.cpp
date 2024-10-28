@@ -10,8 +10,6 @@
 
 namespace Vinyl
 {
-	extern const std::filesystem::path g_AssetPath;
-
 	EditorLayer::EditorLayer() : Layer("EditorLayer") {}
 
 	void EditorLayer::OnAttach()
@@ -36,8 +34,13 @@ namespace Vinyl
 		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
 		if (commandLineArgs.Count > 1)
 		{
-			auto sceneFilePath = commandLineArgs[1];
-			OpenScene(sceneFilePath);
+			auto projectFilePath = commandLineArgs[1];
+			OpenProject(projectFilePath);
+		}
+		else
+		{
+			// TODO: prompt the user to select a directory
+			NewProject();
 		}
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
@@ -255,7 +258,7 @@ namespace Vinyl
 		MenuBar();
 
 		m_SceneHierarchyPanel.OnImGuiRender();
-		m_ContentBrowserPanel.OnImGuiRender();
+		m_ContentBrowserPanel->OnImGuiRender();
 
 		ImGui::Begin("Settings");
 		ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
@@ -543,12 +546,12 @@ namespace Vinyl
 				// Handle .vinyl scene files
 				if (extension == ".vinyl")
 				{
-					OpenScene(std::filesystem::path(g_AssetPath) / path);
+					OpenScene(std::filesystem::path(path));
 				}
 				// Handle image files (you can add more extensions if needed)
 				else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || extension == ".bmp" || extension == ".tga" || extension == ".gif")
 				{
-					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+					std::filesystem::path texturePath = std::filesystem::path(path);
 					Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
 
 					if (texture->IsLoaded())
@@ -704,6 +707,26 @@ namespace Vinyl
 			}
 		}
 		return false;
+	}
+
+	void EditorLayer::NewProject()
+	{
+		Project::New();
+	}
+
+	void EditorLayer::OpenProject(const std::filesystem::path& path)
+	{
+		if (Project::Load(path))
+		{
+			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
+			OpenScene(startScenePath);
+			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+		}
+	}
+
+	void EditorLayer::SaveProject()
+	{
+		// Project::SaveActive();
 	}
 
 	// Scene methods
