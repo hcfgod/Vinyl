@@ -4,10 +4,13 @@
 #include "Vinyl/Scripting/ScriptEngine.h"
 #include "Vinyl/UI/UI.h"
 
+#include <filesystem>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
+#include <imgui/misc/cpp/imgui_stdlib.h>
+
 #include <glm/gtc/type_ptr.hpp>
-#include <filesystem>
 
 namespace Vinyl
 {
@@ -302,6 +305,7 @@ namespace Vinyl
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
 			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Collider 2D");
+			DisplayAddComponentEntry<TextComponent>("Text Component");
 
 			ImGui::EndPopup();
 		}
@@ -543,6 +547,14 @@ namespace Vinyl
 						}
 					}
 				}
+		});
+
+		DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
+		{
+			ImGui::InputTextMultiline("Text String", &component.TextString);
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
+			ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
 		});
 	}
 

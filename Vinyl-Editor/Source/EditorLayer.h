@@ -82,9 +82,9 @@ namespace Vinyl
 
 		enum class SceneState
 		{
-			Edit = 0, Play = 1, Simulate = 2
+			None = 0, Edit = 1, Play = 2, Simulate = 3
 		};
-		SceneState m_SceneState = SceneState::Edit;
+		SceneState m_SceneState = SceneState::None;
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;

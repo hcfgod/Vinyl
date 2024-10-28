@@ -26,6 +26,8 @@ IncludeDir["mono"] = "Vinyl/Vendor/mono/include"
 IncludeDir["shaderc"] = "Vinyl/Vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Vinyl/Vendor/SPIRV-Cross"
 IncludeDir["filewatch"] = "Vinyl/Vendor/filewatch"
+IncludeDir["msdfgen"] = "Vinyl/Vendor/msdf-atlas-gen/msdfgen"
+IncludeDir["msdf_atlas_gen"] = "Vinyl/Vendor/msdf-atlas-gen/msdf-atlas-gen"
 IncludeDir["VulkanSDK"] = "Vinyl/Vendor/VulkanSDK/Include"
 
 group "Dependencies"
@@ -34,6 +36,7 @@ group "Dependencies"
 	include "Vinyl/Vendor/imgui"
 	include "Vinyl/Vendor/yaml-cpp"
 	include "Vinyl/Vendor/Box2D"
+	include "Vinyl/Vendor/msdf-atlas-gen"
 group ""
 
 group "Core"
@@ -91,6 +94,8 @@ project "Vinyl"
 		"%{IncludeDir.shaderc}",
 		"%{IncludeDir.SPIRV_Cross}",
 		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.msdfgen}",
+		"%{IncludeDir.msdf_atlas_gen}",
 		"%{IncludeDir.VulkanSDK}"
 	}
 
@@ -101,6 +106,7 @@ project "Vinyl"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"msdf-atlas-gen",
 		"Vinyl/Vendor/VulkanSDK/Lib/vulkan-1.lib",
 		"opengl32.lib",
 	}
