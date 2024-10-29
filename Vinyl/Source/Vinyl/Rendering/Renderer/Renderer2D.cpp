@@ -6,6 +6,8 @@
 #include "Vinyl/Rendering/UniformBuffer.h"
 #include "Vinyl/Rendering/Renderer/RenderCommand.h"
 
+#include "Vinyl/Asset/AssetManager.h"
+
 #include "Vinyl/Rendering/TextRendering/MSDFData.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -203,7 +205,7 @@ namespace Vinyl
 
 		s_Data.WhiteTexture = Texture2D::Create(TextureSpecification());
 		uint32_t whiteTextureData = 0xffffffff;
-		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+		s_Data.WhiteTexture->SetData(Buffer(&whiteTextureData, sizeof(uint32_t)));
 
 		int32_t samplers[s_Data.MaxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
@@ -539,7 +541,8 @@ namespace Vinyl
 	{
 		if (src.Texture)
 		{
-			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+			Ref<Texture2D> texture = AssetManager::GetAsset<Texture2D>(src.Texture);
+			DrawQuad(transform, texture, src.TilingFactor, src.Color, entityID);
 		}
 		else
 		{

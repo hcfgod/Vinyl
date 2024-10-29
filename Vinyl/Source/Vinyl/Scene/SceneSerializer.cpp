@@ -216,12 +216,7 @@ namespace Vinyl
 
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
-
-			if (spriteRendererComponent.Texture)
-			{
-				std::filesystem::path relativePath = Project::GetPathRelativeToAssetDirectory(spriteRendererComponent.Texture->GetPath());
-				out << YAML::Key << "TexturePath" << YAML::Value << relativePath.string();
-			}
+			out << YAML::Key << "TextureHandle" << YAML::Value << spriteRendererComponent.Texture;
 
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
@@ -360,7 +355,7 @@ namespace Vinyl
 		out << YAML::EndMap; // Entity
 	}
 
-	void SceneSerializer::Serialize(const std::string& filepath)
+	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
@@ -388,18 +383,18 @@ namespace Vinyl
 		fout << out.c_str();
 	}
 
-	void SceneSerializer::SerializeRuntime(const std::string& filepath)
+	void SceneSerializer::SerializeRuntime(const std::filesystem::path& filepath)
 	{
 		// Not implemented
 		VL_CORE_ASSERT(false, "");
 	}
 
-	bool SceneSerializer::Deserialize(const std::string& filepath)
+	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
 	{
 		YAML::Node data;
 		try
 		{
-			data = YAML::LoadFile(filepath);
+			data = YAML::LoadFile(filepath.string());
 		}
 		catch (YAML::ParserException e)
 		{
@@ -466,18 +461,19 @@ namespace Vinyl
 				{
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
-
 					if (spriteRendererComponent["TexturePath"])
 					{
-						std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
-						auto path = Project::GetAssetFileSystemPath(texturePath);
-						src.Texture = Texture2D::Create(path.string());
+						// NOTE(Yan): legacy, could try and find something in the asset registry that matches?
+						// std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						// auto path = Project::GetAssetFileSystemPath(texturePath);
+						// src.Texture = Texture2D::Create(path.string());
 					}
 
+					if (spriteRendererComponent["TextureHandle"])
+						src.Texture = spriteRendererComponent["TextureHandle"].as<AssetHandle>();
+
 					if (spriteRendererComponent["TilingFactor"])
-					{
 						src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
-					}
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];
@@ -596,7 +592,7 @@ namespace Vinyl
 		return true;
 	}
 
-	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
+	bool SceneSerializer::DeserializeRuntime(const std::filesystem::path& filepath)
 	{
 		// Not implemented
 		VL_CORE_ASSERT(false, "");

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Vinyl/Asset/Asset.h"
 #include "Vinyl/Core/Timestep.h"
 #include "Vinyl/Core/UUID.h"
 #include "Vinyl/Rendering/Camera/EditorCamera.h"
@@ -12,13 +13,14 @@ namespace Vinyl
 {
 	class Entity;
 
-	class Scene
+	class Scene : public Asset
 	{
 	public:
 		Scene();
 		~Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+		virtual AssetType GetType() const { return AssetType::Scene; }
 
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());

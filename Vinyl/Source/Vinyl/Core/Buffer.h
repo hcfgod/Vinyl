@@ -9,11 +9,17 @@ namespace Vinyl
 	{
 		uint8_t* Data = nullptr;
 		uint64_t Size = 0;
+
 		Buffer() = default;
 
 		Buffer(uint64_t size)
 		{
 			Allocate(size);
+		}
+
+		Buffer(const void* data, uint64_t size)
+			: Data((uint8_t*)data), Size(size)
+		{
 		}
 
 		Buffer(const Buffer&) = default;
@@ -28,13 +34,14 @@ namespace Vinyl
 		void Allocate(uint64_t size)
 		{
 			Release();
-			Data = new uint8_t[size];
+
+			Data = (uint8_t*)malloc(size);
 			Size = size;
 		}
 
 		void Release()
 		{
-			delete[] Data;
+			free(Data);
 			Data = nullptr;
 			Size = 0;
 		}
@@ -49,13 +56,20 @@ namespace Vinyl
 		{
 			return (bool)Data;
 		}
+
 	};
 
 	struct ScopedBuffer
 	{
-		ScopedBuffer(Buffer buffer) : m_Buffer(buffer) { }
+		ScopedBuffer(Buffer buffer)
+			: m_Buffer(buffer)
+		{
+		}
 
-		ScopedBuffer(uint64_t size) : m_Buffer(size) { }
+		ScopedBuffer(uint64_t size)
+			: m_Buffer(size)
+		{
+		}
 
 		~ScopedBuffer()
 		{

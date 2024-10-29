@@ -22,6 +22,7 @@
 #include <unordered_set>
 
 #include "Vinyl/Core/Base.h"
+#include "Vinyl/Core/Buffer.h"
 
 #include "Vinyl/Core/Log.h"
 

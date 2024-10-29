@@ -177,7 +177,7 @@ namespace Vinyl
 		}
 
 		// Get the absolute path for the script module
-		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		auto scriptModulePath = Project::GetActiveAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
 		VL_CORE_INFO("[ScriptEngine] Full scriptModulePath: {}", scriptModulePath);
 
 		status = LoadAppAssembly(scriptModulePath);

@@ -55,6 +55,9 @@
     <Filter Include="Source\Vinyl\Rendering\Renderer">
       <UniqueIdentifier>{AA9EE0B4-1682-EFF4-1F85-1D318BE7B545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Vinyl\Rendering\TextRendering">
+      <UniqueIdentifier>{56457AE8-422C-3CE0-EB7C-A2FDD742B546}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Vinyl\Scene">
       <UniqueIdentifier>{D466C4D8-C04A-852E-29AB-7F8115AE6FB0}</UniqueIdentifier>
     </Filter>
@@ -225,9 +228,6 @@
     <ClInclude Include="Source\Vinyl\Rendering\Framebuffer.h">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\Font.h">
-      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.h">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClInclude>
@@ -248,6 +248,12 @@
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\SubTexture2D.h">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\Font.h">
+      <Filter>Source\Vinyl\Rendering\TextRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\MSDFData.h">
+      <Filter>Source\Vinyl\Rendering\TextRendering</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vinyl\Rendering\Texture.h">
       <Filter>Source\Vinyl\Rendering</Filter>
@@ -1545,7 +1551,15 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vinyl\Rendering\TextRendering\MSDFData.h" />
+    <ClInclude Include="Source\Vinyl\Asset\Asset.h" />
+    <ClInclude Include="Source\Vinyl\Asset\AssetImporter.h" />
+    <ClInclude Include="Source\Vinyl\Asset\AssetManager.h" />
+    <ClInclude Include="Source\Vinyl\Asset\AssetManagerBase.h" />
+    <ClInclude Include="Source\Vinyl\Asset\AssetMetadata.h" />
+    <ClInclude Include="Source\Vinyl\Asset\EditorAssetManager.h" />
+    <ClInclude Include="Source\Vinyl\Asset\RuntimeAssetManager.h" />
+    <ClInclude Include="Source\Vinyl\Asset\SceneImporter.h" />
+    <ClInclude Include="Source\Vinyl\Asset\TextureImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1629,9 +1643,6 @@
     <ClCompile Include="Source\Vinyl\Rendering\Framebuffer.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vinyl\Rendering\TextRendering\Font.cpp">
-      <Filter>Source\Vinyl\Rendering\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Renderer\GraphicsContext.cpp">
       <Filter>Source\Vinyl\Rendering\Renderer</Filter>
     </ClCompile>
@@ -1652,6 +1663,9 @@
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\SubTexture2D.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vinyl\Rendering\TextRendering\Font.cpp">
+      <Filter>Source\Vinyl\Rendering\TextRendering</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vinyl\Rendering\Texture.cpp">
       <Filter>Source\Vinyl\Rendering</Filter>
@@ -1689,5 +1703,13 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Vinyl\Asset\Asset.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\AssetImporter.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\AssetManager.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\AssetManagerBase.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\EditorAssetManager.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\RuntimeAssetManager.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\SceneImporter.cpp" />
+    <ClCompile Include="Source\Vinyl\Asset\TextureImporter.cpp" />
   </ItemGroup>
 </Project>

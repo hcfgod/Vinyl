@@ -4,6 +4,9 @@
 #include "Vinyl/Scripting/ScriptEngine.h"
 #include "Vinyl/UI/UI.h"
 
+#include "Vinyl/Asset/AssetManager.h"
+#include "Vinyl/Asset/AssetMetadata.h"
+
 #include <filesystem>
 
 #include <imgui/imgui.h>
@@ -383,35 +386,6 @@ namespace Vinyl
 				}
 		});
 
-		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
-		{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-
-				ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
-
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-					{
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturePath(path);
-						Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
-
-						if (texture->IsLoaded())
-						{
-							component.Texture = texture;
-						}
-						else
-						{
-							VL_WARN("Could not load texture {0}", texturePath.filename().string());
-						}
-					}
-					ImGui::EndDragDropTarget();
-				}
-
-				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
-		});
-
 		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
@@ -556,6 +530,69 @@ namespace Vinyl
 			ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
 			ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
 		});
+
+		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+
+				std::string label = "None";
+				bool isTextureValid = false;
+				if (component.Texture != 0)
+				{
+					if (AssetManager::IsAssetHandleValid(component.Texture)
+						&& AssetManager::GetAssetType(component.Texture) == AssetType::Texture2D)
+					{
+						const AssetMetadata& metadata = Project::GetActive()->GetEditorAssetManager()->GetMetadata(component.Texture);
+						label = metadata.FilePath.filename().string();
+						isTextureValid = true;
+					}
+					else
+					{
+						label = "Invalid";
+					}
+				}
+
+				ImVec2 buttonLabelSize = ImGui::CalcTextSize(label.c_str());
+				buttonLabelSize.x += 20.0f;
+				float buttonLabelWidth = glm::max<float>(100.0f, buttonLabelSize.x);
+
+				ImGui::Button(label.c_str(), ImVec2(buttonLabelWidth, 0.0f));
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						AssetHandle handle = *(AssetHandle*)payload->Data;
+						if (AssetManager::GetAssetType(handle) == AssetType::Texture2D)
+						{
+							component.Texture = handle;
+						}
+						else
+						{
+							VL_CORE_WARN("Wrong asset type!");
+						}
+
+					}
+
+					ImGui::EndDragDropTarget();
+				}
+
+				if (isTextureValid)
+				{
+					ImGui::SameLine();
+					ImVec2 xLabelSize = ImGui::CalcTextSize("X");
+					float buttonSize = xLabelSize.y + ImGui::GetStyle().FramePadding.y * 2.0f;
+					if (ImGui::Button("X", ImVec2(buttonSize, buttonSize)))
+					{
+						component.Texture = 0;
+					}
+				}
+
+				ImGui::SameLine();
+				ImGui::Text("Texture");
+
+				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+			});
 	}
 
 	template<typename T>
